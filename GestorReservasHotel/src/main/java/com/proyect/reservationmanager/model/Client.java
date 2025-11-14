@@ -24,17 +24,17 @@ public class Client {
 
   // nombre (VARCHAR(100), NOT NULL)
   @Column(nullable = false, length = 100)
-  @NotBlank(message = "First name is mandatory")
+  @NotBlank(message = "El nombre es obligatorio")
   private String firstName;
 
   // apellido (VARCHAR(100), NOT NULL)
   @Column(nullable = false, length = 100)
-  @NotBlank(message = "Last name is mandatory")
+  @NotBlank(message = "El apellido es obligatorio")
   private String lastName;
 
   // email (VARCHAR(100), UNIQUE)
   @Column(unique = true, length = 100)
-  @Email(message = "Email must be valid")
+  @Email(message = "El email debe ser valido")
   private String email;
 
   // telefono (VARCHAR(20))
@@ -43,5 +43,6 @@ public class Client {
 
   // fecha_registro (TIMESTAMP, NOT NULL)
   @Column(nullable = false)
+  @NotNull
   private LocalDateTime registrationDate;
 }

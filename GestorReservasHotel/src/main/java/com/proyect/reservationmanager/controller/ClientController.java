@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.proyect.reservationmanager.model.Client;
 import com.proyect.reservationmanager.repository.ClientRepository;
 
+import jakarta.validation.Valid;
+
 @RestController // Marca la clase para manejar peticiones HTTP y devolver JSON/XML
 @RequestMapping("/api/clients") // Define la URL base para este controlador
 public class ClientController {
@@ -19,9 +21,12 @@ public class ClientController {
 
   // Endpoint: GET /api/clients
   @GetMapping
-  public List<Client> getAllClients() {
-    // usa el metodo findAll() del JpaRepository
-    return clientRepository.findAll();
+  public ResponseEntity<List<Client>>  getAllClients() {
+    // Obtenemos la lista de la base de datos
+    List<Client> clients = clientRepository.findAll();
+
+    // Devolvemos la lista con el código 200 OK
+    return new ResponseEntity<>(clients, HttpStatus.OK);
   }
 
   // Endpoint Get http://localhost:8080/api/clients/1
@@ -40,7 +45,7 @@ public class ClientController {
   // Endpoint: POST /api/clients
   @PostMapping
   // @RequestBody mapea el JSON de la petición al objeto Client
-  public ResponseEntity<Client> createClient(@RequestBody Client client) {
+  public ResponseEntity<Client> createClient(@Valid @RequestBody Client client) {
     // Usa el metodo save()
     Client savedClient = clientRepository.save(client);
 
@@ -50,7 +55,7 @@ public class ClientController {
 
   // Endpoint PUT http://localhost:8080/api/clients/1
   @PutMapping("/{id}")
-  public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client clientDetails) {
+  public ResponseEntity<Client> updateClient(@PathVariable Long id, @Valid @RequestBody Client clientDetails) {
     // Buscamos al cliente existente usando el ID
     return clientRepository.findById(id)
       .map(client -> {
