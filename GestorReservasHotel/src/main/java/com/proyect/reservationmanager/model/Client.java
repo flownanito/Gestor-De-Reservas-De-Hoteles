@@ -15,7 +15,7 @@ public class Client {
   // PK: id_cliente
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY) // PostgreSQL usa IDENTIFY para auto-incremento
-  private Long clientId;
+  private Long id;
 
   // dni (VARCHAR(15), UNIQUE, NOT NULL)
   @Column(unique = true, nullable = false, length = 15)
