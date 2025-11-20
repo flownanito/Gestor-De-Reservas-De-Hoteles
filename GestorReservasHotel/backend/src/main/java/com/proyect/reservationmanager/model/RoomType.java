@@ -1,11 +1,13 @@
 package com.proyect.reservationmanager.model;
 
 import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -17,7 +19,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "room_type")
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data 
+@AllArgsConstructor 
+@NoArgsConstructor
 public class RoomType {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +49,7 @@ public class RoomType {
   @Column(nullable = false)
   private Integer capacity;
 
-  // (Añadir más adelante la relación con habitaciones)
+  @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private List<Room> rooms;
 }
