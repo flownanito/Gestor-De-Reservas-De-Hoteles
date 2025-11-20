@@ -42,6 +42,17 @@ public class ClientController {
     }
   }
 
+  @GetMapping("/dni/{dni}")
+  public ResponseEntity<Object> getClientByDni(@PathVariable String dni) {
+    Optional<Client> client = clientRepository.findByDni(dni);
+
+    if (client.isPresent()) {
+      return new ResponseEntity<>(client.get(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
   // Endpoint: POST /api/clients
   @PostMapping
   // @RequestBody mapea el JSON de la petición al objeto Client

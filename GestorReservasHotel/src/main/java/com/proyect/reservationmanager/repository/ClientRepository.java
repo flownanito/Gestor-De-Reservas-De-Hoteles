@@ -1,5 +1,8 @@
 package com.proyect.reservationmanager.repository;
 
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.proyect.reservationmanager.model.Client;
@@ -10,5 +13,5 @@ import com.proyect.reservationmanager.model.Client;
 public interface ClientRepository extends JpaRepository<Client, Long> {
   // Spring Data JPA permite definir métodos personalizados y Spring los implementa
   // Por ejemplo, para buscar un cliente por su DNI, simplemente defines la firma
-  Client findByDni(String dni);
+  Optional<Client> findByDni(String dni);
 }

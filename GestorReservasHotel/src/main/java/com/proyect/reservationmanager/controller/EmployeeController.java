@@ -48,6 +48,23 @@ public class EmployeeController {
     }
   }
 
+  @GetMapping("/position/{positionName}")
+  public ResponseEntity<List<Employee>> getEmployeeByPosition(@PathVariable String positionName) {
+    List<Employee> employee = employeeRepository.findByPositionPositionName(positionName);
+    return new ResponseEntity<>(employee, HttpStatus.OK);
+  }
+
+  @GetMapping("/email/{email}")
+  public ResponseEntity<Object> getEmployeeByEmail(@PathVariable String email) {
+    Optional<Employee> employee = employeeRepository.findByEmail(email);
+
+    if (employee.isPresent()) {
+      return new ResponseEntity<Object>(employee.get(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+    }
+  }
+
   @PostMapping
   public ResponseEntity<Object> createEmployee(@Valid @RequestBody Employee employee) {
     Long positionId = employee.getPosition().getId();
