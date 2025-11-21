@@ -18,21 +18,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "room_state")
+@Table(name = "feature")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class RoomState {
+public class Feature {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "El nombre de estado es obligatorio")
-  @Column(nullable = false, length = 50)
-  private String stateName;
+  @NotBlank(message = "El nombre de la caracteristic es obligatorio")
+  @Column(unique = true, nullable = false, length = 50)
+  private String featureName;
 
-  @OneToMany(mappedBy = "roomState", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "feature", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
-  private List<Room> rooms;
+  private List<Feature> features;
+
 }
