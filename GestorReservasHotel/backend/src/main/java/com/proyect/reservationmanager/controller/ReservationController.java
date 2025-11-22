@@ -20,10 +20,13 @@ public class ReservationController {
 
   // Endpoint: GET /api/reservations
   @GetMapping
-  public List<Reservation> getAllReservations() {
-    // Usa el método findAll() del JpaRepository
-    return reservationRepository.findAll();
+public ResponseEntity<List<Reservation>> getAllReservations() {
+    // Obtenemos la lista de reservas de la base de datos
+    List<Reservation> reservations = reservationRepository.findAll();
+    // retorna el codigo HTTP 200 "OK"
+    return new ResponseEntity<>(reservations, HttpStatus.OK);
   }
+
 
   // Endpoint: GET http://localhost:8080/api/reservations/1
   @GetMapping("/{id}")

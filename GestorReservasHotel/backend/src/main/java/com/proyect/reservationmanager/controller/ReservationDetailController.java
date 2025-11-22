@@ -20,8 +20,11 @@ public class ReservationDetailController {
 
   // Endpoint: GET /api/reservation-details
   @GetMapping
-  public List<ReservationDetail> getAllReservationDetails() {
-    return reservationDetailRepository.findAll();
+public ResponseEntity<List<ReservationDetail>> getAllReservations() {
+    // Obtenemos la lista de reservas de la base de datos
+    List<Reservation> reservationsDetail = reservationDetailRepository.findAll();
+    // retorna el codigo HTTP 200 "OK"
+    return new ResponseEntity<>(reservationsDetail, HttpStatus.OK);
   }
 
   // Endpoint: GET /api/reservation-details/1

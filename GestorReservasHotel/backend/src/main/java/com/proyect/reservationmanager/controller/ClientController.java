@@ -24,7 +24,6 @@ public class ClientController {
   public ResponseEntity<List<Client>>  getAllClients() {
     // Obtenemos la lista de la base de datos
     List<Client> clients = clientRepository.findAll();
-
     // Devolvemos la lista con el código 200 OK
     return new ResponseEntity<>(clients, HttpStatus.OK);
   }
