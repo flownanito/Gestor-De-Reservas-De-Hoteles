@@ -1,7 +1,7 @@
 package com.proyect.reservationmanager.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.*; 
+import jakarta.validation.constraints.*; 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -11,24 +11,16 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
-@Table(name = "reservation")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity 
+@Table(name = "Reservation") 
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor 
 public class Reservation {
-
+  
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   private Long reservationId;
-
-  @ManyToOne
-  @JoinColumn(name = "client_id")
-  private Client client;
-
-  @ManyToOne
-  @JoinColumn(name = "employee_id")
-  private Employee employee;
 
   // Fecha Reserva (DATE(10), NOT NULL)
   @Column(nullable = false, length = 10)
