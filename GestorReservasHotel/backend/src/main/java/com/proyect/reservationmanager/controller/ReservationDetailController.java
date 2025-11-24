@@ -22,7 +22,7 @@ public class ReservationDetailController {
   @GetMapping
 public ResponseEntity<List<ReservationDetail>> getAllReservations() {
     // Obtenemos la lista de reservas de la base de datos
-    List<Reservation> reservationsDetail = reservationDetailRepository.findAll();
+    List<ReservationDetail> reservationsDetail = reservationDetailRepository.findAll();
     // retorna el codigo HTTP 200 "OK"
     return new ResponseEntity<>(reservationsDetail, HttpStatus.OK);
   }
