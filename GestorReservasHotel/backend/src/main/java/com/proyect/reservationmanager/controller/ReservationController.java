@@ -14,19 +14,18 @@ import com.proyect.reservationmanager.repository.ReservationRepository;
 @RestController // Marca la clase para manejar peticiones HTTP y devolver JSON/XML
 @RequestMapping("/api/reservations") // Define la URL base para este controlador
 public class ReservationController {
-  
+
   @Autowired // Inyecta el repositorio para poder usar los métodos CRUD
   private ReservationRepository reservationRepository;
 
   // Endpoint: GET /api/reservations
   @GetMapping
-public ResponseEntity<List<Reservation>> getAllReservations() {
+  public ResponseEntity<List<Reservation>> getAllReservations() {
     // Obtenemos la lista de reservas de la base de datos
     List<Reservation> reservations = reservationRepository.findAll();
     // retorna el codigo HTTP 200 "OK"
     return new ResponseEntity<>(reservations, HttpStatus.OK);
   }
-
 
   // Endpoint: GET http://localhost:8080/api/reservations/1
   @GetMapping("/{id}")
@@ -54,27 +53,28 @@ public ResponseEntity<List<Reservation>> getAllReservations() {
 
   // Endpoint: PUT http://localhost:8080/api/reservations/1
   @PutMapping("/{id}")
-  public ResponseEntity<Reservation> updateReservation(@PathVariable Long id, @RequestBody Reservation reservationDetails) {
+  public ResponseEntity<Reservation> updateReservation(@PathVariable Long id,
+      @RequestBody Reservation reservationDetails) {
     // Buscamos la reserva existente usando el ID
     return reservationRepository.findById(id)
-      .map(reservation -> {
-        // Si existe (map) actualizamos los campos con los datos del JSON
-        reservation.setReservationDate(reservationDetails.getReservationDate());
-        reservation.setCheckInDate(reservationDetails.getCheckInDate());
-        reservation.setCheckOutDate(reservationDetails.getCheckOutDate());
-        reservation.setCondition(reservationDetails.getCondition());
-        reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
-        reservation.setTotalPrice(reservationDetails.getTotalPrice());
-        // El reservationId no se modifica en un PUT
+        .map(reservation -> {
+          // Si existe (map) actualizamos los campos con los datos del JSON
+          reservation.setReservationDate(reservationDetails.getReservationDate());
+          reservation.setCheckInDate(reservationDetails.getCheckInDate());
+          reservation.setCheckOutDate(reservationDetails.getCheckOutDate());
+          reservation.setCondition(reservationDetails.getCondition());
+          reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
+          reservation.setTotalPrice(reservationDetails.getTotalPrice());
+          // El reservationId no se modifica en un PUT
 
-        // Guardamos la entidad actualizada (Hibernate la mapea a un UPDATE)
-        Reservation updatedReservation = reservationRepository.save(reservation);
+          // Guardamos la entidad actualizada (Hibernate la mapea a un UPDATE)
+          Reservation updatedReservation = reservationRepository.save(reservation);
 
-        // Devolvemos la respuesta 200 OK con la reserva actualizada
-        return new ResponseEntity<>(updatedReservation, HttpStatus.OK);
-      })
-      // Si no existe (orElse), devolvemos 404 Not Found
-      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+          // Devolvemos la respuesta 200 OK con la reserva actualizada
+          return new ResponseEntity<>(updatedReservation, HttpStatus.OK);
+        })
+        // Si no existe (orElse), devolvemos 404 Not Found
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   // Endpoint: DELETE http://localhost:8080/api/reservations/1

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.*; // Para validaciones
 import lombok.*; // Para simplificar el código Java
 
 import java.time.LocalDateTime;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // Indica que esta clase es una tabla de base de datos
 @Table(name = "Clients") // Especifica el nombre real de la tabla en la BD
@@ -16,6 +19,10 @@ public class Client {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY) // PostgreSQL usa IDENTIFY para auto-incremento
   private Long id;
+
+  @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<Reservation> reservations;
 
   // dni (VARCHAR(15), UNIQUE, NOT NULL)
   @Column(unique = true, nullable = false, length = 15)
