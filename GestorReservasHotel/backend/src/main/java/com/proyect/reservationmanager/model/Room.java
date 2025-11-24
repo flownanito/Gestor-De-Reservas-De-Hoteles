@@ -1,7 +1,5 @@
 package com.proyect.reservationmanager.model;
 
-import com.proyect.reservationmanager.model.RoomType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
