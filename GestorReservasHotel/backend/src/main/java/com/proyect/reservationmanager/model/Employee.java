@@ -14,7 +14,7 @@ import lombok.*;
 public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long idEmpleado;
+  private Long id;
 
   @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore

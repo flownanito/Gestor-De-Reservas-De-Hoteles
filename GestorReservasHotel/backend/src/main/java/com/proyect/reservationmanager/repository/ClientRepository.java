@@ -14,4 +14,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
   // Spring Data JPA permite definir métodos personalizados y Spring los implementa
   // Por ejemplo, para buscar un cliente por su DNI, simplemente defines la firma
   Optional<Client> findByDni(String dni);
+  Optional<Client> findByEmail(String email);
+  Optional<Client> findByDniAndIdNot(String dni, Long id);
+  Optional<Client> findByEmailAndIdNot(String email, Long id);
 }
