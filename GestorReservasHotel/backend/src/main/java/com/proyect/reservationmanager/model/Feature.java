@@ -35,5 +35,4 @@ public class Feature {
   @OneToMany(mappedBy = "feature", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   private List<Feature> features;
-
 }

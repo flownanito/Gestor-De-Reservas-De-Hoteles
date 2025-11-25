@@ -29,7 +29,7 @@ public class RoomState {
   private Long id;
 
   @NotBlank(message = "El nombre de estado es obligatorio")
-  @Column(nullable = false, length = 50)
+  @Column(nullable = false, length = 50, unique = true)
   private String stateName;
 
   @OneToMany(mappedBy = "roomState", cascade = CascadeType.ALL, orphanRemoval = true)
