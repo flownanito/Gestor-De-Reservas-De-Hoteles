@@ -31,14 +31,13 @@ public class Room {
 
   @NotNull(message = "El numero de planta es obligatorio")
   @Column(nullable = false)
-  private int floor;
+  private Integer floor;
 
   @ManyToOne
-  @JoinColumn(name = "roomStateId", nullable = false)
+  @JoinColumn(name = "room_state_id", nullable = false)
   private RoomState roomState;
 
   @ManyToOne
-  @JoinColumn(name = "roomTypeId", nullable = false)
+  @JoinColumn(name = "room_type_id", nullable = false)
   private RoomType roomType;
-
 }
