@@ -46,25 +46,33 @@ public class RoomTypeController {
   }
 
   @PostMapping
-  public ResponseEntity<RoomType> createRoomType(@Valid @RequestBody RoomType roomType) {
+  public ResponseEntity<Object> createRoomType(@Valid @RequestBody RoomType roomType) {
+    if (roomTypeRepository.findByName(roomType.getName()).isPresent()) {
+      return new ResponseEntity<Object>("Error, el nombre ya existe", HttpStatus.CONFLICT);
+    }
+
     RoomType savedRoomType = roomTypeRepository.save(roomType);
-    return new ResponseEntity<>(savedRoomType, HttpStatus.CREATED);
+    return new ResponseEntity<Object>(savedRoomType, HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<RoomType> updateRoomType(@PathVariable Long id, @Valid @RequestBody RoomType roomTypeDetails) {
+  public ResponseEntity<Object> updateRoomType(@PathVariable Long id, @Valid @RequestBody RoomType roomTypeDetails) {
     return roomTypeRepository.findById(id)
-      .map(roomType -> {
-        roomType.setName(roomTypeDetails.getName());
-        roomType.setBasePrice(roomTypeDetails.getBasePrice());
-        roomType.setDescription(roomTypeDetails.getDescription());
-        roomType.setNumBeds(roomTypeDetails.getNumBeds());
-        roomType.setCapacity(roomTypeDetails.getCapacity());
+        .map(roomType -> {
+          if (roomTypeRepository.findByNameAndIdNot(roomTypeDetails.getName(), id).isPresent()) {
+            return new ResponseEntity<Object>("Error el nombre ya existe", HttpStatus.CONFLICT);
+          }
 
-        RoomType updateRoomType = roomTypeRepository.save(roomType);
-        return new ResponseEntity<>(updateRoomType, HttpStatus.OK);
-      })
-      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+          roomType.setName(roomTypeDetails.getName());
+          roomType.setBasePrice(roomTypeDetails.getBasePrice());
+          roomType.setDescription(roomTypeDetails.getDescription());
+          roomType.setNumBeds(roomTypeDetails.getNumBeds());
+          roomType.setCapacity(roomTypeDetails.getCapacity());
+
+          RoomType updateRoomType = roomTypeRepository.save(roomType);
+          return new ResponseEntity<Object>(updateRoomType, HttpStatus.OK);
+        })
+        .orElse(new ResponseEntity<Object>(HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/{id}")
