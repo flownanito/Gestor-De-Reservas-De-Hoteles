@@ -82,15 +82,12 @@ public class RoomStateController {
   // ---------------------- GET BY NAME ----------------------
   @GetMapping("/name/{stateName}")
   public ResponseEntity<Object> getRoomStateByName(@PathVariable String stateName) {
-    List<RoomState> states = roomStateRepository.findAll()
-        .stream()
-        .filter(s -> s.getStateName().equalsIgnoreCase(stateName))
-        .toList();
+    Optional<RoomState> states = roomStateRepository.findByStateName(stateName);
 
-    if (states.isEmpty()) {
-      return new ResponseEntity<>("RoomState with name '" + stateName + "' not found", HttpStatus.NOT_FOUND);
+    if (states.isPresent()) {
+      return new ResponseEntity<>(states.get(), HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(states, HttpStatus.OK);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 }

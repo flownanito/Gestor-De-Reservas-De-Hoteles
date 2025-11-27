@@ -1,7 +1,7 @@
 package com.proyect.reservationmanager.model;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "room_type")
-@Data 
-@AllArgsConstructor 
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class RoomType {
   @Id
@@ -55,5 +55,5 @@ public class RoomType {
 
   @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
-  private List<Room> rooms;
+  private Set<Room> rooms;
 }

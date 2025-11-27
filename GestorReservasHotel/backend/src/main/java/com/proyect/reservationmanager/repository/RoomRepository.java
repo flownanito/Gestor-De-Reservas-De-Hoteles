@@ -12,6 +12,8 @@ import com.proyect.reservationmanager.model.Room;
 public interface RoomRepository extends JpaRepository<Room, Long> {
   Optional<Room> findByRoomNumber(String roomNumber);
 
+  Optional<Room> findByRoomNumberAndIdNot(String roomNumber, Long id);
+
   List<Room> findByRoomStateStateName(String stateName);
 
   List<Room> findByRoomTypeName(String roomTypeName);

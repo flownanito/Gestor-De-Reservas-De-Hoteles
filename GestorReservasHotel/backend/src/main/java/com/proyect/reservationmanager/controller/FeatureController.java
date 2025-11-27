@@ -62,6 +62,10 @@ public class FeatureController {
   // ---------------------- CREATE ----------------------
   @PostMapping
   public ResponseEntity<Object> createFeature(@Valid @RequestBody Feature feature) {
+    if (featureRepository.findByFeatureName(feature.getFeatureName()).isPresent()) {
+      return new ResponseEntity<>("Error, la caracteristica ya existe", HttpStatus.CONFLICT);
+    }
+
     Feature savedFeature = featureRepository.save(feature);
     return new ResponseEntity<>(savedFeature, HttpStatus.CREATED);
   }
@@ -72,12 +76,16 @@ public class FeatureController {
     Optional<Feature> featureOpt = featureRepository.findById(id);
 
     if (featureOpt.isPresent()) {
+      if (featureRepository.findByFeatureNameAndIdNot(featureDetails.getFeatureName(), id).isPresent()) {
+        return new ResponseEntity<Object>("Error 409", HttpStatus.CONFLICT);
+      }
+
       Feature feature = featureOpt.get();
       feature.setFeatureName(featureDetails.getFeatureName());
       Feature updatedFeature = featureRepository.save(feature);
-      return new ResponseEntity<>(updatedFeature, HttpStatus.OK);
+      return new ResponseEntity<Object>(updatedFeature, HttpStatus.OK);
     } else {
-      return new ResponseEntity<>("Feature with ID " + id + " not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Object>("Feature with ID " + id + " not found", HttpStatus.NOT_FOUND);
     }
   }
 

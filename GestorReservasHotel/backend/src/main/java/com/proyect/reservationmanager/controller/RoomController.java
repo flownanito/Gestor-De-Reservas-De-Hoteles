@@ -98,11 +98,15 @@ public class RoomController {
   // ---------------------------------------------------------
   @PostMapping
   public ResponseEntity<Object> createRoom(@Valid @RequestBody Room room) {
+    if (roomRepository.findByRoomNumber(room.getRoomNumber()).isPresent()) {
+      return new ResponseEntity<>( "La habitación ya existe", HttpStatus.CONFLICT);
+    }
 
     RoomState roomState = room.getRoomState();
     if (roomState == null || roomState.getId() == null) {
       return new ResponseEntity<>("RoomState must not be null", HttpStatus.BAD_REQUEST);
     }
+
     Long stateId = roomState.getId();
     Optional<RoomState> stateOpt = roomStateRepository.findById(stateId);
     if (stateOpt.isEmpty()) {
@@ -150,6 +154,10 @@ public class RoomController {
 
     return roomRepository.findById(id)
         .map(room -> {
+          if (roomRepository.findByRoomNumberAndIdNot(roomDetails.getRoomNumber(), id).isPresent()) {
+            return new ResponseEntity<Object>("Error 409", HttpStatus.CONFLICT);
+          }
+
           room.setRoomNumber(roomDetails.getRoomNumber());
           room.setFloor(roomDetails.getFloor());
           room.setRoomState(stateOpt.get());
