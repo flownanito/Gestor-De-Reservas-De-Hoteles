@@ -1,5 +1,9 @@
 package com.proyect.reservationmanager.model;
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -10,7 +14,11 @@ import lombok.*;
 public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long idEmpleado;
+  private Long id;
+
+  @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<Reservation> reservations;
 
   @ManyToOne
   @JoinColumn(name = "position_id", nullable = false)

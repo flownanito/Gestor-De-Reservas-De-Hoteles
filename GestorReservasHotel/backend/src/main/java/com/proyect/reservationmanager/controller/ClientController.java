@@ -1,5 +1,6 @@
 package com.proyect.reservationmanager.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,35 +56,50 @@ public class ClientController {
   // Endpoint: POST /api/clients
   @PostMapping
   // @RequestBody mapea el JSON de la petición al objeto Client
-  public ResponseEntity<Client> createClient(@Valid @RequestBody Client client) {
-    // Usa el metodo save()
-    Client savedClient = clientRepository.save(client);
+  public ResponseEntity<Object> createClient(@Valid @RequestBody Client client) {
+    if (clientRepository.findByDni(client.getDni()).isPresent()) {
+      return new ResponseEntity<>("Error: El DNI ya existe", HttpStatus.CONFLICT);
+    }
 
-    // Retorna el cliente creado y un código de estado 201 (Created)
+    if (clientRepository.findByEmail(client.getEmail()).isPresent()) {
+      return new ResponseEntity<>("Error: El email ya existe", HttpStatus.CONFLICT);
+    }
+
+    if (client.getRegistrationDate() == null) {
+      client.setRegistrationDate(LocalDateTime.now());
+    }
+
+    Client savedClient = clientRepository.save(client);
     return new ResponseEntity<>(savedClient, HttpStatus.CREATED);
   }
 
   // Endpoint PUT http://localhost:8080/api/clients/1
   @PutMapping("/{id}")
-  public ResponseEntity<Client> updateClient(@PathVariable Long id, @Valid @RequestBody Client clientDetails) {
-    // Buscamos al cliente existente usando el ID
+  public ResponseEntity<Object> updateClient(@PathVariable Long id, @Valid @RequestBody Client clientDetails) {
+    // Buscamos si el cliente con el ID del Path existe
     return clientRepository.findById(id)
       .map(client -> {
-        // Si existe (map) actualizamos los campos con los datos del JSON
+        // Chequeo de DNI
+        if (clientRepository.findByDniAndIdNot(clientDetails.getDni(), id).isPresent()) {
+          return new ResponseEntity<Object>("Error 409: El DNI está en uso por otro cliente", HttpStatus.CONFLICT);
+        }
+
+        // Chequeo de email
+        if (clientRepository.findByEmailAndIdNot(clientDetails.getEmail(), id).isPresent()) {
+          return new ResponseEntity<Object>("Error 409: El email está en uso por otro cliente", HttpStatus.CONFLICT);
+        }
+
+        // Si todo es único actualizamos
         client.setDni(clientDetails.getDni());
         client.setFirstName(clientDetails.getFirstName());
         client.setLastName(clientDetails.getLastName());
         client.setEmail(clientDetails.getEmail());
         client.setPhone(clientDetails.getPhone());
-        // El ID y registrationDate no se suelen modificar en un PUT
 
-        // Guardamos la entidad actualizada (Hibernate la mapea a un UPDATE)
+        // Guardamos y devolvemos 200 OK
         Client updateClient = clientRepository.save(client);
-
-        // Devolvemos la respuesta 200 OK con el cliente actualizado
-        return new ResponseEntity<>(updateClient, HttpStatus.OK);
+        return new ResponseEntity<Object>(updateClient, HttpStatus.OK);
       })
-      // Si no existe (orElse), devolvemos 404 Not Found
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
@@ -100,3 +116,4 @@ public class ClientController {
     }
   }
 }
+
