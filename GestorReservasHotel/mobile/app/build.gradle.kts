@@ -41,4 +41,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Retrofit (El cliente HTTP)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Gson Converter (Para traducir de JSON a Java)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
