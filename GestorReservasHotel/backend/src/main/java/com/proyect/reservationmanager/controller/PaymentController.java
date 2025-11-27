@@ -9,13 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.proyect.reservationmanager.model.Payment;
-import com.proyect.reservationmanager.model.PaymentMethods;
 import com.proyect.reservationmanager.repository.PaymentRepository;
 
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
-  
+
   @Autowired
   private PaymentRepository paymentRepository;
 
@@ -43,9 +42,9 @@ public class PaymentController {
   // Endpoint: PUT /api/payments/{id}
   @PutMapping("/{id}")
   public ResponseEntity<Payment> updatePayment(
-      @PathVariable Long id, 
+      @PathVariable Long id,
       @RequestBody Payment paymentDetails) {
-    
+
     return paymentRepository.findById(id)
       .map(payment -> {
         // Actualizamos los campos con los datos del JSON
