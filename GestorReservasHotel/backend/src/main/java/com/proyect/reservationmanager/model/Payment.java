@@ -1,6 +1,8 @@
 package com.proyect.reservationmanager.model;
 
 import java.time.LocalDateTime;
+import com.proyect.reservationmanager.model.PaymentMethods;
+import com.proyect.reservationmanager.model.Reservation;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +20,14 @@ public class Payment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long paymentId;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "reservation_id", nullable = false)
+  private Reservation reservation;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "payment_methods_id", nullable = false)
+  private PaymentMethods paymentMethods;
 
   @Column(nullable = false, length = 100)
   @NotBlank(message = "El estado del pago es obligatorio")

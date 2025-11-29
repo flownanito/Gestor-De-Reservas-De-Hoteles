@@ -1,15 +1,13 @@
 package com.proyect.reservationmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-/**
- * Entidad para métodos de pago (PaymentMethods)
- * Atributos solicitados:
- * - idPaymentMethods: identificador autoincremental
- * - paymentName: nombre del método de pago
- */
+
 @Entity
 @Table(name = "payment_methods")
 @Data
@@ -20,6 +18,11 @@ public class PaymentMethods {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_payment_methods")
   private Long idPaymentMethods;
+
+  @OneToMany(mappedBy = "paymentMethods", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<Payment> payments;
+
 
   @Column(name = "payment_name", nullable = false, length = 100)
   @NotBlank(message = "El nombre del método de pago es obligatorio")
