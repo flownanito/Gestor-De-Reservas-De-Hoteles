@@ -43,6 +43,5 @@ public class Client {
 
   // fecha_registro (TIMESTAMP, NOT NULL)
   @Column(nullable = false)
-  @NotNull
   private LocalDateTime registrationDate;
 }
