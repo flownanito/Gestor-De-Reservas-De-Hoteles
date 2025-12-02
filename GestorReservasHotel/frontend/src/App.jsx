@@ -9,8 +9,6 @@ import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
-// importacion de pruba de que se ve bien el reservation detail 
 import ReservationDetail from './pages/reservationdetail/ReservationDetail';
 
 export default function App() {
