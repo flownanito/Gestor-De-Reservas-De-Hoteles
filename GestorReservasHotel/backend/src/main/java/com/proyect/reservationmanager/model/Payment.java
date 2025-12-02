@@ -1,9 +1,6 @@
 package com.proyect.reservationmanager.model;
 
 import java.time.LocalDateTime;
-import com.proyect.reservationmanager.model.PaymentMethods;
-import com.proyect.reservationmanager.model.Reservation;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
