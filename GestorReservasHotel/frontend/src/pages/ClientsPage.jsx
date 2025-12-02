@@ -73,6 +73,24 @@ const ClientsPage = () => {
     }
   }
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Estas seguro de que quieres eliminar este cliente")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/clients/{id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo eliminar al cliente");
+      }
+
+      
+    }
+  }
+
   // Cargar datos al iniciar la página
   useEffect(() => {
     fetchClients();
