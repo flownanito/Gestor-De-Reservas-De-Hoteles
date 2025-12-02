@@ -6,6 +6,7 @@ const ClientsPage = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
     dni: '',
@@ -79,7 +80,7 @@ const ClientsPage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/clients/{id}`, {
+      const response = await fetch(`http://localhost:8080/api/clients/${id}`, {
         method: 'DELETE',
       });
 
@@ -87,17 +88,33 @@ const ClientsPage = () => {
         throw new Error("No se pudo eliminar al cliente");
       }
 
-      
+      alert("Cliente eliminado");
+      fetchClients();
+
+    } catch (error) {
+      console.error("Error deleting:", error);
+      alert("Error al borrar: " + error.message);
     }
-  }
+  };
+
+  const handleEdit = (client) => {
+    setEditingId(client.id || client.clientId);
+    setFormData({
+      dni: client.dni,
+      firstName: client.firstName,
+      lastName: client.lastName,
+      email: client.email,
+      phone: client.phone
+    });
+  };
 
   // Cargar datos al iniciar la página
   useEffect(() => {
     fetchClients();
   }, []); // El array vacío significa que solo se ejecuta una vez al montar
 
- if (loading) return <div>Cargando...</div>;
- if (error) return <div style={{ color: 'red' }}>Error: {error}</div>
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>
 
   return (
     <div>
@@ -175,6 +192,34 @@ const ClientsPage = () => {
               <td>{client.lastName}</td>
               <td>{client.email}</td>
               <td>{client.registrationDate}</td>
+              <td style={{ textAlign: 'center' }}>
+                <button
+                  onClick={() => handleDelete(client.id || client.clientId)}
+                  style={{
+                    backgroundColor: '#ff4444',
+                    color: 'white',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    borderRadius: '4px'
+                  }}
+                >
+                  Borrar
+                </button>
+                <button
+                  onClick={() => handleEdit(client)}
+                  style={{
+                    backgroundColor: '#ff4444',
+                    color: 'white',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    borderRadius: '4px'
+                  }}
+                >
+
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
