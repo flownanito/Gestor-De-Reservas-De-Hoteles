@@ -10,6 +10,9 @@ import ReservationsPage from './pages/ReservationsPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+// importacion de pruba de que se ve bien el reservation detail 
+import ReservationDetail from './pages/reservationdetail/ReservationDetail';
+
 export default function App() {
   return (
     <>
@@ -26,6 +29,7 @@ export default function App() {
           <Route path='/clients' element={<ClientsPage />} />
           <Route path='/employees' element={<EmployeesPage />} />
           <Route path='/reservations' element={<ReservationsPage />} />
+          <Route path='/reservationdetail' element={<ReservationDetail />} /> 
         </Routes>
       </main>
 
