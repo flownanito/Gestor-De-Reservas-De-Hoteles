@@ -12,7 +12,7 @@ import com.proyect.reservationmanager.model.PaymentMethods;
 import com.proyect.reservationmanager.repository.PaymentMethodsRepository;
 
 @RestController
-@RequestMapping("/api/paymentmethods")
+@RequestMapping("/api/payment-methods")
 public class PaymentMethodsController {
 
   @Autowired

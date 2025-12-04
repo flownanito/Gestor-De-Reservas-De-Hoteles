@@ -32,6 +32,18 @@ body {
   margin: 0;
 }
 
+/* Layout helpers to keep footer at the bottom */
+.app-container {
+  min-height: 100vh; /* full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* main should expand to take available space so footer stays at the bottom */
+main {
+  flex: 1 0 auto;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

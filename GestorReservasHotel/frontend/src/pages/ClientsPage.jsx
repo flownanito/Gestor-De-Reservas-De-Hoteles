@@ -50,9 +50,17 @@ const ClientsPage = () => {
       return;
     }
 
+    let url = 'http://localhost:8080/api/clients';
+    let method = 'POST';
+
+    if (editingId) {
+      method = 'PUT';
+      url = `http://localhost:8080/api/clients/${editingId}`;
+    }
+
     try {
-      const response = await fetch('http://localhost:8080/api/clients', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -64,8 +72,10 @@ const ClientsPage = () => {
         throw new Error(errorText || "Error al crear cliente");
       }
 
-      alert("Cliente creado con exito");
+      alert(editingId ? "Cliente actualizado" : "Cliente creado");
+
       setFormData({ dni: '', firstName: '', lastName: '', email: '', phone: '' });
+      setEditingId(null);
       fetchClients();
 
     } catch (error) {
@@ -114,7 +124,7 @@ const ClientsPage = () => {
   }, []); // El array vacío significa que solo se ejecuta una vez al montar
 
   if (loading) return <div>Cargando...</div>;
-  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
   return (
     <div>
@@ -125,49 +135,15 @@ const ClientsPage = () => {
         <h3>Añadir nuevo cliente</h3>
 
         {/* Input para el nombre */}
-        <input
-          type="text"
-          name="firstName"
-          placeholder="Nombre"
-          value={formData.firstName}
-          onChange={handleInputChange}
-        />
-
+        <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} />
         {/* Input para el apellido */}
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Apellido"
-          value={formData.lastName}
-          onChange={handleInputChange}
-        />
-
+        <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleInputChange} />
         {/* Input para el DNI */}
-        <input
-          type="text"
-          name="dni"
-          placeholder="DNI"
-          value={formData.dni}
-          onChange={handleInputChange}
-        />
-
+        <input type="text" name="dni" placeholder="DNI" value={formData.dni} onChange={handleInputChange} />
         {/* Input para el email */}
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} />
         {/* Input para el Telefono */}
-        <input
-          type="number"
-          name="phone"
-          placeholder="Teléfono"
-          value={formData.phone}
-          onChange={handleInputChange}
-        />
+        <input type="number" name="phone" placeholder="Teléfono" value={formData.phone} onChange={handleInputChange} />
 
         <button onClick={handleSubmit}>
           Guardar Cliente
@@ -191,6 +167,7 @@ const ClientsPage = () => {
               <td>{client.firstName}</td>
               <td>{client.lastName}</td>
               <td>{client.email}</td>
+              <td>{client.phone}</td>
               <td>{client.registrationDate}</td>
               <td style={{ textAlign: 'center' }}>
                 <button
@@ -217,7 +194,7 @@ const ClientsPage = () => {
                     borderRadius: '4px'
                   }}
                 >
-
+                  Actualizar
                 </button>
               </td>
             </tr>

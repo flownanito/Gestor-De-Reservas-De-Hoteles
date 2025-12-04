@@ -9,7 +9,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employees")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Employee {
   @Id
@@ -39,4 +39,10 @@ public class Employee {
 
   @Column(length = 20)
   private String phone;
+
+  @Column(nullable = false)
+  private String password;
+
+  @Column(nullable = false)
+  private String role;
 }

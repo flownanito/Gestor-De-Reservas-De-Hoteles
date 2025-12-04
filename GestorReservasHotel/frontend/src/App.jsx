@@ -1,5 +1,5 @@
-
-import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -11,17 +11,28 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 export default function App() {
+  // Guarda el usuario inicialmente null, nadie logueado
+  const [user, setUser] = useState(null);
+
+  // Cerrar sesión
+  const handleLogout = () => {
+    setUser(null);
+  };
+
+  // si no hay usuario mostramos el login
+  if (!user) {
+    return <LoginPage onLoginSuccess={setUser} />;
+  }
+
   return (
-    <>
-      <Header />
+    <div className="app-container">
+      <Header user={user} onLogout={handleLogout} />
 
       <main>
         <Routes>
-          {/* Rutas Públicas (Login y Register) */}
-          <Route path='/login' element={<LoginPage />} />
+          <Route path='/login' element={<Navigate to="/" />} />
           <Route path='/register' element={<RegisterPage />} />
 
-          {/* Rutas de Gestión */}
           <Route path='/' element={<Dashboard />} />
           <Route path='/clients' element={<ClientsPage />} />
           <Route path='/employees' element={<EmployeesPage />} />
@@ -30,7 +41,7 @@ export default function App() {
       </main>
 
       <Footer />
-    </>
+    </div>
 
   )
 }

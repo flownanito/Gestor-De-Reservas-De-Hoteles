@@ -7,7 +7,7 @@ import lombok.*; // Para simplificar el código Java
 import java.time.LocalDateTime;
 
 @Entity // Indica que esta clase es una tabla de base de datos
-@Table(name = "Clients") // Especifica el nombre real de la tabla en la BD
+@Table(name = "clients") // Especifica el nombre real de la tabla en la BD
 @Data // Lombok genera los metodos get/set/toString automaticamente
 @NoArgsConstructor // Lombok Constructor sin argumentos (obligatorio para JPA)
 @AllArgsConstructor // Lombok Constructor con todos los argumentos
