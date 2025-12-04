@@ -7,41 +7,61 @@ import Dashboard from './pages/Dashboard';
 import ClientsPage from './pages/ClientsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
-import Header from './components/Header';
 import Footer from './components/Footer';
+import Header from './components/Header';
+import ProfilePage from './pages/ProfilePage';
 
 export default function App() {
-  // Guarda el usuario inicialmente null, nadie logueado
   const [user, setUser] = useState(null);
 
-  // Cerrar sesión
   const handleLogout = () => {
     setUser(null);
   };
 
-  // si no hay usuario mostramos el login
-  if (!user) {
-    return <LoginPage onLoginSuccess={setUser} />;
-  }
+  // --- 1. HE BORRADO EL BLOQUE "if (!user)..." ---
+  // Ahora la app se renderiza completa siempre.
 
   return (
-    <div className="app-container">
+    <div className="min-h-screen bg-gray-50">
+
+      {/* 2. EL HEADER: Ahora siempre se muestra, haya usuario o no */}
       <Header user={user} onLogout={handleLogout} />
 
-      <main>
+      {/* 3. MAIN con padding-top para que el Header fijo no tape nada */}
+      <main className="pt-20 min-h-screen relative">
         <Routes>
-          <Route path='/login' element={<Navigate to="/" />} />
+          {/* Ruta Login: Si ya tengo usuario, me manda al inicio. Si no, muestra el Login */}
+          <Route
+            path='/login'
+            element={!user ? <LoginPage onLoginSuccess={setUser} /> : <Navigate to="/" />}
+          />
+
           <Route path='/register' element={<RegisterPage />} />
 
+          {/* Ruta Principal (Dashboard/Hero) visible para todos */}
           <Route path='/' element={<Dashboard />} />
-          <Route path='/clients' element={<ClientsPage />} />
-          <Route path='/employees' element={<EmployeesPage />} />
-          <Route path='/reservations' element={<ReservationsPage />} />
+
+          {/* Rutas Protegidas (Solo si hay usuario, si no -> Login) */}
+          <Route
+            path='/clients'
+            element={user ? <ClientsPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path='/employees'
+            element={user ? <EmployeesPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path='/reservations'
+            element={user ? <ReservationsPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path='/profile'
+            element={user ? <ProfilePage /> : <Navigate to="/login" />}
+          />
         </Routes>
       </main>
 
       <Footer />
     </div>
-
-  )
+  );
 }
