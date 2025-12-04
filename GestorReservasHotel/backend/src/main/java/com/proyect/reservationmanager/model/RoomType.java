@@ -1,3 +1,4 @@
+
 package com.proyect.reservationmanager.model;
 
 import java.math.BigDecimal;

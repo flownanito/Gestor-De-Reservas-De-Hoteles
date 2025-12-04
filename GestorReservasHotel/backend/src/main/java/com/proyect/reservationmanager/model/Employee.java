@@ -1,3 +1,4 @@
+
 package com.proyect.reservationmanager.model;
 
 import java.util.Set;
@@ -40,3 +41,4 @@ public class Employee {
   @Column(length = 20)
   private String phone;
 }
+

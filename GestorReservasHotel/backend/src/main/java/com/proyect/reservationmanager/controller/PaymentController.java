@@ -45,6 +45,7 @@ public class PaymentController {
       @PathVariable Long id,
       @RequestBody Payment paymentDetails) {
 
+
     return paymentRepository.findById(id)
       .map(payment -> {
         // Actualizamos los campos con los datos del JSON
@@ -76,4 +77,6 @@ public class PaymentController {
   public List<Payment> getPaymentsByStatus(@PathVariable String status) {
     return paymentRepository.findByStatus(status);
   }
+
 }
+
