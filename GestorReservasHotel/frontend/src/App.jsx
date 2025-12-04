@@ -8,7 +8,7 @@ import ClientsPage from './pages/ClientsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import Footer from './components/footer/Footer';
 import ReservationDetail from './pages/reservationdetail/ReservationDetail';
 
 export default function App() {

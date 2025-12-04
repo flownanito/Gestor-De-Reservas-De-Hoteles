@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+// importacion del Footer y Header
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/Header";
 
 // importacion del css
 import './ReservationDetail.css';
@@ -10,28 +14,8 @@ const ReservationDetail = () => {
 
   return (
     <div className="reservation-detail-root min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
-              <span className="text-white text-lg">🏨</span>
-            </div>
-            <nav className="flex gap-8">
-              <a href="#" className="text-sm text-gray-900 font-medium">Inicio</a>
-              <a href="#" className="text-sm text-gray-600">Habitaciones</a>
-              <a href="#" className="text-sm text-gray-600">Mis Reservas</a>
-              <a href="#" className="text-sm text-gray-600">Mi Perfil</a>
-            </nav>
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-              <span className="text-gray-700">👤</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
+      <>
+      <Header />
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-12">Detalles</h1>
@@ -47,8 +31,8 @@ const ReservationDetail = () => {
                   alt="Habitación" 
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-4 left-4">
-                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                <div className="absolute bottom-4 right-4">
+                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg z-10">
                     <span className="text-lg">▶️</span>
                   </button>
                 </div>
@@ -151,7 +135,7 @@ const ReservationDetail = () => {
             {/* Location Map */}
             <div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Ubicación</h3>
-              <div className="bg-gradient-to-br from-green-100 via-blue-50 to-blue-100 h-64 rounded-lg relative overflow-hidden">
+              <div className="bg-gradient-to-br from-green-100 via-blue-50 to-blue-100 h-64 rounded-lg relative overflow-visible">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 map-container">
                   <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center map-pin">
                     <span className="text-white text-2xl">📍</span>
@@ -321,64 +305,7 @@ const ReservationDetail = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-6">
-                <span className="text-2xl">🏨</span>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                En nuestro hotel, nos dedicamos a proporcionarte la mejor experiencia de hospedaje. 
-                Contamos con habitaciones modernas, servicios de primera clase y un equipo comprometido con tu comodidad.
-              </p>
-              <div className="flex gap-4">
-                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <span className="text-xl">📘</span>
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <span className="text-xl">🐦</span>
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <span className="text-xl">📷</span>
-                </a>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <h4 className="font-semibold text-white mb-4">Enlaces</h4>
-                <ul className="space-y-3 text-gray-400 text-sm">
-                  <li><a href="#" className="hover:text-white transition-colors">Inicio</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Habitaciones</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Sobre nosotros</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Servicios</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Galería</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Ofertas Especiales</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-4">Contacto</h4>
-                <ul className="space-y-3 text-gray-400 text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="text-orange-400">📍</span>
-                    <span>Calle Principal 123<br />28001 Madrid, España</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-orange-400">📞</span>
-                    <span>+34 (234) 567-89</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-orange-400">📧</span>
-                    <span>info@hotelexample.com</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      </>
     </div>
   );
 };
