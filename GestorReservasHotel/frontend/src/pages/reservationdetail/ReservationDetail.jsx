@@ -7,6 +7,8 @@ import Header from "../../components/Header";
 // importacion del css
 import './ReservationDetail.css';
 
+// (ln 11-32 de ClientePages.jsx)Implementar el useEfect para que se ejecuten al cargar los componentes
+
 const ReservationDetail = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');

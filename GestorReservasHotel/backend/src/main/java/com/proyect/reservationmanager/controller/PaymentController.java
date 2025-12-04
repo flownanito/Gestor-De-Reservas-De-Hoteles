@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.proyect.reservationmanager.model.Payment;
 import com.proyect.reservationmanager.repository.PaymentRepository;
 
+// Añadir condicionales para que en caso de Error muestre el HTTP.Status + el error especificado en donde sucede el error.
+
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
