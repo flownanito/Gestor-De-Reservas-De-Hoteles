@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
-@Table(name = "position")
+@Table(name = "positions")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Position {
   @Id
