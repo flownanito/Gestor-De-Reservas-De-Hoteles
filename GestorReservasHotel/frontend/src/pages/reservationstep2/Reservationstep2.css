@@ -22,6 +22,9 @@ body {
   background-color: #f9fafb;
   color: #111827;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 /* Progress Bar Styles */
 .progress-step {
@@ -209,29 +212,174 @@ button.loading::after {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  /* header nav responsive rule removed from this file */
-  
-  .form-container {
-    padding: 1.5rem;
+/* Mobile devices (< 640px) */
+@media (max-width: 640px) {
+  .reservation-step-2 {
+    padding: 0;
   }
   
+  main {
+    padding: 1rem !important;
+  }
+  
+  .bg-white.border-b {
+    padding: 0.75rem 0;
+  }
+  
+  .bg-white.border-b .max-w-7xl {
+    padding: 0 0.5rem !important;
+  }
+  
+  /* Progress bar adjustments */
+  .flex.items-center.justify-between.max-w-2xl {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .flex.flex-col.items-center {
+    flex: 1 1 auto;
+    min-width: 60px;
+  }
+  
+  .flex-1.h-0\.5 {
+    display: none;
+  }
+  
+  /* Form adjustments for mobile */
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 1.5rem !important;
+    margin: 0 !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .text-center.mb-8 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 0.875rem;
+  }
+  
+  /* Input styling for mobile */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    font-size: 16px !important;
+    padding: 0.75rem 1rem !important;
+  }
+  
+  label {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Button styling for mobile */
   button {
-    padding: 0.75rem 1rem;
-    font-size: 13px;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    width: 100%;
   }
   
-  .progress-step span {
-    font-size: 12px;
+  .flex.gap-4 {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  
+  .flex.gap-4 button {
+    flex: 1;
+  }
+  
+  .space-y-6 > div {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .text-xs.text-gray-500.mb-6 {
+    font-size: 0.75rem !important;
+    margin-bottom: 1rem !important;
   }
 }
 
-@media (max-width: 640px) {
-  .btn-group {
-    flex-direction: column;
+/* Tablet devices (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  main {
+    padding: 2rem 1rem !important;
   }
   
-  .btn-group button {
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.875rem !important;
+  }
+  
+  button {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.95rem !important;
+  }
+  
+  /* Progress bar centered */
+  .bg-white.border-b .max-w-7xl {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* Desktop devices (> 1024px) */
+@media (min-width: 1025px) {
+  main {
+    padding: 3rem 2rem !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 3rem !important;
+    max-width: 700px;
+    margin: 0 auto !important;
+    width: 100%;
+  }
+  
+  h2 {
+    font-size: 2.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 1.1rem !important;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    font-size: 1rem !important;
+    padding: 1rem !important;
+  }
+  
+  label {
+    font-size: 1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  button {
+    padding: 1rem 2rem !important;
+    font-size: 1.05rem !important;
+  }
+  
+  /* Progress bar centered */
+  .bg-white.border-b {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .bg-white.border-b .max-w-7xl {
+    display: flex;
+    justify-content: center;
     width: 100%;
   }
 }

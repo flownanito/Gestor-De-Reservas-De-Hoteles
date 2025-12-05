@@ -19,7 +19,7 @@ const ReservationDetail = () => {
       <>
       <Header />
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-[100rem] mx-auto px-6 py-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-12">Detalles</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
