@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Hotel, AlertCircle, CheckCircle } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import api from '../services/api';
+import hotelImage from '../assets/img/hotel-lobby.jpg';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export default function RegisterPage() {
       {/* Fondo (Igual que Login) */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+          src={hotelImage}
           alt="Hotel Lobby"
           className="w-full h-full object-cover"
         />

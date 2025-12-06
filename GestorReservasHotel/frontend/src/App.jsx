@@ -8,6 +8,9 @@ import ClientsPage from './pages/ClientsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
 import ProfilePage from './pages/ProfilePage';
+import Rooms from './pages/rooms/Rooms';
+import RoomDetails from './pages/room-details/RoomDetails';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -33,11 +36,13 @@ export default function App() {
 
           <Route path='/' element={<Dashboard />} />
 
-          <Route path='/clients' element={user ? <ClientsPage /> : <Navigate to="/login" />} />
-          <Route path='/employees' element={user ? <EmployeesPage /> : <Navigate to="/login" />} />
-          <Route path='/reservations' element={user ? <ReservationsPage /> : <Navigate to="/login" />} />
-
           <Route path='/profile' element={user ? <ProfilePage user={user} /> : <Navigate to="/login" />} />
+          <Route path='/clients' element={<ClientsPage />} />
+          <Route path='/employees' element={<EmployeesPage />} />
+          <Route path='/reservations' element={<ReservationsPage />} />
+          <Route path='/rooms' element={<Rooms />} />
+          <Route path="/rooms/:id" element={<RoomDetails />} />
+
         </Routes>
       </main>
 
