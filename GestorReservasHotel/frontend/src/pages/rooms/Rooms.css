@@ -1,0 +1,19 @@
+.rooms-tittle {
+  margin-top: 120px;
+  margin-left: 70px;
+  margin-bottom: 50px;
+}
+
+.rooms-tittle h1{
+  font-size: xx-large;
+}
+
+.rooms-tittle p{
+  margin-top: 15px;
+}
+
+.rooms-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
