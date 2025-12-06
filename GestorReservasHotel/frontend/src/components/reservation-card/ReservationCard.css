@@ -1,0 +1,146 @@
+.reservation-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.reservation-img {
+  width: 110px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.reservation-info {
+  flex: 1;
+}
+
+.reservation-details {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.reservation-price {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.reservation-cancel {
+  background-color: #c15700;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.reservation-cancel:hover {
+  background-color: #a84500;
+}
+
+.reservation-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reservation-details-btn {
+  background-color: #eeeeee;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.reservation-details-btn:hover {
+  background-color: #dcdcdc;
+}
+
+/* RESPONSIVE: Móviles */
+@media (max-width: 650px) {
+  .reservation-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .reservation-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+  }
+
+  .reservation-info h3 {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+
+  .reservation-details {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+  }
+
+  .reservation-price {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+
+  .reservation-cancel {
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 25px;
+    font-size: 16px;
+  }
+
+  .reservation-actions {
+    width: 100%;
+  }
+
+  .reservation-details-btn,
+  .reservation-cancel {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
+/* Responsive más pequeño */
+@media (max-width: 400px) {
+  .reservation-img {
+    height: 150px;
+  }
+
+  .reservation-info h3 {
+    font-size: 16px;
+  }
+
+  .reservation-price {
+    font-size: 18px;
+  }
+
+  .reservation-cancel {
+    padding: 10px;
+    font-size: 15px;
+  }
+}

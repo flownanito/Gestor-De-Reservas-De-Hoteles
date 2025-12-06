@@ -12,6 +12,7 @@ import Rooms from './pages/rooms/Rooms';
 import RoomDetails from './pages/room-details/RoomDetails';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ReservationsUpcoming from './pages/reservations-upcoming/ReservationsUpcoming';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path='/reservations' element={<ReservationsPage />} />
           <Route path='/rooms' element={<Rooms />} />
           <Route path="/rooms/:id" element={<RoomDetails />} />
+          {/* <Route path="/reservation-upcoming" element={<ReservationsUpcoming />} /> */}
         </Routes>
       </main>
 
