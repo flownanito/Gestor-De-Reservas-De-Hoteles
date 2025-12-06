@@ -1,0 +1,469 @@
+/* Importacion del Tailwind CSS */
+@import 'tailwindcss';
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb;
+}
+
+/* Force light background and text for this page component to avoid global dark theme */
+.reservation-step-2 {
+  background-color: #f9fafb;
+  color: #111827;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Progress Bar Styles */
+.progress-step {
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-circle {
+  background-color: #f97316;
+  transform: scale(1.1);
+}
+
+.progress-step.completed .step-circle {
+  background-color: #f97316;
+}
+
+.progress-line {
+  height: 2px;
+  transition: background-color 0.5s ease;
+}
+
+.progress-line.completed {
+  background-color: #f97316;
+}
+
+/* Form Container */
+.form-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder {
+  color: #9ca3af;
+}
+
+/* Input hover effect */
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="tel"]:hover {
+  border-color: #d1d5db;
+}
+
+/* Label styles */
+label {
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Button Styles */
+button {
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button (Continuar) */
+.btn-primary {
+  background-color: #f97316;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #ea580c;
+  box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.3);
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+
+/* Secondary Button (Atrás) */
+.btn-secondary {
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn-secondary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1);
+}
+
+/* Social Media Icons */
+.social-icon {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* Form Validation Styles */
+input:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+}
+
+input:valid:not(:placeholder-shown) {
+  border-color: #10b981;
+}
+
+/* Error message styles */
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+
+input:invalid:not(:placeholder-shown) ~ .error-message {
+  display: block;
+}
+
+/* Loading state for buttons */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.loading {
+  position: relative;
+  color: transparent;
+}
+
+button.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+/* Mobile devices (< 640px) */
+@media (max-width: 640px) {
+  .reservation-step-2 {
+    padding: 0;
+  }
+  
+  main {
+    padding: 1rem !important;
+  }
+  
+  .bg-white.border-b {
+    padding: 0.75rem 0;
+  }
+  
+  .bg-white.border-b .max-w-7xl {
+    padding: 0 0.5rem !important;
+  }
+  
+  /* Progress bar adjustments */
+  .flex.items-center.justify-between.max-w-2xl {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .flex.flex-col.items-center {
+    flex: 1 1 auto;
+    min-width: 60px;
+  }
+  
+  .flex-1.h-0\.5 {
+    display: none;
+  }
+  
+  /* Form adjustments for mobile */
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 1.5rem !important;
+    margin: 0 !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .text-center.mb-8 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 0.875rem;
+  }
+  
+  /* Input styling for mobile */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    font-size: 16px !important;
+    padding: 0.75rem 1rem !important;
+  }
+  
+  label {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Button styling for mobile */
+  button {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    width: 100%;
+  }
+  
+  .flex.gap-4 {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  
+  .flex.gap-4 button {
+    flex: 1;
+  }
+  
+  .space-y-6 > div {
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .text-xs.text-gray-500.mb-6 {
+    font-size: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+/* Tablet devices (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  main {
+    padding: 2rem 1rem !important;
+  }
+  
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.875rem !important;
+  }
+  
+  button {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.95rem !important;
+  }
+  
+  /* Progress bar centered */
+  .bg-white.border-b .max-w-7xl {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* Desktop devices (> 1024px) */
+@media (min-width: 1025px) {
+  main {
+    padding: 3rem 2rem !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .bg-white.rounded-lg.shadow-sm {
+    padding: 3rem !important;
+    max-width: 700px;
+    margin: 0 auto !important;
+    width: 100%;
+  }
+  
+  h2 {
+    font-size: 2.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 1.1rem !important;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    font-size: 1rem !important;
+    padding: 1rem !important;
+  }
+  
+  label {
+    font-size: 1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  button {
+    padding: 1rem 2rem !important;
+    font-size: 1.05rem !important;
+  }
+  
+  /* Progress bar centered */
+  .bg-white.border-b {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .bg-white.border-b .max-w-7xl {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* Accessibility improvements */
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: #fed7aa;
+  color: #111827;
+}
+
+::-moz-selection {
+  background-color: #fed7aa;
+  color: #111827;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Animations for form fields */
+.form-field {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Tooltip styles (if needed) */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem;
+  background-color: #111827;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.tooltip:hover::before {
+  opacity: 1;
+}
