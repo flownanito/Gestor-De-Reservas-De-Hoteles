@@ -3,6 +3,7 @@ package com.proyect.reservationmanager.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,20 @@ public class ClientController {
 
     Client savedClient = clientRepository.save(client);
     return new ResponseEntity<>(savedClient, HttpStatus.CREATED);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
+    String email = loginData.get("email");
+    String password = loginData.get("password");
+
+    Client client = clientRepository.findByEmailAndPassword(email, password);
+
+    if (client != null) {
+      return ResponseEntity.ok(client);
+    } else {
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
   }
 
   // Endpoint PUT http://localhost:8080/api/clients/1

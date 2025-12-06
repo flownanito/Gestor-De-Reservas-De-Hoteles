@@ -1,6 +1,5 @@
-
-
-import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -8,30 +7,41 @@ import Dashboard from './pages/Dashboard';
 import ClientsPage from './pages/ClientsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
+import ProfilePage from './pages/ProfilePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
 export default function App() {
-  return (
-    <>
-      <Header />
+  const [user, setUser] = useState(null);
 
-      <main>
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header user={user} onLogout={handleLogout} />
+
+      <main className="pt-20 min-h-screen relative">
         <Routes>
-          {/* Rutas Públicas (Login y Register) */}
-          <Route path='/login' element={<LoginPage />} />
+          <Route
+            path='/login'
+            element={!user ? <LoginPage onLoginSuccess={setUser} /> : <Navigate to="/" />}
+          />
           <Route path='/register' element={<RegisterPage />} />
 
-          {/* Rutas de Gestión */}
           <Route path='/' element={<Dashboard />} />
-          <Route path='/clients' element={<ClientsPage />} />
-          <Route path='/employees' element={<EmployeesPage />} />
-          <Route path='/reservations' element={<ReservationsPage />} />
+
+          <Route path='/clients' element={user ? <ClientsPage /> : <Navigate to="/login" />} />
+          <Route path='/employees' element={user ? <EmployeesPage /> : <Navigate to="/login" />} />
+          <Route path='/reservations' element={user ? <ReservationsPage /> : <Navigate to="/login" />} />
+
+          <Route path='/profile' element={user ? <ProfilePage user={user} /> : <Navigate to="/login" />} />
         </Routes>
       </main>
 
       <Footer />
-    </>
-
+    </div>
   )
 }

@@ -4,11 +4,13 @@ com\proyect\reservationmanager\controller\ReservationController.class
 com\proyect\reservationmanager\config\WebConfig.class
 com\proyect\reservationmanager\repository\PositionRepository.class
 com\proyect\reservationmanager\model\Client.class
+com\proyect\reservationmanager\controller\AuthController.class
 com\proyect\reservationmanager\repository\PaymentRepository.class
 com\proyect\reservationmanager\repository\RoomTypeRepository.class
 com\proyect\reservationmanager\model\RoomState.class
 com\proyect\reservationmanager\model\ReservationDetail.class
 com\proyect\reservationmanager\model\PaymentMethods.class
+com\proyect\reservationmanager\config\DataInitializer.class
 com\proyect\reservationmanager\controller\PaymentMethodsController.class
 com\proyect\reservationmanager\model\Room.class
 com\proyect\reservationmanager\controller\ClientController.class
@@ -30,6 +32,7 @@ com\proyect\reservationmanager\controller\PaymentController.class
 com\proyect\reservationmanager\controller\EmployeeController.class
 com\proyect\reservationmanager\model\Position.class
 com\proyect\reservationmanager\model\Reservation.class
+com\proyect\reservationmanager\dto\LoginRequest.class
 com\proyect\reservationmanager\model\Feature.class
 com\proyect\reservationmanager\repository\FeatureRepository.class
 com\proyect\reservationmanager\repository\ReservationRepository.class

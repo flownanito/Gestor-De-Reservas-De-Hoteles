@@ -1,6 +1,8 @@
+import api from '../services/api';
 import React, { useState } from "react";
 import { Hotel, AlertCircle } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import hotelImage from '../assets/img/hotel-lobby.jpg';
 
 export default function LoginPage({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -8,22 +10,33 @@ export default function LoginPage({ onLoginSuccess }) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Limpiar errores previos
+    setError("");
 
-    // Lógica simulada basada en los usuarios del diseño
-    if (email === 'admin@hotel.com' && password.length > 0) {
-      onLoginSuccess({ name: 'Super Admin', email, role: 'ADMIN' });
-      navigate('/');
-    } else if (email === 'empleado@hotel.com' && password.length > 0) {
-      onLoginSuccess({ name: 'Juan Empleado', email, role: 'EMPLOYEE' });
-      navigate('/');
-    } else if (email === 'cliente@hotel.com' && password.length > 0) {
-      onLoginSuccess({ name: 'Maria Cliente', email, role: 'CLIENT' });
-      navigate('/');
-    } else {
-      setError("Usuario no encontrado o contraseña incorrecta.");
+    try {
+      console.log("Enviando datos al backend...", { email, password });
+
+      // Llamada real al backend
+      const response = await api.post('/auth/login', {
+        email: email,
+        password: password
+      });
+
+      // Si llegamos aquí, el login fue exitoso
+      console.log("Usuario recibido:", response.data);
+
+      // Guardamos el usuario real en el estado de App.jsx
+      onLoginSuccess(response.data);
+      navigate('/'); // Nos vamos al dashboard
+
+    } catch (err) {
+      console.error("Error en login:", err);
+      if (err.response && err.response.status === 401) {
+        setError("Usuario o contraseña incorrectos.");
+      } else {
+        setError("Error de conexión con el servidor.");
+      }
     }
   };
 
@@ -33,7 +46,7 @@ export default function LoginPage({ onLoginSuccess }) {
       {/* --- IMAGEN DE FONDO --- */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+          src={hotelImage}
           alt="Hotel Lobby"
           className="w-full h-full object-cover"
           onError={(e) => { e.target.style.display = 'none'; }} // Si falla, se queda el fondo negro
@@ -81,7 +94,7 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700">
+              <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700">
                 Contraseña
               </label>
               <input
@@ -105,10 +118,10 @@ export default function LoginPage({ onLoginSuccess }) {
 
           {/* Link a Registro */}
           <div className="mt-4 text-center">
-             <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
-             <Link to="/register" className="text-sm font-semibold text-amber-700 hover:underline">
-               Regístrate aquí
-             </Link>
+            <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
+            <Link to="/register" className="text-sm font-semibold text-amber-700 hover:underline">
+              Regístrate aquí
+            </Link>
           </div>
 
           {/* Información Demo (Copiada del diseño) */}

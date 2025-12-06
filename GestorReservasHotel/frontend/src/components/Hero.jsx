@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import hotelImage from '../assets/img/hotel-exterior.jpg';
 
-// Importamos iconos de Lucide si los tienes instalados (recomendado)
-// Si no, puedes borrarlos y usar emojis en el código de abajo
 import { Calendar, MapPin, Star, Hotel } from "lucide-react";
 
 const Hero = () => {
@@ -14,7 +13,7 @@ const Hero = () => {
       {/* --- FONDO (Imagen + Capa Oscura) --- */}
       <div style={styles.bgContainer}>
         <img
-          src="https://images.unsplash.com/photo-1723465308831-29da05e011f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+          src={hotelImage}
           alt="Hotel Exterior"
           style={styles.bgImage}
           onError={(e) => e.target.style.display = 'none'} // Si falla, se ve el fondo negro
@@ -61,34 +60,6 @@ const Hero = () => {
             Ver Habitaciones
           </button>
         </div>
-
-        {/* Tarjetas de Información (Grid) */}
-        <div style={styles.cardsGrid}>
-          {/* Card 1 */}
-          <div style={styles.card}>
-            {/* <MapPin size={32} color="#f59e0b" style={{marginBottom: '10px'}} /> */}
-            <div style={{fontSize: '2rem', marginBottom: '10px'}}>📍</div>
-            <div style={styles.cardTitle}>Ubicación Premium</div>
-            <p style={styles.cardText}>Centro de la ciudad</p>
-          </div>
-
-          {/* Card 2 */}
-          <div style={styles.card}>
-            {/* <Hotel size={32} color="#f59e0b" style={{marginBottom: '10px'}} /> */}
-            <div style={{fontSize: '2rem', marginBottom: '10px'}}>🏨</div>
-            <div style={styles.cardTitle}>120 Habitaciones</div>
-            <p style={styles.cardText}>Suites de lujo</p>
-          </div>
-
-          {/* Card 3 */}
-          <div style={styles.card}>
-            {/* <Star size={32} color="#f59e0b" style={{marginBottom: '10px'}} /> */}
-            <div style={{fontSize: '2rem', marginBottom: '10px'}}>⭐</div>
-            <div style={styles.cardTitle}>Servicio 5 Estrellas</div>
-            <p style={styles.cardText}>Atención personalizada</p>
-          </div>
-        </div>
-
       </div>
     </section>
   );

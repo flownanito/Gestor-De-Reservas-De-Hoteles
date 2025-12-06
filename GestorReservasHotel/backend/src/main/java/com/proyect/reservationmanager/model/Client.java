@@ -37,6 +37,9 @@ public class Client {
   @Email(message = "El email debe ser valido")
   private String email;
 
+  @Column(nullable = false)
+  private String password;
+
   // telefono (VARCHAR(20))
   @Column(length = 20)
   private String phone;
