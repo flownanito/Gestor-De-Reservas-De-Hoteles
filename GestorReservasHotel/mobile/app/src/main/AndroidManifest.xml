@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile">
         <activity
+            android:name=".RoomFeaureActivity"
+            android:exported="false" />
+        <!-- Actividad Mi Perfil -->
+        <activity
+            android:name=".MiPerfilActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- Actividad PaymentManagementActivity -->
+        <activity android:name=".PaymentManagementActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

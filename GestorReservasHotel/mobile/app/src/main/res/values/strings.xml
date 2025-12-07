@@ -1,3 +1,69 @@
 <resources>
     <string name="app_name">Mobile</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="go_to_profile">Ir a Mi Perfil</string>
+
+
+    <string name="my_profile">Mi Perfil</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="personal_information">Información Personal</string>
+    <string name="account_management">Gestión de la Cuenta</string>
+    <string name="change_password">Cambiar Contraseña</string>
+    <string name="manage_notifications">Gestionar Notificaciones</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="upcoming_reservations">Próximas Reservas</string>
+    <string name="view_all">Ver todas</string>
+    <string name="no_reservations">Sin próximas reservas</string>
+    <string name="no_reservations_desc">Parece que no tienes ningún viaje\nplaneado. ¡Es hora de una
+        aventura!</string>
+    <string name="search_hotels">Buscar hoteles</string>
+    <string name="edit_photo">Editar foto</string>
+    <string name="not_specified">No especificado</string>
+
+
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="email">Email</string>
+    <string name="phone">Teléfono</string>
+    <string name="dni">DNI</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_account">Eliminar Cuenta</string>
+    <string name="delete_account_warning">Esta acción no se puede deshacer</string>
+    <string name="delete_confirmation_title">Eliminar Cuenta</string>
+    <string name="delete_confirmation_message">¿Estás seguro de que deseas eliminar tu cuenta? Esta
+        acción no se puede deshacer.</string>
+    <string name="delete">Eliminar</string>
+
+
+    <string name="first_name_required">El nombre es obligatorio</string>
+    <string name="last_name_required">El apellido es obligatorio</string>
+    <string name="email_invalid">Email inválido</string>
+    <string name="dni_required">El DNI es obligatorio</string>
+
+
+    <string name="profile_updated">Perfil actualizado correctamente</string>
+    <string name="error_loading_data">Error al cargar los datos</string>
+    <string name="error_updating_profile">Error al actualizar el perfil</string>
+    <string name="error_deleting_account">Error al eliminar la cuenta</string>
+    <string name="account_deleted">Cuenta eliminada correctamente</string>
+    <string name="connection_error">Error de conexión: %s</string>
+    <string name="client_not_identified">Error: Cliente no identificado</string>
+
+
+    <string name="feature_in_development_photo">Función de cambio de foto en desarrollo</string>
+    <string name="feature_in_development_password">Función de cambio de contraseña en desarrollo</string>
+    <string name="feature_in_development_notifications">Función de notificaciones en desarrollo</string>
+    <string name="navigating_to_hotels">Navegando a búsqueda de hoteles…</string>
+    <string name="showing_all_reservations">Mostrando todas las reservas…</string>
+
+    <!-- Descripciones para imágenes (contentDescription) -->
+    <string name="desc_icono_perfil">Icono de perfil</string>
+    <string name="desc_icono_telefono">Icono de teléfono</string>
+    <string name="desc_icono_identificacion">Icono de identificación</string>
+    <string name="desc_icono_clave">Icono de clave/contraseña</string>
+    <string name="desc_icono_notificacion">Icono de notificación</string>
+    <string name="desc_icono_cerrar_sesion">Icono para cerrar sesión</string>
+    <string name="desc_icono_reserva">Icono de reservas</string>
+    <string name="desc_icono_flecha">Icono de flecha</string>
 </resources>
