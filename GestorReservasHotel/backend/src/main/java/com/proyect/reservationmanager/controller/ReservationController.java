@@ -14,7 +14,7 @@ import com.proyect.reservationmanager.repository.ReservationRepository;
 @RestController // Marca la clase para manejar peticiones HTTP y devolver JSON/XML
 @RequestMapping("/api/reservations") // Define la URL base para este controlador
 public class ReservationController {
-  
+
   @Autowired // Inyecta el repositorio para poder usar los métodos CRUD
   private ReservationRepository reservationRepository;
 
@@ -39,6 +39,12 @@ public ResponseEntity<List<Reservation>> getAllReservations() {
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Retorna 404 NOT FOUND
     }
+  }
+
+  @GetMapping("/client/{clientId}")
+  public ResponseEntity<List<Reservation>> getReservationsByClient(@PathVariable Long clientId) {
+      List<Reservation> reservations = reservationRepository.findByClient_Id(clientId);
+      return new ResponseEntity<>(reservations, HttpStatus.OK);
   }
 
   // Endpoint: POST /api/reservations

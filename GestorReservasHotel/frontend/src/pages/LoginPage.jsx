@@ -123,16 +123,6 @@ export default function LoginPage({ onLoginSuccess }) {
               Regístrate aquí
             </Link>
           </div>
-
-          {/* Información Demo (Copiada del diseño) */}
-          <div className="mt-8 p-4 bg-amber-50 rounded-lg border border-amber-100">
-            <p className="text-amber-900 font-semibold mb-2 text-sm">Usuarios de prueba:</p>
-            <ul className="text-gray-600 space-y-1 text-sm">
-              <li>• admin@hotel.com (Pass: cualquiera)</li>
-              <li>• empleado@hotel.com</li>
-              <li>• cliente@hotel.com</li>
-            </ul>
-          </div>
         </div>
 
         {/* Footer inferior */}

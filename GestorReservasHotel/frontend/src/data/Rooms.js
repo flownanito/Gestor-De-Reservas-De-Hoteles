@@ -1,11 +1,11 @@
-import room1 from "../assets/room1.jpg";
-import room2 from "../assets/room2.jpg";
-import room3 from "../assets/room3.jpg";
-import room4 from "../assets/room4.jpg";
-import room5 from "../assets/room5.jpg";
-import room6 from "../assets/room6.jpg";
-import room7 from "../assets/room7.jpg";
-import room8 from "../assets/room8.jpg";
+import room1 from "../assets/img/room1.jpg"
+import room2 from "../assets/img/room2.jpg"
+import room3 from "../assets/img/room3.jpg"
+import room4 from "../assets/img/room4.jpg"
+import room5 from "../assets/img/room5.jpg"
+import room6 from "../assets/img/room6.jpg"
+import room7 from "../assets/img/room7.jpg"
+import room8 from "../assets/img/room8.jpg"
 
 const roomsData = [
   {

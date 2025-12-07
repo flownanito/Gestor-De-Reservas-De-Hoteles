@@ -5,31 +5,31 @@ const ProfilePage = ({ user }) => {
   const [activeTab, setActiveTab] = useState("info");
   const [isEditing, setIsEditing] = useState(false);
 
-  // Datos simulados para las estadísticas
+  // Datos simulados para las estadísticas visuales
   const stats = {
     bookings: 12,
     spent: "1,380€",
+    level: "Cliente Preferencial"
   };
 
-  // Mock data para reservas
+  // Mock data para el historial (hasta que conectemos la API de reservas)
   const mockBookings = [
     { id: "BK001", room: "Suite Ejecutiva", checkIn: "2025-12-15", checkOut: "2025-12-18", status: "confirmed", total: 840 },
     { id: "BK002", room: "Habitación Deluxe", checkIn: "2025-11-01", checkOut: "2025-11-03", status: "completed", total: 300 },
   ];
 
-  // Estado del formulario con los datos reales
+  // Estado del formulario (Solo datos reales de la BD)
   const [profileData, setProfileData] = useState({
     name: user.name || "",
-    lastName: user.lastName || "", // ⬅️ AÑADIDO: Apellido
+    lastName: user.lastName || "", // ⬅️ Nuevo campo
     email: user.email || "",
-    phone: user.phone || "",
-    // Eliminado: preferences
+    phone: user.phone || ""
   });
 
   const handleSave = () => {
+    // Aquí conectaríamos con el endpoint PUT /api/clients/{id}
     setIsEditing(false);
-    // Aquí iría la llamada a la API para actualizar (PUT)
-    alert("Perfil actualizado exitosamente (Simulado)");
+    alert("Datos actualizados correctamente (Simulado)");
   };
 
   return (
@@ -37,7 +37,7 @@ const ProfilePage = ({ user }) => {
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Mi Perfil</h1>
-        <p className="text-gray-600 mt-1">Gestiona tu información y revisa tu historial.</p>
+        <p className="text-gray-600 mt-1">Gestiona tu información personal y revisa tus reservas.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -45,6 +45,7 @@ const ProfilePage = ({ user }) => {
         {/* --- COLUMNA IZQUIERDA: TARJETA RESUMEN --- */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
+
             <div className="w-24 h-24 bg-amber-700 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 border-4 border-amber-50">
               {user.name ? user.name.charAt(0).toUpperCase() : "U"}
             </div>
@@ -53,6 +54,10 @@ const ProfilePage = ({ user }) => {
             <p className="text-sm text-gray-500 uppercase tracking-wider mb-6">{user.role}</p>
 
             <div className="space-y-4 text-left border-t border-gray-100 pt-6">
+              <div className="flex items-center gap-3 text-gray-700">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-600"><Star size={18} /></div>
+                <span className="font-medium">{stats.level}</span>
+              </div>
               <div className="flex items-center gap-3 text-gray-700">
                 <div className="p-2 bg-gray-50 rounded-lg text-gray-500"><Calendar size={18} /></div>
                 <span>{stats.bookings} Reservas realizadas</span>
@@ -68,19 +73,19 @@ const ProfilePage = ({ user }) => {
         {/* --- COLUMNA DERECHA: DETALLES --- */}
         <div className="lg:col-span-2">
 
-          {/* Tabs */}
+          {/* Navegación de Pestañas */}
           <div className="bg-white rounded-t-2xl border-b border-gray-200 flex overflow-hidden">
             <button
               onClick={() => setActiveTab("info")}
               className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'info' ? 'bg-amber-50 text-amber-700 border-b-2 border-amber-700' : 'text-gray-500 hover:bg-gray-50'}`}
             >
-              Información Personal
+              Datos de Contacto
             </button>
             <button
               onClick={() => setActiveTab("bookings")}
               className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'bookings' ? 'bg-amber-50 text-amber-700 border-b-2 border-amber-700' : 'text-gray-500 hover:bg-gray-50'}`}
             >
-              Mis Reservas
+              Historial de Reservas
             </button>
           </div>
 
@@ -89,45 +94,45 @@ const ProfilePage = ({ user }) => {
             {/* TAB: INFORMACIÓN */}
             {activeTab === "info" && (
               <div className="space-y-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold text-gray-800">Datos de Contacto</h3>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-lg font-bold text-gray-800">Información Personal</h3>
                   <button onClick={() => setIsEditing(!isEditing)} className="text-sm text-amber-700 font-medium flex items-center gap-1 hover:underline">
                     <Edit size={16} /> {isEditing ? "Cancelar" : "Editar"}
                   </button>
                 </div>
 
-                {/* GRID 2x2 CON LOS 4 CAMPOS */}
+                {/* GRID PERFECTO 2x2 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                   {/* 1. Nombre */}
                   <div>
                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">Nombre</label>
-                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white' : 'border-gray-100 bg-gray-50'} text-gray-800`}>
+                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white shadow-sm' : 'border-gray-100 bg-gray-50'} text-gray-800 transition-all`}>
                       <User size={18} className="text-gray-400" />
                       {isEditing ? (
-                        <input className="w-full bg-transparent outline-none" value={profileData.name} onChange={(e) => setProfileData({...profileData, name: e.target.value})} />
-                      ) : profileData.name}
+                        <input className="w-full bg-transparent outline-none" value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} />
+                      ) : <span className="font-medium">{profileData.name}</span>}
                     </div>
                   </div>
 
-                  {/* 2. Apellido (NUEVO) */}
+                  {/* 2. Apellidos */}
                   <div>
                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">Apellidos</label>
-                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white' : 'border-gray-100 bg-gray-50'} text-gray-800`}>
+                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white shadow-sm' : 'border-gray-100 bg-gray-50'} text-gray-800 transition-all`}>
                       <User size={18} className="text-gray-400" />
                       {isEditing ? (
-                        <input className="w-full bg-transparent outline-none" value={profileData.lastName} onChange={(e) => setProfileData({...profileData, lastName: e.target.value})} />
-                      ) : profileData.lastName}
+                        <input className="w-full bg-transparent outline-none" value={profileData.lastName} onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })} />
+                      ) : <span className="font-medium">{profileData.lastName}</span>}
                     </div>
                   </div>
 
                   {/* 3. Email */}
                   <div>
                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">Correo Electrónico</label>
-                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white' : 'border-gray-100 bg-gray-50'} text-gray-800`}>
+                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white shadow-sm' : 'border-gray-100 bg-gray-50'} text-gray-800 transition-all`}>
                       <Mail size={18} className="text-gray-400" />
                       {isEditing ? (
-                        <input className="w-full bg-transparent outline-none" value={profileData.email} onChange={(e) => setProfileData({...profileData, email: e.target.value})} />
+                        <input className="w-full bg-transparent outline-none" value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} />
                       ) : profileData.email}
                     </div>
                   </div>
@@ -135,20 +140,19 @@ const ProfilePage = ({ user }) => {
                   {/* 4. Teléfono */}
                   <div>
                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">Teléfono</label>
-                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white' : 'border-gray-100 bg-gray-50'} text-gray-800`}>
+                    <div className={`flex items-center gap-3 p-3 rounded-lg border ${isEditing ? 'border-amber-500 bg-white shadow-sm' : 'border-gray-100 bg-gray-50'} text-gray-800 transition-all`}>
                       <Phone size={18} className="text-gray-400" />
                       {isEditing ? (
-                        <input className="w-full bg-transparent outline-none" value={profileData.phone} onChange={(e) => setProfileData({...profileData, phone: e.target.value})} />
+                        <input className="w-full bg-transparent outline-none" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
                       ) : (profileData.phone || "Sin teléfono")}
                     </div>
                   </div>
 
                 </div>
 
-                {/* Botones de Acción (Solo al editar) */}
                 {isEditing && (
-                  <div className="flex justify-end pt-4 mt-4 border-t border-gray-100">
-                    <button onClick={handleSave} className="px-6 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800 transition-colors shadow-sm font-medium">
+                  <div className="flex justify-end pt-6 border-t border-gray-100">
+                    <button onClick={handleSave} className="px-6 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800 transition-colors shadow-md font-medium">
                       Guardar Cambios
                     </button>
                   </div>
@@ -159,9 +163,9 @@ const ProfilePage = ({ user }) => {
             {/* TAB: RESERVAS */}
             {activeTab === "bookings" && (
               <div className="space-y-4">
-                {/* Aquí iría el listado de reservas (igual que antes) */}
+                {/* Aquí irán las reservas reales cuando conectemos el endpoint */}
                 <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                   <p className="text-gray-500">Historial de reservas en construcción...</p>
+                  <p className="text-gray-500">Historial de reservas próximamente...</p>
                 </div>
               </div>
             )}

@@ -8,15 +8,14 @@ import ClientsPage from './pages/ClientsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import ReservationsPage from './pages/ReservationsPage';
 import ProfilePage from './pages/ProfilePage';
-import Rooms from './pages/rooms/Rooms';
-import RoomDetails from './pages/room-details/RoomDetails';
-
+import Room from './pages/Rooms';
+import RoomDetails from './pages/RoomDetails';
 import Header from './components/Header';
-import Footer from './components/footer/Footer';
-import ReservationDetail from './pages/reservationdetail/ReservationDetail';
-import ReservationStep1 from './pages/reservationstep1/Reservationstep1';
-import ReservationStep2 from './pages/reservationstep2/Reservationstep2';
-import ReservationStep3 from './pages/reservationstep3/Reservationstep3';
+import Footer from './components/Footer';
+import ReservationDetail from './pages/ReservationDetail';
+import ReservationStep1 from './components/Reservationstep1';
+import ReservationStep2 from './components/Reservationstep2';
+import ReservationStep3 from './components/Reservationstep3';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -43,13 +42,16 @@ export default function App() {
           <Route path='/profile' element={user ? <ProfilePage user={user} /> : <Navigate to="/login" />} />
           <Route path='/clients' element={<ClientsPage />} />
           <Route path='/employees' element={<EmployeesPage />} />
-          <Route path='/reservations' element={<ReservationsPage />} />
-          <Route path='/rooms' element={<Rooms />} />
+          <Route
+            path='/reservations'
+            element={user ? <ReservationsPage user={user} /> : <Navigate to="/login" />}
+          />
+          <Route path='/rooms' element={<Room />} />
           <Route path="/rooms/:id" element={<RoomDetails />} />
           <Route path='/reservationdetail' element={<ReservationDetail />} />
-          <Route path='/reservationstep1' element={<ReservationStep1 />} />
-          <Route path='/reservationstep2' element={<ReservationStep2 />} />
-          <Route path='/reservationstep3' element={<ReservationStep3 />} />
+          <Route path='/reservationStep1' element={<ReservationStep1 />} />
+          <Route path='/reservationStep2' element={<ReservationStep2 />} />
+          <Route path='/reservationStep3' element={<ReservationStep3 />} />
 
         </Routes>
       </main>

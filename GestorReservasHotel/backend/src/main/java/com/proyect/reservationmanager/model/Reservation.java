@@ -2,12 +2,12 @@ package com.proyect.reservationmanager.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "reservations")
@@ -16,44 +16,43 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 public class Reservation {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long reservationId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "id_empleado")
-  private Employee employee;
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
-  // Fecha Reserva (DATE(10), NOT NULL)
-  @Column(nullable = false, length = 10)
-  @NotBlank(message = "La fecha de reserva es obligatoria")
-  private LocalDateTime reservationDate;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
-  // Fecha Check-In (DATE(10), NOT NULL)
-  @DateTimeFormat
-  @Column(nullable = false, length = 10)
-  @NotBlank(message = "La fecha de check-in es obligatoria")
-  private Date checkInDate;
+    @Column(nullable = false)
+    @NotNull(message = "La fecha de reserva es obligatoria")
+    private LocalDateTime reservationDate;
 
-  // Fecha Check-Out (DATE(10), NOT NULL)
-  @DateTimeFormat
-  @Column(nullable = false, length = 10)
-  @NotBlank(message = "La fecha de check-out es obligatoria")
-  private Date CheckOutDate;
 
-  // Estado (VARCHAR(50), UNIQUE)
-  @Column(unique = true, length = 50)
-  @NotBlank(message = "El estado debe ser un valor válido")
-  private String condition;
+    @Column(nullable = false)
+    @NotNull(message = "La fecha de check-in es obligatoria")
+    private LocalDate checkInDate;
 
-  // Numero Huesped (VARCHAR(25), UNIQUE)
-  @Column(unique = true, length = 25)
-  @NotBlank(message = "El número de huésped debe ser un valor válido")
-  private String numberOfGuests;
+    @Column(nullable = false)
+    @NotNull(message = "La fecha de check-out es obligatoria")
+    private LocalDate checkOutDate;
 
-  // Precio Total (INTEGER(10)), UNIQUE)
-  @Column(unique = true, length = 10)
-  @NotBlank(message = "El precio total debe ser un valor válido")
-  private Integer totalPrice;
+    // DATOS
+    @Column(length = 50)
+    @NotBlank(message = "El estado es obligatorio")
+    private String condition;
+
+    @Column(nullable = false)
+    @NotNull(message = "El número de huéspedes es obligatorio")
+    @Min(value = 1, message = "Debe haber al menos 1 huésped")
+    private Integer numberOfGuests;
+
+    @Column(nullable = false)
+    @NotNull(message = "El precio total es obligatorio")
+    @Min(value = 0, message = "El precio no puede ser negativo")
+    private Double totalPrice;
 }
-
