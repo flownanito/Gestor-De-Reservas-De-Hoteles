@@ -7,7 +7,7 @@ import lombok.*; // Para simplificar el código Java
 import java.time.LocalDateTime;
 
 @Entity // Indica que esta clase es una tabla de base de datos
-@Table(name = "Clients") // Especifica el nombre real de la tabla en la BD
+@Table(name = "clients") // Especifica el nombre real de la tabla en la BD
 @Data // Lombok genera los metodos get/set/toString automaticamente
 @NoArgsConstructor // Lombok Constructor sin argumentos (obligatorio para JPA)
 @AllArgsConstructor // Lombok Constructor con todos los argumentos
@@ -37,12 +37,14 @@ public class Client {
   @Email(message = "El email debe ser valido")
   private String email;
 
+  @Column(nullable = false)
+  private String password;
+
   // telefono (VARCHAR(20))
   @Column(length = 20)
   private String phone;
 
   // fecha_registro (TIMESTAMP, NOT NULL)
   @Column(nullable = false)
-  @NotNull
   private LocalDateTime registrationDate;
 }

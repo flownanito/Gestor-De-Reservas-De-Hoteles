@@ -1,3 +1,4 @@
+
 package com.proyect.reservationmanager.model;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "room_type")
+@Table(name = "room_types")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

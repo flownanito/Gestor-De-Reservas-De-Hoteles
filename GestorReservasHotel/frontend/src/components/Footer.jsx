@@ -1,46 +1,66 @@
+import React, { useState } from "react";
 
-import React from 'react';
 
 const Footer = () => {
   return (
-    <footer style={{ width: '100%', background: '#1a1a1a', color: '#ccc', padding: '40px 0' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between' }}>
-
-        {/* Columna 1: Logo y Eslogan (Según diseño Figma) */}
-        <div style={{ width: '30%' }}>
-          {/* Placeholder para el Logo */}
-          <h3 style={{ color: 'white' }}>CODE HOTEL & RESORT</h3>
-          <p style={{ fontSize: '0.9em' }}>
-            Experiencia de lujo incomparable en el corazón de la ciudad. Tu hogar lejos de casa.
-          </p>
-          {/* Iconos de Redes Sociales aquí (Facebook, Twitter, Instagram) */}
+    <>
+      <footer className="bg-gray-900 text-white mt-20">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-8">
+                <span className="text-2xl">🏨</span>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                En nuestro hotel, nos dedicamos a proporcionarte la mejor experiencia de hospedaje.
+                Contamos con habitaciones modernas, servicios de primera clase y un equipo comprometido con tu comodidad.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <span className="text-xl">📘</span>
+                </a>
+                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <span className="text-xl">🐦</span>
+                </a>
+                <a href="#" className="w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <span className="text-xl">📷</span>
+                </a>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h4 className="font-semibold text-white mb-4">Enlaces</h4>
+                <ul className="space-y-3 text-gray-400 text-sm">
+                  <li><a href="#" className="hover:text-white transition-colors">Inicio</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Habitaciones</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Sobre nosotros</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Servicios</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Galería</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Ofertas Especiales</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-4">Contacto</h4>
+                <ul className="space-y-3 text-gray-400 text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-400">📍</span>
+                    <span>Calle Principal 123<br />28001 Madrid, España</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-orange-400">📞</span>
+                    <span>+34 (234) 567-89</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-orange-400">📧</span>
+                    <span>info@hotelexample.com</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Columna 2: Enlaces */}
-        <div style={{ width: '30%' }}>
-          <h4 style={{ color: 'white' }}>Enlaces</h4>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li>Sobre nosotros</li>
-            <li>Habitaciones y Suites</li>
-            <li>Mis Reservas</li>
-            <li>Mi Perfil</li>
-          </ul>
-        </div>
-
-        {/* Columna 3: Contacto */}
-        <div style={{ width: '30%' }}>
-          <h4 style={{ color: 'white' }}>Contacto</h4>
-          <p>📍 123 Avenida Principal</p>
-          <p>📞 +1 (234) 567-89</p>
-          <p>📧 info@codehotel.com</p>
-        </div>
-      </div>
-
-      {/* Copyright Bar */}
-      <div style={{ textAlign: 'center', fontSize: '0.8em', padding: '20px 0', borderTop: '1px solid #333' }}>
-        © 2025 Code Hotel & Resort. Todos los derechos reservados.
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 

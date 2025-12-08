@@ -1,3 +1,4 @@
+
 package com.proyect.reservationmanager.controller;
 
 import java.util.List;
@@ -14,13 +15,13 @@ import com.proyect.reservationmanager.repository.ReservationDetailRepository;
 @RestController
 @RequestMapping("/api/reservation-details")
 public class ReservationDetailController {
-  
+
   @Autowired
   private ReservationDetailRepository reservationDetailRepository;
 
   // Endpoint: GET /api/reservation-details
   @GetMapping
-public ResponseEntity<List<ReservationDetail>> getAllReservations() {
+  public ResponseEntity<List<ReservationDetail>> getAllReservations() {
     // Obtenemos la lista de reservas de la base de datos
     List<ReservationDetail> reservationsDetail = reservationDetailRepository.findAll();
     // retorna el codigo HTTP 200 "OK"
@@ -49,22 +50,22 @@ public ResponseEntity<List<ReservationDetail>> getAllReservations() {
   // Endpoint: PUT /api/reservation-details/1
   @PutMapping("/{id}")
   public ResponseEntity<ReservationDetail> updateReservationDetail(
-      @PathVariable Long id, 
+      @PathVariable Long id,
       @RequestBody ReservationDetail reservationDetailDetails) {
-    
-    return reservationDetailRepository.findById(id)
-      .map(reservationDetail -> {
-        // Actualizamos los campos con los datos del JSON
-        reservationDetail.setCheckInDate(reservationDetailDetails.getCheckInDate());
-        reservationDetail.setCheckOutDate(reservationDetailDetails.getCheckOutDate());
-        reservationDetail.setSubtotal(reservationDetailDetails.getSubtotal());
-        reservationDetail.setPriceForNight(reservationDetailDetails.getPriceForNight());
 
-        // Guardamos la entidad actualizada
-        ReservationDetail updatedReservationDetail = reservationDetailRepository.save(reservationDetail);
-        return new ResponseEntity<>(updatedReservationDetail, HttpStatus.OK);
-      })
-      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    return reservationDetailRepository.findById(id)
+        .map(reservationDetail -> {
+          // Actualizamos los campos con los datos del JSON
+          reservationDetail.setCheckInDate(reservationDetailDetails.getCheckInDate());
+          reservationDetail.setCheckOutDate(reservationDetailDetails.getCheckOutDate());
+          reservationDetail.setSubtotal(reservationDetailDetails.getSubtotal());
+          reservationDetail.setPriceForNight(reservationDetailDetails.getPriceForNight());
+
+          // Guardamos la entidad actualizada
+          ReservationDetail updatedReservationDetail = reservationDetailRepository.save(reservationDetail);
+          return new ResponseEntity<>(updatedReservationDetail, HttpStatus.OK);
+        })
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   // Endpoint: DELETE /api/reservation-details/1
