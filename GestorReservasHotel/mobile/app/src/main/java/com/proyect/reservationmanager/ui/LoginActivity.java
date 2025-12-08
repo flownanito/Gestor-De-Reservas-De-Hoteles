@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.proyect.reservationmanager.R;
 
 // Imports de tus modelos y retrofit
 import com.proyect.reservationmanager.models.LoginRequest;

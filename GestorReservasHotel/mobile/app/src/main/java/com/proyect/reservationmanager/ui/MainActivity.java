@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
   private void cargarClientes() {
     // Obtener la instancia de la api
-    ClientApiService apiService = RetrofitClient.getClient().create(ClientApiService.class);
+    ClientApiService apiService = RetrofitClient.getInstance().getClientApi();
 
     // Crear la llamada para pedir la lista
     Call<List<Client>> call = apiService.getAllClients();
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
   // Logica para llamar al servidor y borrar
   private void deleteClientFromApi(Long id) {
-    ClientApiService apiService = RetrofitClient.getClient().create(ClientApiService.class);
+    ClientApiService apiService = RetrofitClient.getInstance().getClientApi();
     Call<Void> call = apiService.deleteClient(id);
 
     call.enqueue(new Callback<Void>() {

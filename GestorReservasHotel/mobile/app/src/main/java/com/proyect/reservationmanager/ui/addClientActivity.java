@@ -49,7 +49,7 @@ public class addClientActivity extends AppCompatActivity {
 
         Client newClient = new Client(dni, firstName, lastName, email, phone);
         // Instancias el servicio
-        ClientApiService apiService = RetrofitClient.getClient().create(ClientApiService.class);
+        ClientApiService apiService = RetrofitClient.getInstance().getClientApi();
 
         // Preparar la llamada (enviando el objeto newClient)
         Call<Client> call = apiService.createClient(newClient);
