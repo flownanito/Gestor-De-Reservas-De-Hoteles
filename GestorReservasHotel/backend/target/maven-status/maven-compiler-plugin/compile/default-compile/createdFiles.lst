@@ -1,0 +1,13 @@
+com/proyect/reservationmanager/dto/LoginRequest.class
+com/proyect/reservationmanager/controller/AuthController.class
+com/proyect/reservationmanager/controller/RoomController.class
+com/proyect/reservationmanager/repository/FeatureRepository.class
+com/proyect/reservationmanager/model/Feature.class
+com/proyect/reservationmanager/repository/RoomRepository.class
+com/proyect/reservationmanager/config/WebConfig.class
+com/proyect/reservationmanager/model/RoomState.class
+com/proyect/reservationmanager/controller/RoomStateController.class
+com/proyect/reservationmanager/model/Room.class
+com/proyect/reservationmanager/repository/RoomStateRepository.class
+com/proyect/reservationmanager/config/DataInitializer.class
+com/proyect/reservationmanager/controller/FeatureController.class

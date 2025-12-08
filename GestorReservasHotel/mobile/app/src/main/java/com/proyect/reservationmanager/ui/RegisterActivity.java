@@ -1,76 +1,84 @@
 package com.proyect.reservationmanager.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import com.proyect.reservationmanager.R;
-import com.proyect.reservationmanager.api.ApiService;
+import com.proyect.reservationmanager.api.ClientApiService;
 import com.proyect.reservationmanager.api.RetrofitClient;
-import com.proyect.reservationmanager.models.RegisterRequest;
+import com.proyect.reservationmanager.models.Client;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-  private TextInputEditText etName, etLastName, etEmail, etPassword, etDni;
-  private MaterialButton btnRegister;
-  private TextView tvGoToLogin;
+  private EditText etName, etLastName, etEmail, etPassword, etDni, etPhone;
+  private Button btnRegister;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_register);
+    setContentView(R.layout.activity_add_client);
 
-    // Vincular
-    etName = findViewById(R.id.etName);
+    // 2. Vinculamos con los IDs correctos de tu XML (activity_add_client.xml)
+    etDni = findViewById(R.id.etDni);
+    etName = findViewById(R.id.etFirstName);
     etLastName = findViewById(R.id.etLastName);
     etEmail = findViewById(R.id.etEmail);
     etPassword = findViewById(R.id.etPassword);
-    etDni = findViewById(R.id.etDni);
-    btnRegister = findViewById(R.id.btnRegister);
-    tvGoToLogin = findViewById(R.id.tvGoToLogin);
+    etPhone = findViewById(R.id.etPhone);
+
+    btnRegister = findViewById(R.id.btnSave);
 
     btnRegister.setOnClickListener(v -> performRegister());
-
-    tvGoToLogin.setOnClickListener(v -> finish());
   }
 
   private void performRegister() {
+    // Obtenemos el texto, asegurando que no sea null
     String name = etName.getText().toString().trim();
     String lastName = etLastName.getText().toString().trim();
     String email = etEmail.getText().toString().trim();
     String password = etPassword.getText().toString().trim();
     String dni = etDni.getText().toString().trim();
+    String phone = etPhone.getText().toString().trim();
 
-    // Validaciones
+    // Validaciones básicas
     if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || dni.isEmpty()) {
-      Toast.makeText(this, "Rellene todos los campos", Toast.LENGTH_SHORT).show();
+      Toast.makeText(this, "Rellene todos los campos obligatorios", Toast.LENGTH_SHORT).show();
       return;
     }
 
-    // Creamos el objeto
-    RegisterRequest request = new RegisterRequest(name, lastName, email, password, dni, "");
+    // Creamos el objeto Client
+    Client client = new Client();
+    client.setFirstName(name);
+    client.setLastName(lastName);
+    client.setEmail(email);
+    client.setPassword(password);
+    client.setDni(dni);
+    client.setPhone(phone);
 
-    ApiService apiService = RetrofitClient.getInstance().getApi();
-    apiService.register(request).enqueue(new Callback<Void>() {
+    // Llamada a la API
+    ClientApiService clientApiService = RetrofitClient.getInstance().getClientApi();
+
+    clientApiService.createClient(client).enqueue(new Callback<Client>() {
       @Override
-      public void onResponse(Call<Void> call, Response<Void> response) {
+      public void onResponse(Call<Client> call, Response<Client> response) {
         if (response.isSuccessful()) {
-          Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_LONG).show();
-          finish();
+          Toast.makeText(RegisterActivity.this, "Cliente guardado con éxito", Toast.LENGTH_LONG).show();
+          finish(); // Cierra la pantalla
         } else {
-          Toast.makeText(RegisterActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+          String msg = "Error: " + response.code();
+          if (response.code() == 409) msg = "El usuario o DNI ya existe";
+          Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
       }
 
       @Override
-      public void onFailure(Call<Void> call, Throwable t) {
+      public void onFailure(Call<Client> call, Throwable t) {
         Toast.makeText(RegisterActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
       }
     });

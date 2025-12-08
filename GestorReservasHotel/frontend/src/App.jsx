@@ -52,6 +52,7 @@ export default function App() {
           <Route path='/reservationStep1' element={<ReservationStep1 />} />
           <Route path='/reservationStep2' element={<ReservationStep2 />} />
           <Route path='/reservationStep3' element={<ReservationStep3 />} />
+          <Route path='/reservationStep3' element={<ReservationStep3 />} />
 
         </Routes>
       </main>

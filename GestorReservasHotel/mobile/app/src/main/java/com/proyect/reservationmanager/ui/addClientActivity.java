@@ -23,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class addClientActivity extends AppCompatActivity {
-  private EditText etDni, etFirstName, etLastName, etEmail, etPhone;
+  private EditText etDni, etFirstName, etLastName, etEmail, etPassword, etPhone;
   private Button btnSave;
 
   @Override
@@ -35,6 +35,7 @@ public class addClientActivity extends AppCompatActivity {
     etFirstName = findViewById(R.id.etFirstName);
     etLastName = findViewById(R.id.etLastName);
     etEmail = findViewById(R.id.etEmail);
+    etPassword = findViewById(R.id.etPassword);
     etPhone = findViewById(R.id.etPhone);
     btnSave = findViewById(R.id.btnSave);
 
@@ -45,9 +46,10 @@ public class addClientActivity extends AppCompatActivity {
         String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
         String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
         String phone = etPhone.getText().toString();
 
-        Client newClient = new Client(dni, firstName, lastName, email, phone);
+        Client newClient = new Client(dni, firstName, lastName, email, password, phone);
         // Instancias el servicio
         ClientApiService apiService = RetrofitClient.getInstance().getClientApi();
 

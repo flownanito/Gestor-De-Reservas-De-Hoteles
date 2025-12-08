@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReservationDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservation Details"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guest Information"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+        
+        <TextView
+            android:id="@+id/tvDetailGuestName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name: John Doe"
+            android:padding="4dp"/>
+            
+        <TextView
+            android:id="@+id/tvDetailGuestContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contact: 555-0000"
+            android:padding="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stay Information"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailDates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dates: Jan 1 - Jan 5"
+            android:padding="4dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Room: 101"
+            android:padding="4dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Cost: $600"
+            android:padding="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CONFIRMED"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_green_dark"
+            android:padding="4dp"
+            android:layout_marginBottom="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnCheckIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check-In" />
+
+            <Button
+                android:id="@+id/btnCheckOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check-Out"
+                android:enabled="false"/>
+
+            <Button
+                android:id="@+id/btnModifyBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Modify Booking"
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
+            <Button
+                android:id="@+id/btnCancelBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel Reservation"
+                android:textColor="@android:color/holo_red_dark"
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

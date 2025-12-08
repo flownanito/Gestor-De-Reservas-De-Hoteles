@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRoomNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Room 101" />
+
+        <TextView
+            android:id="@+id/tvRoomType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Double Suite" />
+
+        <TextView
+            android:id="@+id/tvRoomPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$150 / night" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRoomStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available"
+        android:padding="8dp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/btnEditRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:padding="8dp" />
+
+    <ImageButton
+        android:id="@+id/btnDeleteRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:padding="8dp" />
+
+</LinearLayout>

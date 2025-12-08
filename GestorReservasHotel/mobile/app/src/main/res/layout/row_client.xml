@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tvClientName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Client Name" />
+
+    <TextView
+        android:id="@+id/tvClientId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ID: 12345678A"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:id="@+id/tvClientContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="555-1234 | email@example.com"
+        android:layout_marginTop="2dp"
+        android:textColor="@android:color/darker_gray" />
+
+</LinearLayout>
