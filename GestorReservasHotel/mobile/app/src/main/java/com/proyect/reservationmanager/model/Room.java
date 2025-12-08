@@ -1,57 +1,94 @@
 package com.proyect.reservationmanager.model;
 
-public class Room {
-    private String number;
-    private String type;
-    private double pricePerNight;
-    private String description;
-    private String status; // Available, Occupied, Maintenance
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import java.util.List;
 
-    public Room(String number, String type, double pricePerNight, String description, String status) {
-        this.number = number;
-        this.type = type;
-        this.pricePerNight = pricePerNight;
-        this.description = description;
-        this.status = status;
-    }
+public class Room implements Serializable {
 
-    public String getNumber() {
-        return number;
-    }
+  @SerializedName("id")
+  private Long id;
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
+  @SerializedName("roomNumber")
+  private String roomNumber;
 
-    public String getType() {
-        return type;
-    }
+  @SerializedName("floor")
+  private Integer floor;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  // Relaciones con otras tablas (Objetos complejos)
+  @SerializedName("roomState")
+  private RoomState roomState;
 
-    public double getPricePerNight() {
-        return pricePerNight;
-    }
+  @SerializedName("roomType")
+  private RoomType roomType;
 
-    public void setPricePerNight(double pricePerNight) {
-        this.pricePerNight = pricePerNight;
-    }
+  @SerializedName("features")
+  private List<Feature> features;
 
-    public String getDescription() {
-        return description;
-    }
+  public Room() {
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public Room(Long id, String roomNumber, Integer floor, RoomState roomState, RoomType roomType, List<Feature> features) {
+    this.id = id;
+    this.roomNumber = roomNumber;
+    this.floor = floor;
+    this.roomState = roomState;
+    this.roomType = roomType;
+    this.features = features;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  // Getters y Setters
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getRoomNumber() {
+    return roomNumber;
+  }
+
+  public void setRoomNumber(String roomNumber) {
+    this.roomNumber = roomNumber;
+  }
+
+  public Integer getFloor() {
+    return floor;
+  }
+
+  public void setFloor(Integer floor) {
+    this.floor = floor;
+  }
+
+  public RoomState getRoomState() {
+    return roomState;
+  }
+
+  public void setRoomState(RoomState roomState) {
+    this.roomState = roomState;
+  }
+
+  public RoomType getRoomType() {
+    return roomType;
+  }
+
+  public void setRoomType(RoomType roomType) {
+    this.roomType = roomType;
+  }
+
+  public List<Feature> getFeatures() {
+    return features;
+  }
+
+  public void setFeatures(List<Feature> features) {
+    this.features = features;
+  }
+
+  @Override
+  public String toString() {
+    return "Habitación " + roomNumber;
+  }
 }

@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui.addClientActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false" />
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.HomeActivity" />
 
         <activity
             android:name=".ui.LoginActivity"
@@ -30,12 +30,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MiPerfilActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".RoomFeaureActivity" android:exported="false" />
+        <activity android:name=".PaymentManagementActivity" />
+
+        <activity android:name=".MainActivity" />
+
         <activity android:name=".ReservationManagementActivity" />
         <activity android:name=".RoomManagementActivity" />
         <activity android:name=".ReservationDetailsActivity" />
         <activity android:name=".ClientManagementActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.HomeActivity" />
+
     </application>
 
 </manifest>

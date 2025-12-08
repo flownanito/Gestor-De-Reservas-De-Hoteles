@@ -1,78 +1,110 @@
 package com.proyect.reservationmanager.model;
 
-public class Reservation {
-    private String id;
-    private String clientName;
-    private String roomNumber;
-    private String startDate;
-    private String endDate;
-    private String status;
-    private double totalCost;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-    public Reservation(String id, String clientName, String roomNumber, String startDate, String endDate, String status,
-            double totalCost) {
-        this.id = id;
-        this.clientName = clientName;
-        this.roomNumber = roomNumber;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-        this.totalCost = totalCost;
+public class Reservation implements Serializable {
+
+    @SerializedName("reservationId")
+    private Long reservationId;
+
+    // Fecha en la que se hizo la reserva (backend manda LocalDateTime)
+    @SerializedName("reservationDate")
+    private String reservationDate;
+
+    @SerializedName("checkInDate")
+    private String checkInDate; // Fecha de entrada
+
+    @SerializedName("checkOutDate")
+    private String checkOutDate; // Fecha de salida
+
+    @SerializedName("condition")
+    private String condition; // Estado de la reserva
+
+    @SerializedName("numberOfGuests")
+    private String numberOfGuests;
+
+    @SerializedName("totalPrice")
+    private Integer totalPrice;
+
+    // Constructor vacío (Necesario para Retrofit/Gson)
+    public Reservation() {
     }
 
-    public String getId() {
-        return id;
+    // Constructor completo
+    public Reservation(Long reservationId, String reservationDate, String checkInDate,
+                       String checkOutDate, String condition, String numberOfGuests,
+                       Integer totalPrice) {
+        this.reservationId = reservationId;
+        this.reservationDate = reservationDate;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.condition = condition;
+        this.numberOfGuests = numberOfGuests;
+        this.totalPrice = totalPrice;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    // Getters y Setters
+
+    public Long getReservationId() {
+        return reservationId;
     }
 
-    public String getClientName() {
-        return clientName;
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public String getReservationDate() {
+        return reservationDate;
     }
 
-    public String getRoomNumber() {
-        return roomNumber;
+    public void setReservationDate(String reservationDate) {
+        this.reservationDate = reservationDate;
     }
 
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
+    public String getCheckInDate() {
+        return checkInDate;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public void setCheckInDate(String checkInDate) {
+        this.checkInDate = checkInDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public String getCheckOutDate() {
+        return checkOutDate;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public void setCheckOutDate(String checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public String getCondition() {
+        return condition;
     }
 
-    public String getStatus() {
-        return status;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getNumberOfGuests() {
+        return numberOfGuests;
     }
 
-    public double getTotalCost() {
-        return totalCost;
+    public void setNumberOfGuests(String numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    // Método toString para depurar
+    @Override
+    public String toString() {
+        return "Reserva #" + reservationId + " (" + checkInDate + " - " + checkOutDate + ")";
     }
 }

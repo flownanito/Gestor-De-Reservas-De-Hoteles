@@ -32,6 +32,7 @@ export default function Header({ user, onLogout }) {
           <div className="hidden md:flex items-center gap-8">
             <Link to="/" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Inicio</Link>
             <Link to="/rooms" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Habitaciones</Link>
+            {/* <Link to="/reservation-upcoming" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Mis Reservas</Link> */}
 
             {/* Solo Admin/Empleados ven esto */}
             {user && (user.role === 'ADMIN' || user.role === 'EMPLOYEE') && (
