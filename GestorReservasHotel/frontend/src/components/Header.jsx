@@ -62,12 +62,12 @@ export default function Header({ user, onLogout }) {
 
                   {/* Nombre y Rol */}
                   <div className="text-right hidden xl:block">
-                      <p className="text-sm font-medium text-gray-900 group-hover:text-amber-700 transition-colors">
-                        {user.name}
-                      </p>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">
-                        {user.role}
-                      </p>
+                    <p className="text-sm font-medium text-gray-900 group-hover:text-amber-700 transition-colors">
+                      {user.name}
+                    </p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">
+                      {user.role}
+                    </p>
                   </div>
                 </Link>
 

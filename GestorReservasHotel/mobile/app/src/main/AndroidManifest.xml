@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ReservationManagementActivity" />
+        <activity android:name=".RoomManagementActivity" />
+        <activity android:name=".ReservationDetailsActivity" />
+        <activity android:name=".ClientManagementActivity" />
     </application>
 
 </manifest>
