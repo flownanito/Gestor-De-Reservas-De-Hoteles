@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import hotelImage from '../assets/img/hotel-exterior.jpg';
 
-import { Calendar, MapPin, Star, Hotel } from "lucide-react";
-
 const Hero = () => {
   const navigate = useNavigate();
 

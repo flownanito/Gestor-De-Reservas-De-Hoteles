@@ -32,6 +32,7 @@ export default function Header({ user, onLogout }) {
           <div className="hidden md:flex items-center gap-8">
             <Link to="/" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Inicio</Link>
             <Link to="/rooms" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Habitaciones</Link>
+            {/* <Link to="/reservation-upcoming" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Mis Reservas</Link> */}
 
             {/* Solo Admin/Empleados ven esto */}
             {user && (user.role === 'ADMIN' || user.role === 'EMPLOYEE') && (
@@ -62,12 +63,12 @@ export default function Header({ user, onLogout }) {
 
                   {/* Nombre y Rol */}
                   <div className="text-right hidden xl:block">
-                      <p className="text-sm font-medium text-gray-900 group-hover:text-amber-700 transition-colors">
-                        {user.name}
-                      </p>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">
-                        {user.role}
-                      </p>
+                    <p className="text-sm font-medium text-gray-900 group-hover:text-amber-700 transition-colors">
+                      {user.name}
+                    </p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">
+                      {user.role}
+                    </p>
                   </div>
                 </Link>
 
