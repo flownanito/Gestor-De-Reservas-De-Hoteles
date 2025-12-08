@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager.models;
+package com.proyect.reservationmanager.model;
 
 public class LoginResponse {
   private Long id;

@@ -1,8 +1,8 @@
 package com.proyect.reservationmanager.api;
 
-import com.proyect.reservationmanager.models.LoginRequest;
-import com.proyect.reservationmanager.models.LoginResponse;
-import com.proyect.reservationmanager.models.RegisterRequest;
+import com.proyect.reservationmanager.model.LoginRequest;
+import com.proyect.reservationmanager.model.LoginResponse;
+import com.proyect.reservationmanager.model.RegisterRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

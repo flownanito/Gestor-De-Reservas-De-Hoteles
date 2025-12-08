@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.api.ClientApiService;
 import com.proyect.reservationmanager.api.RetrofitClient;
-import com.proyect.reservationmanager.models.Client;
+import com.proyect.reservationmanager.model.Client;
 
 public class MainActivity extends AppCompatActivity {
   private RecyclerView recyclerView;

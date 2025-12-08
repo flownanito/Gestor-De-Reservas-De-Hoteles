@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.proyect.reservationmanager.R;
-import com.proyect.reservationmanager.models.Client;
+import com.proyect.reservationmanager.model.Client;
 import java.util.List;
 
 public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientViewHolder> {

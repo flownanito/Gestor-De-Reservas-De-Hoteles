@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.api.ClientApiService;
 import com.proyect.reservationmanager.api.RetrofitClient;
-import com.proyect.reservationmanager.models.Client;
+import com.proyect.reservationmanager.model.Client;
 
 import retrofit2.Call;
 import retrofit2.Callback;

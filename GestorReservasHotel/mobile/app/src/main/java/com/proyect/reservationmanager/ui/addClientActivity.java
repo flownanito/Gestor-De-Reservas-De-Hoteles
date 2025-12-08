@@ -1,22 +1,17 @@
 package com.proyect.reservationmanager.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.api.ClientApiService;
 import com.proyect.reservationmanager.api.RetrofitClient;
-import com.proyect.reservationmanager.models.Client;
+import com.proyect.reservationmanager.model.Client;
 
 import retrofit2.Call;
 import retrofit2.Callback;

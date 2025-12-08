@@ -8,8 +8,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.proyect.reservationmanager.adapter.ClientAdapter;
 import com.proyect.reservationmanager.model.Client;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +31,20 @@ public class ClientManagementActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearchClient);
 
         rvClients.setLayoutManager(new LinearLayoutManager(this));
+
+        // Cargar datos de prueba adaptados al nuevo modelo
         clientList = getMockClients();
 
+        // Inicializar adaptador
         adapter = new ClientAdapter(clientList, client -> {
-            Toast.makeText(this, "Selected: " + client.getName(), Toast.LENGTH_SHORT).show();
-            // Navigate to Client Details or Edit
+            // Al hacer click, mostramos Nombre y Apellido
+            String fullName = client.getFirstName() + " " + client.getLastName();
+            Toast.makeText(this, "Seleccionado: " + fullName, Toast.LENGTH_SHORT).show();
+            // Aquí iría la navegación al detalle o edición
         });
         rvClients.setAdapter(adapter);
 
+        // Lógica del buscador
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,20 +63,37 @@ public class ClientManagementActivity extends AppCompatActivity {
 
     private void filter(String text) {
         List<Client> filteredList = new ArrayList<>();
+        String filterPattern = text.toLowerCase().trim();
+
         for (Client item : clientList) {
-            boolean nameMatch = item.getName().toLowerCase().contains(text.toLowerCase());
-            boolean idMatch = item.getDocumentId().toLowerCase().contains(text.toLowerCase());
-            if (nameMatch || idMatch) {
+            // Buscamos coincidencia en Nombre, Apellido o DNI
+            // Nota: usamos "!= null" para evitar cierres inesperados si algún dato viene vacío
+            boolean firstNameMatch = item.getFirstName() != null && item.getFirstName().toLowerCase().contains(filterPattern);
+            boolean lastNameMatch = item.getLastName() != null && item.getLastName().toLowerCase().contains(filterPattern);
+            boolean dniMatch = item.getDni() != null && item.getDni().toLowerCase().contains(filterPattern);
+
+            if (firstNameMatch || lastNameMatch || dniMatch) {
                 filteredList.add(item);
             }
         }
+
+        // Asegúrate de que tu ClientAdapter tenga el método updateList
         adapter.updateList(filteredList);
     }
 
     private List<Client> getMockClients() {
         List<Client> list = new ArrayList<>();
-        list.add(new Client("1", "John Doe", "12345678A", "555-1234", "john@example.com"));
-        list.add(new Client("2", "Jane Smith", "87654321B", "555-5678", "jane@example.com"));
+
+        // Constructor nuevo: (dni, firstName, lastName, email, password, phone)
+        Client c1 = new Client("12345678A", "John", "Doe", "john@example.com", "123456", "555-1234");
+        c1.setId(1L); // Seteamos ID manualmente porque es Long
+
+        Client c2 = new Client("87654321B", "Jane", "Smith", "jane@example.com", "123456", "555-5678");
+        c2.setId(2L);
+
+        list.add(c1);
+        list.add(c2);
+
         return list;
     }
 }

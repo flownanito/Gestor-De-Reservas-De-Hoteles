@@ -11,8 +11,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.proyect.reservationmanager.R;
 
 // Imports de tus modelos y retrofit
-import com.proyect.reservationmanager.models.LoginRequest;
-import com.proyect.reservationmanager.models.LoginResponse;
+import com.proyect.reservationmanager.model.LoginRequest;
+import com.proyect.reservationmanager.model.LoginResponse;
 import com.proyect.reservationmanager.api.RetrofitClient;
 import com.proyect.reservationmanager.api.ApiService;
 

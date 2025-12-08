@@ -1,6 +1,6 @@
 package com.proyect.reservationmanager.api;
 
-import com.proyect.reservationmanager.models.Client;
+import com.proyect.reservationmanager.model.Client;
 
 import java.util.List;
 

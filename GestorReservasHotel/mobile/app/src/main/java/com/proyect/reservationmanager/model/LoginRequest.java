@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager.models;
+package com.proyect.reservationmanager.model;
 
 public class LoginRequest {
   private String email;
