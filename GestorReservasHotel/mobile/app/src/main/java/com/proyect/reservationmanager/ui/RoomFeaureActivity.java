@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager;
+package com.proyect.reservationmanager.ui;
 
 import android.os.Bundle;
 import android.widget.EditText;
@@ -7,24 +7,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.adapter.FeatureAdapter;
 import com.proyect.reservationmanager.model.Feature;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class RoomFeaureActivity extends AppCompatActivity {
 
     private RecyclerView recyclerFeatures;
     private FeatureAdapter featureAdapter;
     private List<Feature> features = new ArrayList<>();
-    private LinearLayout searchContainer;
     private EditText etSearch;
 
     @Override
@@ -32,35 +30,22 @@ public class RoomFeaureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_feaure);
 
-        // Configurar Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Gestionar Características");
-        }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // Inicializar vistas
-        searchContainer = findViewById(R.id.searchContainer);
         etSearch = findViewById(R.id.etSearch);
         recyclerFeatures = findViewById(R.id.recyclerFeatures);
         FloatingActionButton fabAdd = findViewById(R.id.fabAddFeature);
 
-        // Configurar RecyclerView
         recyclerFeatures.setLayoutManager(new LinearLayoutManager(this));
+
         featureAdapter = new FeatureAdapter(features,
                 position -> showEditDialog(position),
                 position -> showDeleteConfirmation(position));
         recyclerFeatures.setAdapter(featureAdapter);
 
-        // Configurar FAB
         fabAdd.setOnClickListener(v -> showAddDialog());
 
-        // Cargar datos de ejemplo
         loadSampleData();
 
-        // Configurar búsqueda
         setupSearch();
     }
 
@@ -71,7 +56,9 @@ public class RoomFeaureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                featureAdapter.filter(s.toString());
+                if (featureAdapter != null) {
+                    featureAdapter.filter(s.toString());
+                }
             }
 
             @Override
@@ -84,14 +71,13 @@ public class RoomFeaureActivity extends AppCompatActivity {
         features.add(new Feature(2L, "Balcón con Vistas al Mar", "🏖️"));
         features.add(new Feature(3L, "TV Pantalla Plana", "📺"));
         features.add(new Feature(4L, "WiFi de Alta Velocidad", "📶"));
-        featureAdapter.notifyDataSetChanged();
+        if (featureAdapter != null) featureAdapter.notifyDataSetChanged();
     }
 
     private void showAddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Añadir Característica");
 
-        // Crear layout para el diálogo
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);

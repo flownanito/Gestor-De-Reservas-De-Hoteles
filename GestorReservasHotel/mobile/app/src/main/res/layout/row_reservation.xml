@@ -1,46 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
-
-    <TextView
-        android:id="@+id/tvClientName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:text="Client Name" />
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp">
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tvRoomInfo"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_today"
+            app:tint="@color/primary"
+            android:background="#FFF7ED"
+            android:padding="10dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Icono Reserva" />
+
+        <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Room: 101" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jan 1 - Jan 5" />
+            <TextView
+                android:id="@+id/tvClientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre Cliente"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:layout_marginBottom="4dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    app:tint="@color/text_gray"
+                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/tvRoomInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hab: 101"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvDates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01 Ene - 05 Ene"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmada"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/green_success"
+                android:background="#ECFDF5"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="#E5E7EB"/>
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Confirmed"
-        android:padding="4dp"
-        android:textColor="@android:color/holo_green_dark" />
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

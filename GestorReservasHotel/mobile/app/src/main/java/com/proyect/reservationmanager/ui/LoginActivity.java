@@ -10,7 +10,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.proyect.reservationmanager.R;
 
-// Imports de tus modelos y retrofit
 import com.proyect.reservationmanager.model.LoginRequest;
 import com.proyect.reservationmanager.model.LoginResponse;
 import com.proyect.reservationmanager.api.RetrofitClient;
@@ -31,16 +30,13 @@ public class LoginActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
-    // 1. Vincular Vistas
     etEmail = findViewById(R.id.etEmail);
     etPassword = findViewById(R.id.etPassword);
     btnLogin = findViewById(R.id.btnLogin);
     tvGoToRegister = findViewById(R.id.tvGoToRegister);
 
-    // 2. Acción Botón Login
     btnLogin.setOnClickListener(v -> performLogin());
 
-    // 3. Acción "Ir a Registro"
     tvGoToRegister.setOnClickListener(v -> {
       Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
       startActivity(intent);
@@ -51,33 +47,26 @@ public class LoginActivity extends AppCompatActivity {
     String email = etEmail.getText().toString().trim();
     String password = etPassword.getText().toString().trim();
 
-    // Validaciones básicas
     if (email.isEmpty() || password.isEmpty()) {
       Toast.makeText(this, "Por favor rellena todos los campos", Toast.LENGTH_SHORT).show();
       return;
     }
 
-    // Crear el objeto para enviar
     LoginRequest loginRequest = new LoginRequest(email, password);
 
-    // Llamada a Retrofit
-    ApiService apiService = RetrofitClient.getInstance().getApi(); // Ajusta según tu configuración
+    ApiService apiService = RetrofitClient.getInstance().getApi();
 
     apiService.login(loginRequest).enqueue(new Callback<LoginResponse>() {
       @Override
       public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
         if (response.isSuccessful() && response.body() != null) {
-          // ¡ÉXITO! 🎉
           LoginResponse user = response.body();
 
-          // Guardar sesión (ID y Nombre) en el móvil
           saveUserSession(user);
 
           Toast.makeText(LoginActivity.this, "Bienvenido " + user.getName(), Toast.LENGTH_SHORT).show();
 
-          // Ir al Home
-          Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-          // Esto evita que al dar "atrás" vuelva al login
+          Intent intent = new Intent(LoginActivity.this, MainActivity.class);
           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
           startActivity(intent);
           finish();

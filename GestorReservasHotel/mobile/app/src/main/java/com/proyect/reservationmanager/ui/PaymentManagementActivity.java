@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager;
+package com.proyect.reservationmanager.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.adapter.CardAdapter;
 import com.proyect.reservationmanager.adapter.TransactionAdapter;
 import com.proyect.reservationmanager.model.Payment;
@@ -44,10 +45,8 @@ public class PaymentManagementActivity extends AppCompatActivity {
         recyclerCards.setLayoutManager(new LinearLayoutManager(this));
         recyclerTransactions.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicialmente ocultar el formulario
         formContainer.setVisibility(View.GONE);
 
-        // Configurar adaptador con listener para eliminar
         cardAdapter = new CardAdapter(cards, position -> showDeleteConfirmation(position));
         recyclerCards.setAdapter(cardAdapter);
 
@@ -96,7 +95,6 @@ public class PaymentManagementActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Tarjeta guardada", Toast.LENGTH_SHORT).show();
 
-        // Limpiar y ocultar formulario
         clearForm();
         formContainer.setVisibility(View.GONE);
     }
@@ -123,7 +121,6 @@ public class PaymentManagementActivity extends AppCompatActivity {
         etHolder.setText("");
     }
 
-    // Algoritmo Luhn
     private boolean isValidCard(String number) {
         int sum = 0;
         boolean alternate = false;

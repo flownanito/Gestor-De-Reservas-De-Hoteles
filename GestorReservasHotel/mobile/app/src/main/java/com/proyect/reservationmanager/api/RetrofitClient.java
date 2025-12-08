@@ -4,9 +4,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-  // Usamos 10.0.2.2 para apuntar al localhost de tu PC desde el emulador
-  // Asegúrate de terminar la URL con una barra '/'
-  // Como uso mi movil fisico uso http://localhost:8080/
   private static final String BASE_URL = "http://localhost:8080/";
 
   private static RetrofitClient instance = null;

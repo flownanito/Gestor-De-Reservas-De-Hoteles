@@ -8,18 +8,17 @@ public class Reservation implements Serializable {
     @SerializedName("reservationId")
     private Long reservationId;
 
-    // Fecha en la que se hizo la reserva (backend manda LocalDateTime)
     @SerializedName("reservationDate")
     private String reservationDate;
 
     @SerializedName("checkInDate")
-    private String checkInDate; // Fecha de entrada
+    private String checkInDate;
 
     @SerializedName("checkOutDate")
-    private String checkOutDate; // Fecha de salida
+    private String checkOutDate;
 
     @SerializedName("condition")
-    private String condition; // Estado de la reserva
+    private String condition;
 
     @SerializedName("numberOfGuests")
     private String numberOfGuests;
@@ -27,11 +26,9 @@ public class Reservation implements Serializable {
     @SerializedName("totalPrice")
     private Integer totalPrice;
 
-    // Constructor vacío (Necesario para Retrofit/Gson)
     public Reservation() {
     }
 
-    // Constructor completo
     public Reservation(Long reservationId, String reservationDate, String checkInDate,
                        String checkOutDate, String condition, String numberOfGuests,
                        Integer totalPrice) {

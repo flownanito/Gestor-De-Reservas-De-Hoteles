@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class FeatureAdapter extends RecyclerView.Adapter<FeatureAdapter.FeatureViewHolder> {
     private List<Feature> featureList;
-    private List<Feature> featureListFull; // Para búsqueda
+    private List<Feature> featureListFull;
     private OnFeatureEditListener editListener;
     private OnFeatureDeleteListener deleteListener;
 

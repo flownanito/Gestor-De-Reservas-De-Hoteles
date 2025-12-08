@@ -1,96 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Lista de tarjetas guardadas -->
         <TextView
-            android:text="Tarjetas Guardadas"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Gestión de Pagos"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"
+            android:layout_marginBottom="20dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCards"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp" />
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/white">
 
-        <Button
-            android:id="@+id/btnAddCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Añadir Nueva Tarjeta" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <!-- Formulario (inicialmente oculto) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mis Tarjetas"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginBottom="12dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnAddCard"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Añadir Nueva Tarjeta"
+                    android:textColor="@color/primary"
+                    app:strokeColor="@color/primary"
+                    app:icon="@android:drawable/ic_input_add"
+                    app:iconTint="@color/primary"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:id="@+id/formContainer"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
 
-            <TextView
-                android:text="Agregar Tarjeta"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/etCardNumber"
-                android:hint="Número de tarjeta"
-                android:inputType="number"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
-            <EditText
-                android:id="@+id/etExpiration"
-                android:hint="MM/YY"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            <EditText
-                android:id="@+id/etCvv"
-                android:hint="CVV"
-                android:inputType="numberPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nueva Tarjeta"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/primary"
+                        android:layout_marginBottom="16dp"/>
 
-            <EditText
-                android:id="@+id/etHolder"
-                android:hint="Titular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Número de tarjeta"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="12dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="16"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnSaveCard"
-                android:text="Guardar Tarjeta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="MM/YY"
+                            android:layout_marginEnd="8dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etExpiration"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="date"
+                                android:maxLength="5"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="CVV"
+                            android:layout_marginStart="8dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberPassword"
+                                android:maxLength="3"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre del Titular"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="20dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etHolder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName|textCapWords"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnSaveCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="Guardar Tarjeta"
+                        android:backgroundTint="@color/primary"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- Historial de pagos -->
         <TextView
-            android:text="Historial de Pagos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Historial de Transacciones"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/text_dark"
+            android:layout_marginBottom="12dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerTransactions"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerTransactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:minHeight="100dp"
+                android:padding="8dp"/>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </ScrollView>

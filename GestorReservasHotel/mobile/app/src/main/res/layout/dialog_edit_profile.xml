@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,126 +17,116 @@
             android:text="Editar Perfil"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#333333"
+            android:textColor="@color/text_dark"
             android:layout_marginBottom="24dp" />
 
-        <!-- Campo Nombre -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#007AFF"
-            app:hintTextColor="#007AFF">
+            android:hint="Nombre"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo Apellido -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#007AFF"
-            app:hintTextColor="#007AFF">
+            android:hint="Apellido"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellido"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#007AFF"
-            app:hintTextColor="#007AFF">
+            android:hint="Email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo Teléfono -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#007AFF"
-            app:hintTextColor="#007AFF">
+            android:hint="Teléfono"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Teléfono"
                 android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo DNI -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:boxStrokeColor="#007AFF"
-            app:hintTextColor="#007AFF">
+            android:hint="DNI"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="DNI"
                 android:inputType="text"
                 android:maxLength="15" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón Guardar -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="Guardar Cambios"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_blue_rounded"
-            android:layout_marginBottom="12dp"
-            android:textStyle="bold" />
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/primary"
+            android:layout_marginBottom="12dp"/>
 
-        <!-- Botón Cancelar -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancelar"
-            android:textColor="#666666"
-            android:background="@drawable/button_gray_rounded"
+            android:textColor="@color/text_gray"
             android:layout_marginBottom="24dp" />
 
-        <!-- Divisor -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EEEEEE"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
-        <!-- Botón Eliminar Cuenta -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDelete"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Eliminar Cuenta"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_red_rounded"
+            android:textColor="#EF4444"
+            app:strokeColor="#EF4444"
+            app:icon="@android:drawable/ic_menu_delete"
+            app:iconTint="#EF4444"
             android:textStyle="bold" />
 
         <TextView
@@ -143,7 +134,7 @@
             android:layout_height="wrap_content"
             android:text="Esta acción no se puede deshacer"
             android:textSize="12sp"
-            android:textColor="#999999"
+            android:textColor="@color/text_gray"
             android:layout_gravity="center"
             android:layout_marginTop="8dp" />
     </LinearLayout>

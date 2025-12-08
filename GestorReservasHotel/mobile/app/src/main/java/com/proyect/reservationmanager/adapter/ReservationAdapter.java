@@ -39,17 +39,23 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reservation reservation = reservationList.get(position);
-        holder.tvClientName.setText(reservation.getClientName());
-        holder.tvRoomInfo.setText("Room: " + reservation.getRoomNumber());
-        holder.tvDates.setText(reservation.getStartDate() + " - " + reservation.getEndDate());
-        holder.tvStatus.setText(reservation.getStatus());
+
+        holder.tvClientName.setText("Reserva #" + reservation.getReservationId());
+
+        String info = "Huéspedes: " + reservation.getNumberOfGuests() + " | " + reservation.getTotalPrice() + "€";
+        holder.tvRoomInfo.setText(info);
+
+        String fechas = reservation.getCheckInDate() + " - " + reservation.getCheckOutDate();
+        holder.tvDates.setText(fechas);
+
+        holder.tvStatus.setText(reservation.getCondition());
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(reservation));
     }
 
     @Override
     public int getItemCount() {
-        return reservationList.size();
+        return reservationList != null ? reservationList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

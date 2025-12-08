@@ -39,26 +39,35 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Client client = clientList.get(position);
-        holder.tvClientName.setText(client.getName());
-        holder.tvClientId.setText("ID: " + client.getDocumentId());
-        holder.tvClientContact.setText(client.getPhone() + " | " + client.getEmail());
+
+        // 1. Nombre Completo
+        String fullName = client.getFirstName();
+        if (client.getLastName() != null) {
+            fullName += " " + client.getLastName();
+        }
+        holder.tvClientName.setText(fullName);
+
+        holder.tvClientEmail.setText(client.getEmail());
+
+        holder.tvClientPhone.setText(client.getPhone());
 
         holder.itemView.setOnClickListener(v -> listener.onClientClick(client));
     }
 
     @Override
     public int getItemCount() {
-        return clientList.size();
+        return clientList != null ? clientList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClientName, tvClientId, tvClientContact;
+        // Usamos los IDs que SÍ existen en tu nuevo XML
+        TextView tvClientName, tvClientEmail, tvClientPhone;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvClientName = itemView.findViewById(R.id.tvClientName);
-            tvClientId = itemView.findViewById(R.id.tvClientId);
-            tvClientContact = itemView.findViewById(R.id.tvClientContact);
+            tvClientEmail = itemView.findViewById(R.id.tvClientEmail);
+            tvClientPhone = itemView.findViewById(R.id.tvClientPhone);
         }
     }
 }

@@ -15,7 +15,6 @@ public class Room implements Serializable {
   @SerializedName("floor")
   private Integer floor;
 
-  // Relaciones con otras tablas (Objetos complejos)
   @SerializedName("roomState")
   private RoomState roomState;
 

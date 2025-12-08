@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F3F4F6">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Panel de Administración"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#111827"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnGoToSearch"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Ir a Vista Cliente (Reservar)"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#EA580C"/>
+
+    <Button
+        android:id="@+id/btnGoToProfile"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Mi Perfil"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnGoToReservations"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Gestionar Reservas"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnGoToClients"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Gestionar Clientes"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnGoToPayment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Gestionar Pagos"/>
+
+</LinearLayout>

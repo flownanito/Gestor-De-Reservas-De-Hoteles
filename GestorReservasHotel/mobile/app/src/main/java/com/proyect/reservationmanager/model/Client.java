@@ -29,7 +29,6 @@ public class Client implements Serializable {
   @SerializedName("password")
   private String password;
 
-  // Constructor vacío (OBLIGATORIO para que funcione tu Registro y Gson)
   public Client() {
   }
 

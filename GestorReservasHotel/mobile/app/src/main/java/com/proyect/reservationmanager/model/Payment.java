@@ -7,7 +7,7 @@ public class Payment {
     private PaymentMethods paymentMethods;
     private String status;
     private Float amount;
-    private String paymentDate; // En backend es LocalDateTime → en Android String
+    private String paymentDate;
 
     public Payment() {
     }

@@ -19,13 +19,11 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
     void onItemLongClick(Client client);
   }
 
-  // Constructor: Recibimos la lista de datos
   public ClientAdapter(List<Client> clients, OnItemLongClickListener listener) {
     this.clients = clients;
     this.listener = listener;
   }
 
-  // 1. Crear el molde visual (Inflar el XML)
   @NonNull
   @Override
   public ClientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,12 +32,10 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
     return new ClientViewHolder(view);
   }
 
-  // 2. Rellenar los datos (Binding)
   @Override
   public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
     Client client = clients.get(position);
 
-    // Asignamos los textos usando los datos del cliente
     holder.tvName.setText(client.getFirstName() + " " + client.getLastName());
     holder.tvEmail.setText(client.getEmail());
     holder.tvPhone.setText(client.getPhone());
@@ -47,20 +43,17 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
     holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View v) {
-        // Avisamos al MainActivity a través de la interfaz
         listener.onItemLongClick(client);
         return true;
       }
     });
   }
 
-  // 3. Cantidad de elementos
   @Override
   public int getItemCount() {
     return (clients != null) ? clients.size() : 0;
   }
 
-  // --- ViewHolder: Mantiene las referencias a los controles de la vista ---
   public static class ClientViewHolder extends RecyclerView.ViewHolder {
     TextView tvName, tvEmail, tvPhone;
 

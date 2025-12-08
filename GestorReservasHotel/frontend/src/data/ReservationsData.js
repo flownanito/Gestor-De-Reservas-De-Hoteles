@@ -1,31 +1,29 @@
-import room3 from "../assets/room3.jpg";
-import room7 from "../assets/room7.jpg";
+// Asegúrate de poner la extensión correcta (.jpg, .png, .webp)
+import reserva1 from '../assets/img/reserva1.avif';
+import reserva2 from '../assets/img/reserva2.avif';
 
-// datos de prueba
 const reservationsData = [
   {
     id: 1,
-    roomId: 3,
-    roomName: "Suite Ejecutiva",
-    img: room3,
-    checkIn: "2025-03-10",
-    checkOut: "2025-03-14",
-    nights: 4,
+    hotelName: "Grand Hotel & Resort",
+    location: "Madrid, España",
+    checkIn: "2023-12-15",
+    checkOut: "2023-12-20",
     guests: 2,
-    totalPrice: "1120€",
-    status: "confirmada"
+    price: 450,
+    status: "Confirmada",
+    image: reserva1 // <--- SIN LLAVES { }
   },
   {
     id: 2,
-    roomId: 7,
-    roomName: "Habitación con Jacuzzi",
-    img: room7,
-    checkIn: "2025-04-01",
-    checkOut: "2025-04-03",
-    nights: 2,
-    guests: 2,
-    totalPrice: "400€",
-    status: "pendiente"
+    hotelName: "Seaside Paradise",
+    location: "Barcelona, España",
+    checkIn: "2024-01-10",
+    checkOut: "2024-01-15",
+    guests: 1,
+    price: 320,
+    status: "Pendiente",
+    image: reserva2 // <--- SIN LLAVES { }
   }
 ];
 

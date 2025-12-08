@@ -26,7 +26,7 @@ public interface ApiService {
   @GET("api/clients/dni/{dni}")
   Call<Client> getClientByDni(@Path("dni") String dni);
 
-  // POST - Crear nuevo cliente (USAR ESTE PARA EL REGISTRO)
+  // POST - Crear nuevo cliente
   @POST("api/clients")
   Call<Client> createClient(@Body Client client);
 

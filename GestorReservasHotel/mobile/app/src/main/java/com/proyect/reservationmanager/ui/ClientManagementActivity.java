@@ -1,5 +1,6 @@
-package com.proyect.reservationmanager;
+package com.proyect.reservationmanager.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.adapter.ClientAdapter;
 import com.proyect.reservationmanager.model.Client;
 
@@ -21,6 +24,7 @@ public class ClientManagementActivity extends AppCompatActivity {
     private ClientAdapter adapter;
     private List<Client> clientList;
     private EditText etSearch;
+    private FloatingActionButton btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +33,18 @@ public class ClientManagementActivity extends AppCompatActivity {
 
         rvClients = findViewById(R.id.rvClients);
         etSearch = findViewById(R.id.etSearchClient);
+        btnAdd = findViewById(R.id.btnAddClient);
 
         rvClients.setLayoutManager(new LinearLayoutManager(this));
 
-        // Cargar datos de prueba adaptados al nuevo modelo
         clientList = getMockClients();
 
-        // Inicializar adaptador
         adapter = new ClientAdapter(clientList, client -> {
-            // Al hacer click, mostramos Nombre y Apellido
             String fullName = client.getFirstName() + " " + client.getLastName();
             Toast.makeText(this, "Seleccionado: " + fullName, Toast.LENGTH_SHORT).show();
-            // Aquí iría la navegación al detalle o edición
         });
         rvClients.setAdapter(adapter);
 
-        // Lógica del buscador
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -59,6 +59,11 @@ public class ClientManagementActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        btnAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientManagementActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void filter(String text) {
@@ -66,8 +71,6 @@ public class ClientManagementActivity extends AppCompatActivity {
         String filterPattern = text.toLowerCase().trim();
 
         for (Client item : clientList) {
-            // Buscamos coincidencia en Nombre, Apellido o DNI
-            // Nota: usamos "!= null" para evitar cierres inesperados si algún dato viene vacío
             boolean firstNameMatch = item.getFirstName() != null && item.getFirstName().toLowerCase().contains(filterPattern);
             boolean lastNameMatch = item.getLastName() != null && item.getLastName().toLowerCase().contains(filterPattern);
             boolean dniMatch = item.getDni() != null && item.getDni().toLowerCase().contains(filterPattern);
@@ -77,19 +80,16 @@ public class ClientManagementActivity extends AppCompatActivity {
             }
         }
 
-        // Asegúrate de que tu ClientAdapter tenga el método updateList
-        adapter.updateList(filteredList);
+        if (adapter != null) {
+            adapter.updateList(filteredList);
+        }
     }
 
     private List<Client> getMockClients() {
         List<Client> list = new ArrayList<>();
 
-        // Constructor nuevo: (dni, firstName, lastName, email, password, phone)
-        Client c1 = new Client("12345678A", "John", "Doe", "john@example.com", "123456", "555-1234");
-        c1.setId(1L); // Seteamos ID manualmente porque es Long
-
-        Client c2 = new Client("87654321B", "Jane", "Smith", "jane@example.com", "123456", "555-5678");
-        c2.setId(2L);
+        Client c1 = new Client(1L, "12345678A", "John", "Doe", "john@example.com", "600123456", "2023-01-01");
+        Client c2 = new Client(2L, "87654321B", "Jane", "Smith", "jane@example.com", "600987654", "2023-02-15");
 
         list.add(c1);
         list.add(c2);

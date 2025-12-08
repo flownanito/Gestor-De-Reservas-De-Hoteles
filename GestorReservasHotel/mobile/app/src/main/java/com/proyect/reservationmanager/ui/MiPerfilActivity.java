@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager;
+package com.proyect.reservationmanager.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,7 +15,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.proyect.reservationmanager.AdminDashboardActivity;
+import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.api.ApiClient;
 import com.proyect.reservationmanager.api.ApiService;
 import com.proyect.reservationmanager.model.Client;
@@ -46,24 +46,19 @@ public class MiPerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mi_perfil);
 
-        // Inicializar API
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // Obtener ID del cliente desde SharedPreferences o Intent
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         clientId = prefs.getLong("client_id", -1L);
 
-        // Inicializar vistas
         initViews();
 
-        // Cargar datos del cliente
         if (clientId != -1L) {
             loadClientData();
         } else {
             Toast.makeText(this, "Error: Cliente no identificado", Toast.LENGTH_SHORT).show();
         }
 
-        // Configurar listeners
         setupListeners();
     }
 
@@ -85,24 +80,20 @@ public class MiPerfilActivity extends AppCompatActivity {
         btnEditProfile.setOnClickListener(v -> showEditProfileDialog());
 
         btnLogout.setOnClickListener(v -> {
-            // Limpiar datos de sesión
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             prefs.edit().clear().apply();
 
-            // Volver a actividad principal
-            Intent intent = new Intent(MiPerfilActivity.this, MainActivity.class);
+            Intent intent = new Intent(MiPerfilActivity.this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
         btnSearchHotels.setOnClickListener(v -> {
-            // Navegar a búsqueda de hoteles
             Toast.makeText(this, "Navegando a búsqueda de hoteles...", Toast.LENGTH_SHORT).show();
         });
 
         tvViewAll.setOnClickListener(v -> {
-            // Ver todas las reservas
             Toast.makeText(this, "Mostrando todas las reservas...", Toast.LENGTH_SHORT).show();
         });
 
@@ -119,7 +110,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         });
     }
 
-    // READ - Cargar datos del cliente desde la API
     private void loadClientData() {
         Call<Client> call = apiService.getClientById(clientId);
         call.enqueue(new Callback<Client>() {
@@ -142,7 +132,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         });
     }
 
-    // Actualizar la interfaz con los datos del cliente
     private void updateUI() {
         if (currentClient != null) {
             String fullName = currentClient.getFirstName() + " " + currentClient.getLastName();
@@ -153,7 +142,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         }
     }
 
-    // UPDATE - Mostrar diálogo para editar el perfil
     private void showEditProfileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -170,7 +158,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         Button btnCancel = dialogView.findViewById(R.id.btnCancel);
         Button btnDelete = dialogView.findViewById(R.id.btnDelete);
 
-        // Prellenar con datos actuales
         if (currentClient != null) {
             etFirstName.setText(currentClient.getFirstName());
             etLastName.setText(currentClient.getLastName());
@@ -204,7 +191,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Validar entrada de datos
     private boolean validateInput(String firstName, String lastName, String email, String dni) {
         if (firstName.isEmpty()) {
             Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show();
@@ -225,10 +211,8 @@ public class MiPerfilActivity extends AppCompatActivity {
         return true;
     }
 
-    // UPDATE - Actualizar datos del cliente en la API
     private void updateClientData(String firstName, String lastName,
             String email, String phone, String dni) {
-        // Crear objeto Client con datos actualizados
         Client updatedClient = new Client();
         updatedClient.setId(currentClient.getId());
         updatedClient.setFirstName(firstName);
@@ -238,11 +222,9 @@ public class MiPerfilActivity extends AppCompatActivity {
         updatedClient.setDni(dni);
         updatedClient.setRegistrationDate(currentClient.getRegistrationDate());
 
-        // Log para debug
         android.util.Log.d("MiPerfil", "Actualizando cliente ID: " + clientId);
         android.util.Log.d("MiPerfil", "Datos: " + firstName + " " + lastName);
 
-        // Llamar a la API
         Call<Client> call = apiService.updateClient(clientId, updatedClient);
         call.enqueue(new Callback<Client>() {
             @Override
@@ -269,7 +251,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         });
     }
 
-    // Mostrar diálogo de cambio de contraseña
     private void showChangePasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -300,7 +281,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Validar cambio de contraseña
     private boolean validatePasswordChange(String currentPassword, String newPassword, String confirmPassword) {
         if (currentPassword.isEmpty()) {
             Toast.makeText(this, "Introduce tu contraseña actual", Toast.LENGTH_SHORT).show();
@@ -321,10 +301,7 @@ public class MiPerfilActivity extends AppCompatActivity {
         return true;
     }
 
-    // Cambiar contraseña en la API
     private void changePassword(String currentPassword, String newPassword) {
-        // Verificar contraseña actual (si tu API lo soporta)
-        // Por ahora, actualizaremos directamente con la nueva contraseña
 
         Client updatedClient = new Client();
         updatedClient.setId(currentClient.getId());
@@ -358,7 +335,6 @@ public class MiPerfilActivity extends AppCompatActivity {
         });
     }
 
-    // DELETE - Mostrar confirmación de eliminación
     private void showDeleteConfirmationDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Eliminar Cuenta")
@@ -369,7 +345,6 @@ public class MiPerfilActivity extends AppCompatActivity {
                 .show();
     }
 
-    // DELETE - Eliminar cliente de la API
     private void deleteClient() {
         Call<Void> call = apiService.deleteClient(clientId);
         call.enqueue(new Callback<Void>() {
@@ -383,7 +358,7 @@ public class MiPerfilActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                     prefs.edit().clear().apply();
 
-                    Intent intent = new Intent(MiPerfilActivity.this, MainActivity.class);
+                    Intent intent = new Intent(MiPerfilActivity.this, AdminDashboardActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

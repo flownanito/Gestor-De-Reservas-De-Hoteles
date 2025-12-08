@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.proyect.reservationmanager.R;
-import com.proyect.reservationmanager.api.ClientApiService;
+import com.proyect.reservationmanager.api.ApiService;
 import com.proyect.reservationmanager.api.RetrofitClient;
 import com.proyect.reservationmanager.model.Client;
 
@@ -37,36 +37,50 @@ public class addClientActivity extends AppCompatActivity {
     btnSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        String dni = etDni.getText().toString();
-        String firstName = etFirstName.getText().toString();
-        String lastName = etLastName.getText().toString();
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        String phone = etPhone.getText().toString();
+        // 1. Recoger datos
+        String dni = etDni.getText().toString().trim();
+        String firstName = etFirstName.getText().toString().trim();
+        String lastName = etLastName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
 
-        Client newClient = new Client(dni, firstName, lastName, email, password, phone);
-        // Instancias el servicio
-        ClientApiService apiService = RetrofitClient.getInstance().getClientApi();
+        // Validacion básica
+        if (dni.isEmpty() || firstName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+          Toast.makeText(addClientActivity.this, "Por favor, rellena los campos obligatorios", Toast.LENGTH_SHORT).show();
+          return;
+        }
 
-        // Preparar la llamada (enviando el objeto newClient)
+        // 2. Crear el objeto Client usando SETTERS
+        Client newClient = new Client();
+        newClient.setDni(dni);
+        newClient.setFirstName(firstName);
+        newClient.setLastName(lastName);
+        newClient.setEmail(email);
+        newClient.setPassword(password);
+        newClient.setPhone(phone);
+
+        // 3. Instanciar el servicio
+        ApiService apiService = RetrofitClient.getInstance().getApi();
+
+        // 4. Preparar la llamada
         Call<Client> call = apiService.createClient(newClient);
 
-        // Ejecutar
+        // 5. Ejecutar llamada asíncrona
         call.enqueue(new Callback<Client>() {
           @Override
           public void onResponse(Call<Client> call, Response<Client> response) {
             if (response.isSuccessful()) {
-              Toast.makeText(addClientActivity.this, "Cliente guardado", Toast.LENGTH_SHORT).show();
-
-              finish();
+              Toast.makeText(addClientActivity.this, "Cliente registrado con éxito", Toast.LENGTH_SHORT).show();
+              finish(); // Cierra la actividad y vuelve atrás
             } else {
-              Toast.makeText(addClientActivity.this, "Error al guardar: " + response.code(), Toast.LENGTH_LONG).show();
+              Toast.makeText(addClientActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
             }
           }
 
           @Override
           public void onFailure(Call<Client> call, Throwable t) {
-            Toast.makeText(addClientActivity.this, "Tiempo de conexión agotado: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(addClientActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
           }
         });
       }

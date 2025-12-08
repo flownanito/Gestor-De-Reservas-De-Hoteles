@@ -24,7 +24,6 @@ public class RegisterActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_client);
 
-    // 2. Vinculamos con los IDs correctos de tu XML (activity_add_client.xml)
     etDni = findViewById(R.id.etDni);
     etName = findViewById(R.id.etFirstName);
     etLastName = findViewById(R.id.etLastName);
@@ -38,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
   }
 
   private void performRegister() {
-    // Obtenemos el texto, asegurando que no sea null
     String name = etName.getText().toString().trim();
     String lastName = etLastName.getText().toString().trim();
     String email = etEmail.getText().toString().trim();
@@ -46,13 +44,11 @@ public class RegisterActivity extends AppCompatActivity {
     String dni = etDni.getText().toString().trim();
     String phone = etPhone.getText().toString().trim();
 
-    // Validaciones básicas
     if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || dni.isEmpty()) {
       Toast.makeText(this, "Rellene todos los campos obligatorios", Toast.LENGTH_SHORT).show();
       return;
     }
 
-    // Creamos el objeto Client
     Client client = new Client();
     client.setFirstName(name);
     client.setLastName(lastName);
@@ -61,7 +57,6 @@ public class RegisterActivity extends AppCompatActivity {
     client.setDni(dni);
     client.setPhone(phone);
 
-    // Llamada a la API
     ClientApiService clientApiService = RetrofitClient.getInstance().getClientApi();
 
     clientApiService.createClient(client).enqueue(new Callback<Client>() {
@@ -69,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
       public void onResponse(Call<Client> call, Response<Client> response) {
         if (response.isSuccessful()) {
           Toast.makeText(RegisterActivity.this, "Cliente guardado con éxito", Toast.LENGTH_LONG).show();
-          finish(); // Cierra la pantalla
+          finish();
         } else {
           String msg = "Error: " + response.code();
           if (response.code() == 409) msg = "El usuario o DNI ya existe";

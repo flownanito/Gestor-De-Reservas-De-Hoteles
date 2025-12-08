@@ -1,4 +1,4 @@
-package com.proyect.reservationmanager;
+package com.proyect.reservationmanager.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.proyect.reservationmanager.R;
 import com.proyect.reservationmanager.adapter.ReservationAdapter;
 import com.proyect.reservationmanager.model.Reservation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,23 +36,22 @@ public class ReservationManagementActivity extends AppCompatActivity {
         spinnerFilter = findViewById(R.id.spinnerFilterStatus);
         FloatingActionButton fab = findViewById(R.id.fabAddReservation);
 
-        // Setup Spinner
-        String[] statuses = { "All", "Confirmed", "Pending", "Cancelled" };
+        String[] statuses = { "Todos", "Confirmada", "Pendiente", "Cancelada" };
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilter.setAdapter(spinnerAdapter);
 
-        // Setup RecyclerView
         rvReservations.setLayoutManager(new LinearLayoutManager(this));
+
         reservationList = getMockReservations();
+
         adapter = new ReservationAdapter(reservationList, reservation -> {
             Intent intent = new Intent(ReservationManagementActivity.this, ReservationDetailsActivity.class);
-            // Pass reservation ID if needed
+            intent.putExtra("RESERVATION_ID", reservation.getReservationId());
             startActivity(intent);
         });
         rvReservations.setAdapter(adapter);
 
-        // Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -67,24 +68,34 @@ public class ReservationManagementActivity extends AppCompatActivity {
         });
 
         fab.setOnClickListener(v -> {
-            // Logic to add new reservation
         });
     }
 
     private void filter(String text) {
         List<Reservation> filteredList = new ArrayList<>();
+        String searchText = text.toLowerCase();
+
         for (Reservation item : reservationList) {
-            if (item.getClientName().toLowerCase().contains(text.toLowerCase())) {
+            String idString = String.valueOf(item.getReservationId());
+            String status = item.getCondition().toLowerCase();
+
+            if (idString.contains(searchText) || status.contains(searchText)) {
                 filteredList.add(item);
             }
         }
-        adapter.updateList(filteredList);
+
+        if (adapter != null) {
+            adapter.updateList(filteredList);
+        }
     }
 
     private List<Reservation> getMockReservations() {
         List<Reservation> list = new ArrayList<>();
-        list.add(new Reservation("1", "John Doe", "101", "2023-01-01", "2023-01-05", "Confirmed", 500));
-        list.add(new Reservation("2", "Jane Smith", "202", "2023-02-10", "2023-02-12", "Pending", 300));
+
+        list.add(new Reservation(1L, "2023-10-01", "2023-12-01", "2023-12-05", "Confirmada", "2", 500));
+
+        list.add(new Reservation(2L, "2023-10-05", "2023-11-20", "2023-11-22", "Pendiente", "1", 300));
+
         return list;
     }
 }
