@@ -2,11 +2,9 @@ package com.proyect.reservationmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-
 
 @Entity
 @Table(name = "payment_methods")
@@ -22,7 +20,6 @@ public class PaymentMethods {
   @OneToMany(mappedBy = "paymentMethods", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   private Set<Payment> payments;
-
 
   @Column(name = "payment_name", nullable = false, length = 100)
   @NotBlank(message = "El nombre del método de pago es obligatorio")

@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   # --- BACKEND (Base de Datos) ---
@@ -30,19 +29,21 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin1234
 
-  # --- FRONTEND (React + Vite) --- 
+  # --- FRONTEND (React + Vite) ---
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: hotel_ui
     ports:
-      - "5173:5173" # Puerto estándar de Vite
+      - "5173:5173" 
     volumes:
-      - ./frontend:/app # Sincroniza tu código local con el contenedor
-      - /app/node_modules # ⚠️ Truco: Evita que tu carpeta local borre las librerías del contenedor
+      - ./frontend/src:/app/src
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
-      - app # Arranca después del backend
+      - app
 
 volumes:
   db_data:

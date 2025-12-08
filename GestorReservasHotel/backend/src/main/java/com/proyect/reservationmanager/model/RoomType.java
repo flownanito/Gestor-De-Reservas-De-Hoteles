@@ -1,11 +1,18 @@
+
 package com.proyect.reservationmanager.model;
 
 import java.math.BigDecimal;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -16,8 +23,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "room_type")
-@Data @AllArgsConstructor @NoArgsConstructor
+@Table(name = "room_types")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoomType {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +54,8 @@ public class RoomType {
   @Column(nullable = false)
   private Integer capacity;
 
-  // (Añadir más adelante la relación con habitaciones)
+  @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<Room> rooms;
 }
+

@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ public class Payment {
   @Column(nullable = false)
   @NotNull(message = "La cantidad es obligatoria")
   private Float amount;
-  
+
   @Column(nullable = false)
   @NotNull(message = "La fecha de pago es obligatoria")
-  private LocalDateTime paymentDate; 
+  private LocalDateTime paymentDate;
 }

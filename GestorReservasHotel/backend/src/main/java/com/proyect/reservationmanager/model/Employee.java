@@ -1,16 +1,25 @@
+
 package com.proyect.reservationmanager.model;
+
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employees")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long idEmpleado;
+  private Long id;
+
+  @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<Reservation> reservations;
 
   @ManyToOne
   @JoinColumn(name = "position_id", nullable = false)
@@ -31,4 +40,11 @@ public class Employee {
 
   @Column(length = 20)
   private String phone;
+
+  @Column(nullable = false)
+  private String password;
+
+  @Column(nullable = false)
+  private String role;
 }
+
