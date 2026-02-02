@@ -18,6 +18,7 @@ import ReservationStep1 from './components/Reservationstep1';
 import ReservationStep2 from './components/Reservationstep2';
 import ReservationStep3 from './components/Reservationstep3';
 import ReservationsUpcoming from './pages/ReservationsUpcoming';
+import RoomMap from './pages/RoomMap';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -64,6 +65,7 @@ export default function App() {
           {/* --- RUTA DE TUS COMPAÑEROS (Upcoming) --- */}
           {/* He descomentado esta línea para que funcione, ya que importamos el componente arriba */}
           <Route path="/reservation-upcoming" element={<ReservationsUpcoming />} />
+          <Route path="/room-map" element={<RoomMap />} />
 
         </Routes>
       </main>

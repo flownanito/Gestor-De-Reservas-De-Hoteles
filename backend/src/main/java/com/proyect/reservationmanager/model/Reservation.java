@@ -28,10 +28,13 @@ public class Reservation {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
     @Column(nullable = false)
     @NotNull(message = "La fecha de reserva es obligatoria")
     private LocalDateTime reservationDate;
-
 
     @Column(nullable = false)
     @NotNull(message = "La fecha de check-in es obligatoria")

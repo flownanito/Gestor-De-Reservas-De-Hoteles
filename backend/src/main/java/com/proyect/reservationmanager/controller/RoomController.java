@@ -5,13 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.proyect.reservationmanager.model.Room;
 import com.proyect.reservationmanager.model.RoomState;
@@ -20,7 +14,7 @@ import com.proyect.reservationmanager.repository.RoomRepository;
 import com.proyect.reservationmanager.repository.RoomStateRepository;
 import com.proyect.reservationmanager.repository.RoomTypeRepository;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
@@ -44,6 +38,7 @@ public class RoomController {
   @GetMapping
   public ResponseEntity<List<Room>> getAllRooms() {
     List<Room> rooms = roomRepository.findAll();
+    System.out.println("GET /api/rooms - Found " + rooms.size() + " rooms");
     return new ResponseEntity<>(rooms, HttpStatus.OK);
   }
 
@@ -99,7 +94,7 @@ public class RoomController {
   @PostMapping
   public ResponseEntity<Object> createRoom(@Valid @RequestBody Room room) {
     if (roomRepository.findByRoomNumber(room.getRoomNumber()).isPresent()) {
-      return new ResponseEntity<>( "La habitación ya existe", HttpStatus.CONFLICT);
+      return new ResponseEntity<>("La habitación ya existe", HttpStatus.CONFLICT);
     }
 
     RoomState roomState = room.getRoomState();
@@ -167,6 +162,36 @@ public class RoomController {
           return new ResponseEntity<Object>(updatedRoom, HttpStatus.OK);
         })
         .orElse(new ResponseEntity<Object>("Room with ID " + id + " not found", HttpStatus.NOT_FOUND));
+  }
+
+  // ---------------------------------------------------------
+  // PATCH (UPDATE STATUS)
+  // ---------------------------------------------------------
+  @PutMapping("/{id}/status/{stateName}")
+  public ResponseEntity<Object> updateRoomStatus(@PathVariable Long id, @PathVariable String stateName) {
+    System.out.println("Updating room " + id + " to status " + stateName);
+    Optional<Room> roomOpt = roomRepository.findById(id);
+    if (roomOpt.isEmpty()) {
+      System.out.println("Room " + id + " not found");
+      return new ResponseEntity<>("Room not found", HttpStatus.NOT_FOUND);
+    }
+
+    Optional<RoomState> stateOpt = roomStateRepository.findByStateName(stateName);
+    if (stateOpt.isEmpty()) {
+      // Si no existe, intentamos buscarlo con la primera letra en mayúscula o
+      // minúscula
+      String formatted = stateName.substring(0, 1).toUpperCase() + stateName.substring(1).toLowerCase();
+      stateOpt = roomStateRepository.findByStateName(formatted);
+      if (stateOpt.isEmpty()) {
+        return new ResponseEntity<>("State '" + stateName + "' not found", HttpStatus.NOT_FOUND);
+      }
+    }
+
+    Room room = roomOpt.get();
+    room.setRoomState(stateOpt.get());
+    roomRepository.save(room);
+
+    return new ResponseEntity<>(room, HttpStatus.OK);
   }
 
   // ---------------------------------------------------------

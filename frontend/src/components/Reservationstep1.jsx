@@ -6,7 +6,7 @@ const ReservationStep1 = ({ initialData, onNext }) => {
     tipoHabitacion: initialData?.tipoHabitacion || 'Habitación Estándar',
     checkIn: initialData?.checkIn || '',
     checkOut: initialData?.checkOut || '',
-    huespedes: initialData?.huespedes || '1',
+    guests: initialData?.guests || '1',
     solicitudes: initialData?.solicitudes || ''
   });
 
@@ -70,6 +70,11 @@ const ReservationStep1 = ({ initialData, onNext }) => {
         <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
           <div className="mb-6 pb-6 border-b border-gray-100">
             <h2 className="text-xl font-bold text-gray-900 mb-1">Detalles de la reserva</h2>
+            {initialData.roomNumber && (
+              <p className="text-amber-700 font-semibold mb-2 bg-amber-50 p-2 rounded-lg border border-amber-100 inline-block">
+                Habitación Seleccionada: {initialData.roomNumber}
+              </p>
+            )}
             <p className="text-gray-500 text-sm">Selecciona las fechas y tipo de habitación</p>
           </div>
 
@@ -120,8 +125,8 @@ const ReservationStep1 = ({ initialData, onNext }) => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Número de Huéspedes</label>
               <select
-                name="huespedes"
-                value={formData.huespedes}
+                name="guests"
+                value={formData.guests}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white cursor-pointer transition-all"
               >

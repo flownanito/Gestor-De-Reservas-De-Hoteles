@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 import api from '../services/api';
 
+// Forced re-build to clear possible cache issues
 import ReservationStep1 from "../components/Reservationstep1";
 import ReservationStep2 from "../components/Reservationstep2";
 import ReservationStep3 from "../components/Reservationstep3";
 
 const ReservationsPage = ({ user }) => {
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(1);
   const [reservationData, setReservationData] = useState({
-    roomId: null,
+    roomId: location.state?.preselectedRoomId || null,
+    roomNumber: location.state?.preselectedRoomNumber || null,
     checkIn: '',
     checkOut: '',
     guests: 1,
@@ -39,12 +43,13 @@ const ReservationsPage = ({ user }) => {
     // 1. Formateamos los datos para que coincidan con el modelo Reservation del backend
     const finalBooking = {
       client: { id: user?.id },
-      reservationDate: new Date().toISOString(),
+      room: { id: reservationData.roomId },
+      reservationDate: new Date().toISOString().slice(0, 19),
       checkInDate: reservationData.checkIn,
       checkOutDate: reservationData.checkOut,
       condition: 'Confirmada',
-      numberOfGuests: parseInt(reservationData.huespedes),
-      totalPrice: parseFloat(paymentData.total)
+      numberOfGuests: parseInt(reservationData.guests) || 1,
+      totalPrice: parseFloat(paymentData.total) || 0
     };
 
     console.log("ENVIANDO RESERVA AL BACKEND:", finalBooking);
