@@ -1,0 +1,31 @@
+# --- SISTEMA OPERATIVO ---
+.DS_Store
+Thumbs.db
+
+# --- IDEs (VS Code, IntelliJ, Android Studio) ---
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# --- BACKEND (Java / Spring Boot) ---
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+*.log
+*.jar
+
+# --- FRONTEND (React / Node) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# --- MOBILE (Android / Gradle) ---
+mobile/build/
+mobile/.gradle/
+mobile/local.properties
+mobile/.idea/
+mobile/app/build/
+mobile/*.iml

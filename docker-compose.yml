@@ -1,0 +1,49 @@
+
+services:
+  # --- BACKEND (Base de Datos) ---
+  db:
+    image: postgres:16-alpine
+    container_name: hotel_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: hotel_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  # --- BACKEND (Spring Boot) ---
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hotel_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/hotel_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin1234
+
+  # --- FRONTEND (React + Vite) ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hotel_ui
+    ports:
+      - "5173:5173" 
+    volumes:
+      - ./frontend/src:/app/src
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - app
+
+volumes:
+  db_data:
