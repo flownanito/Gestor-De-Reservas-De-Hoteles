@@ -8,8 +8,14 @@ function RoomDetails() {
   const navigate = useNavigate();
 
   if (!room) return (
-    <div className="min-h-screen flex items-center justify-center text-xl text-gray-500">
+    <div className="min-h-screen flex flex-col items-center justify-center text-xl text-gray-500">
       Habitación no encontrada
+      <button
+        onClick={() => navigate(-1)}
+        className="mt-6 inline-block bg-white text-amber-700 font-medium px-6 py-3 rounded-xl shadow-lg hover:bg-gray-100 transition"
+      >
+        Volver atrás
+      </button>
     </div>
   );
 
