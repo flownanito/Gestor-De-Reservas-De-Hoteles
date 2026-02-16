@@ -10,6 +10,7 @@ import ReservationsPage from './pages/ReservationsPage';
 import ProfilePage from './pages/ProfilePage';
 import Room from './pages/Rooms';
 import RoomDetails from './pages/RoomDetails';
+import RoomMap from './pages/RoomMap';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -64,6 +65,7 @@ export default function App() {
           {/* --- RUTA DE TUS COMPAÑEROS (Upcoming) --- */}
           {/* He descomentado esta línea para que funcione, ya que importamos el componente arriba */}
           <Route path="/reservation-upcoming" element={<ReservationsUpcoming />} />
+          <Route path='/room-map' element={<RoomMap />} />
 
         </Routes>
       </main>
