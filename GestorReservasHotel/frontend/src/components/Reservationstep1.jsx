@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useRoomTypes } from "../hooks/useRoomTypes";
 
 const ReservationStep1 = ({ initialData, onNext }) => {
+
+  const { rooms, loading, error } = useRoomTypes();
+
   // Inicializamos el estado con lo que venga del padre (o valores por defecto)
   const [formData, setFormData] = useState({
-    tipoHabitacion: initialData?.tipoHabitacion || 'Habitación Estándar',
-    checkIn: initialData?.checkIn || '',
-    checkOut: initialData?.checkOut || '',
-    huespedes: initialData?.huespedes || '1',
-    solicitudes: initialData?.solicitudes || ''
+    roomTypeId: initialData?.roomTypeId ?? 1,
+    checkIn: initialData?.checkIn || "",
+    checkOut: initialData?.checkOut || "",
+    guests: initialData?.guests ?? 1,
+    solicitudes: initialData?.solicitudes || ""
   });
+
+  const selectedRoom = rooms.find((r) => r.id === Number(formData.roomTypeId));
+  const maxGuests = Number(selectedRoom?.people ?? 1);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,12 +25,19 @@ const ReservationStep1 = ({ initialData, onNext }) => {
   };
 
   const handleSubmit = () => {
-    // Validaciones simples antes de avanzar
+    // Validación fechas
     if (!formData.checkIn || !formData.checkOut) {
       alert("Por favor selecciona las fechas");
       return;
     }
-    // ¡PASAMOS LOS DATOS AL PADRE PARA AVANZAR!
+
+    // Validación capacidad máxima
+    if (formData.guests > maxGuests) {
+      alert(`Esta habitación permite máximo ${maxGuests} huésped(es).`);
+      return;
+    }
+
+    // Si todo está correcto, avanzar
     onNext(formData);
   };
 
@@ -79,16 +93,38 @@ const ReservationStep1 = ({ initialData, onNext }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Tipo de habitación
               </label>
+
+              {error && (
+                <p className="text-sm text-red-600 mb-2">
+                  Error cargando habitaciones: {error}
+                </p>
+              )}
+
               <select
-                name="tipoHabitacion"
-                value={formData.tipoHabitacion}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white cursor-pointer transition-all"
+                name="roomTypeId"
+                value={formData.roomTypeId}
+                onChange={(e) => {
+                  const newRoomTypeId = Number(e.target.value);
+                  const newSelected = rooms.find((r) => r.id === newRoomTypeId);
+                  const newMax = Number(newSelected?.people ?? 1);
+
+                  setFormData((prev) => ({
+                    ...prev,
+                    roomTypeId: newRoomTypeId,
+                    guests: Math.min(prev.guests ?? 1, newMax), // recorta si es mayor
+                  }));
+                }}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white"
               >
-                <option>Habitación Estándar</option>
-                <option>Habitación Superior</option>
-                <option>Suite</option>
-                <option>Suite Presidencial</option>
+                {loading && <option>Cargando...</option>}
+
+                {!loading && rooms.map((r) => (
+                  <option key={r.id} value={r.id} disabled={r.availableRooms === 0}>
+                    {r.name}{r.availableRooms !== null && r.availableRooms !== undefined
+                      ? ` (${r.availableRooms} disponibles)`
+                      : ""}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -118,17 +154,25 @@ const ReservationStep1 = ({ initialData, onNext }) => {
 
             {/* Huéspedes */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Número de Huéspedes</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Número de Huéspedes
+              </label>
               <select
-                name="huespedes"
-                value={formData.huespedes}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white cursor-pointer transition-all"
+                name="guests"
+                value={formData.guests}
+                onChange={(e) => setFormData({ ...formData, guests: Number(e.target.value) })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white"
               >
-                {[1, 2, 3, 4, 5].map(num => (
-                  <option key={num} value={num}>{num} persona{num > 1 ? 's' : ''}</option>
+                {Array.from({ length: maxGuests }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num} persona{num > 1 ? "s" : ""}
+                  </option>
                 ))}
               </select>
+
+              <p className="mt-2 text-xs text-gray-500">
+                Máximo para esta habitación: <b>{maxGuests}</b> huésped{maxGuests > 1 ? "es" : ""}
+              </p>
             </div>
 
             {/* Solicitudes */}

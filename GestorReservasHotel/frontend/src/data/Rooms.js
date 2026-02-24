@@ -24,7 +24,7 @@ const roomsData = [
     pets: false,
     shortPeriod: "450€",    // 150 * 3
     mediumPeriod: "1050€",  // 150 * 7
-    longPeriod: "4500€"     // 150 * 30
+    longPeriod: "4500€",     // 150 * 30
   },
   {
     id: 2,
