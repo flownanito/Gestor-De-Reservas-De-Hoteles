@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Importar para redirigir
-import { CheckCircle } from 'lucide-react'; // Icono de éxito
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle } from 'lucide-react';
 import { useRoomTypes } from "../hooks/useRoomTypes";
+import { calculateReservationPrice } from '../utils/priceCalculator';
 
 const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
   const navigate = useNavigate();
@@ -16,27 +17,9 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
   const checkOut = initialData?.checkOut || "";
   const guests = Number(initialData?.guests ?? 1);
 
-  // Calcula noches y precios
+  // Calcula noches y precios usando la utilidad pura
   const { nights, subtotal, impuestos, total } = useMemo(() => {
-    const toDate = (s) => (s ? new Date(`${s}T00:00:00`) : null);
-    const inD = toDate(checkIn);
-    const outD = toDate(checkOut);
-
-    let n = 0;
-    if (inD && outD && outD > inD) {
-      n = Math.ceil((outD - inD) / (1000 * 60 * 60 * 24));
-    }
-
-    // Precio por noche: usa basePrice del backend si existe
-    const pricePerNight = Number(selectedRoom?.basePrice ?? 0);
-
-    const sub = n * pricePerNight;
-
-    // impuestos ejemplo: 10% (ajústalo a tu gusto)
-    const tax = Math.round(sub * 0.1 * 100) / 100;
-    const tot = Math.round((sub + tax) * 100) / 100;
-
-    return { nights: n, subtotal: sub, impuestos: tax, total: tot };
+    return calculateReservationPrice(checkIn, checkOut, selectedRoom?.basePrice);
   }, [checkIn, checkOut, selectedRoom]);
 
   // Estado de pago SOLO para tarjeta
