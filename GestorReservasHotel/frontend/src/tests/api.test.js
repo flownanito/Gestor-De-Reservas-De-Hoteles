@@ -58,4 +58,24 @@ describe('API Tests: reservationsApi', () => {
         await expect(createReservation(payload)).rejects.toThrowError('Network failure');
         expect(fetchSpy).toHaveBeenCalledTimes(1);
     });
+
+    it('debe configurar correctamente las cabeceras application/json (AAA - Configuración)', async () => {
+        // Arrange: Preparamos un mock exitoso
+        const payload = { test: 'headers' };
+        const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
+            ok: true,
+            json: async () => ({ success: true }),
+        });
+
+        // Act: Ejecutamos el servicio
+        await createReservation(payload);
+
+        // Assert: Comprobamos específicamente que la petición contiene el Content-Type correcto
+        expect(fetchSpy).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.objectContaining({
+                headers: { 'Content-Type': 'application/json' }
+            })
+        );
+    });
 });
