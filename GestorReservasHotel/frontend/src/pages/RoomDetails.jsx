@@ -1,17 +1,78 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import roomsData from "../data/Rooms";
-
 
 function RoomDetails() {
   const { id } = useParams();
-  const room = roomsData.find((r) => r.id === parseInt(id));
   const navigate = useNavigate();
 
-  if (!room) return (
-    <div className="min-h-screen flex items-center justify-center text-xl text-gray-500">
-      Habitación no encontrada
-    </div>
-  );
+  const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const roomId = parseInt(id, 10);
+
+    const local = roomsData.find((r) => r.id === roomId);
+    if (!local) {
+      setError("Habitación no encontrada");
+      setLoading(false);
+      return;
+    }
+
+    fetch("http://localhost:8080/api/room-types")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const backend = data.find((r) => r.id === roomId);
+
+        // Mezclamos: mantenemos lo local (img/textos) y añadimos disponibilidad real
+        const merged = {
+          ...local,
+          totalRooms: backend?.totalRooms ?? null,
+          availableRooms: backend?.availableRooms ?? null,
+          basePrice: backend?.basePrice ?? null,
+        };
+
+        setRoom(merged);
+        setLoading(false);
+      })
+      .catch(() => {
+        // Si backend falla, al menos mostramos lo local (sin disponibilidad real)
+        setRoom({ ...local, totalRooms: null, availableRooms: null });
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Cargando habitación...
+      </div>
+    );
+  }
+
+  if (error || !room) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error ?? "Error"}
+      </div>
+    );
+  }
+
+  // Umbral “pocas habitaciones”
+  const LOW_STOCK_THRESHOLD = 5;
+
+  const hasAvailability = room.availableRooms !== null && room.availableRooms !== undefined;
+  const availableRooms = room.availableRooms;
+  const totalRooms = room.totalRooms;
+
+  const isSoldOut = hasAvailability && availableRooms === 0;
+
+  // 👇 OJO: esto lo ajustamos en el punto 2
+  const isLowStock = hasAvailability && availableRooms > 0 && availableRooms <= LOW_STOCK_THRESHOLD;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 font-sans">
@@ -78,8 +139,32 @@ function RoomDetails() {
           <div className="lg:col-span-1">
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 sticky top-24">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{room.name}</h2>
-              <div className="text-3xl font-bold text-amber-700 mb-6">
-                {room.price} <span className="text-sm text-gray-500 font-normal">/ noche</span>
+
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-3xl font-bold text-amber-700">
+                  {room.price} <span className="text-sm text-gray-500 font-normal">/ noche</span>
+                </div>
+
+                {/* Etiqueta disponibilidad */}
+                {hasAvailability && (
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="text-sm text-gray-700">
+                      <b>{availableRooms}</b>{totalRooms ? ` / ${totalRooms}` : ""} disponibles
+                    </span>
+
+                    {isSoldOut && (
+                      <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                        Completo
+                      </span>
+                    )}
+
+                    {isLowStock && (
+                      <span className="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm border border-red-200">
+                        Quedan pocas
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-3 mb-8 text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
@@ -99,9 +184,14 @@ function RoomDetails() {
 
               <button
                 onClick={() => navigate('/reservations', { state: { preselectedRoom: room.name } })}
-                className="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                disabled={isSoldOut}
+                className={`w-full font-bold py-4 px-6 rounded-xl transition-colors shadow-md transform duration-150
+      ${isSoldOut
+                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    : "bg-amber-700 hover:bg-amber-800 text-white hover:shadow-lg hover:-translate-y-0.5"
+                  }`}
               >
-                Reservar Ahora
+                {isSoldOut ? "No disponible" : isLowStock ? "Reservar (¡Quedan pocas!)" : "Reservar Ahora"}
               </button>
             </div>
           </div>

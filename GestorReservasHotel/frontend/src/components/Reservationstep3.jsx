@@ -1,23 +1,50 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 1. Importar para redirigir
 import { CheckCircle } from 'lucide-react'; // Icono de éxito
+import { useRoomTypes } from "../hooks/useRoomTypes";
 
 const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
   const navigate = useNavigate();
   const [showSuccessModal, setShowSuccessModal] = useState(false); // 2. Estado del modal
 
+  const { rooms, loading } = useRoomTypes();
+
+  const roomTypeId = Number(initialData?.roomTypeId);
+  const selectedRoom = rooms.find((r) => r.id === roomTypeId);
+
+  const checkIn = initialData?.checkIn || "";
+  const checkOut = initialData?.checkOut || "";
+  const guests = Number(initialData?.guests ?? 1);
+
+  // Calcula noches y precios
+  const { nights, subtotal, impuestos, total } = useMemo(() => {
+    const toDate = (s) => (s ? new Date(`${s}T00:00:00`) : null);
+    const inD = toDate(checkIn);
+    const outD = toDate(checkOut);
+
+    let n = 0;
+    if (inD && outD && outD > inD) {
+      n = Math.ceil((outD - inD) / (1000 * 60 * 60 * 24));
+    }
+
+    // Precio por noche: usa basePrice del backend si existe
+    const pricePerNight = Number(selectedRoom?.basePrice ?? 0);
+
+    const sub = n * pricePerNight;
+
+    // impuestos ejemplo: 10% (ajústalo a tu gusto)
+    const tax = Math.round(sub * 0.1 * 100) / 100;
+    const tot = Math.round((sub + tax) * 100) / 100;
+
+    return { nights: n, subtotal: sub, impuestos: tax, total: tot };
+  }, [checkIn, checkOut, selectedRoom]);
+
+  // Estado de pago SOLO para tarjeta
   const [paymentData, setPaymentData] = useState({
-    habitacion: initialData?.tipoHabitacion || 'Habitación Estándar',
-    checkIn: initialData?.checkIn || '15/12/2025',
-    checkOut: initialData?.checkOut || '18/12/2025',
-    huespedes: initialData?.huespedes || 2,
-    subtotal: 252,
-    impuestos: 50,
-    total: 302,
-    cardName: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: ''
+    cardName: "",
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
   });
 
   const handleChange = (e) => {
@@ -31,18 +58,30 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
       return;
     }
 
-    try {
-      // Aquí llamarías al onSubmit del padre que llama al Backend
-      await onSubmit(paymentData);
+    // Validaciones básicas de fechas/selección
+    if (!roomTypeId || !selectedRoom) {
+      alert("Selecciona una habitación válida");
+      return;
+    }
+    if (!checkIn || !checkOut || nights <= 0) {
+      alert("Revisa las fechas (check-out debe ser posterior a check-in)");
+      return;
+    }
 
-      // 3. ¡ÉXITO! MOSTRAR EL MODAL
+    try {
+      // Le pasamos al padre los importes calculados
+      await onSubmit({
+        ...paymentData,
+        subtotal,
+        impuestos,
+        total,
+      });
+
       setShowSuccessModal(true);
 
-      // 4. ESPERAR 2 SEGUNDOS Y REDIRIGIR AL INICIO
       setTimeout(() => {
-        navigate('/');
+        navigate("/");
       }, 2000);
-
     } catch (error) {
       console.error("Error:", error);
       alert("Hubo un error en el pago.");
@@ -87,19 +126,19 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
                   <div className="space-y-2 text-sm text-gray-700">
                     <div className="flex justify-between">
                       <span>Habitación:</span>
-                      <span className="font-medium">{paymentData.habitacion}</span>
+                      <span className="font-medium">{selectedRoom?.name ?? "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Check-in:</span>
-                      <span className="font-medium">{paymentData.checkIn}</span>
+                      <span className="font-medium">{checkIn || "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Check-out:</span>
-                      <span className="font-medium">{paymentData.checkOut}</span>
+                      <span className="font-medium">{checkOut || "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Huéspedes:</span>
-                      <span className="font-medium">{paymentData.huespedes} personas</span>
+                      <span className="font-medium">{guests} persona{guests > 1 ? "s" : ""}</span>
                     </div>
                   </div>
                 </div>
@@ -197,18 +236,18 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
               <div className="space-y-4 mb-6 text-gray-600">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-medium">{paymentData.subtotal} €</span>
+                  <span className="font-medium">{subtotal.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Impuestos</span>
-                  <span className="font-medium">{paymentData.impuestos} €</span>
+                  <span className="font-medium">{impuestos.toFixed(2)} €</span>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-gray-900">Total a Pagar</span>
-                  <span className="text-2xl font-bold text-amber-700">{paymentData.total} €</span>
+                  <span className="text-2xl font-bold text-amber-700">{total.toFixed(2)} €</span>
                 </div>
               </div>
 
