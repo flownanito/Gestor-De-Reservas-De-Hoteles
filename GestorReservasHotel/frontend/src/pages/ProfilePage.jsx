@@ -1,22 +1,44 @@
-import React, { useState } from "react";
-import { User, Mail, Phone, Calendar, CreditCard, Star, Edit } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { User, Mail, Phone, Calendar, CreditCard, Star, Edit, Loader2, AlertCircle } from "lucide-react";
+import api from '../services/api';
 
 const ProfilePage = ({ user }) => {
   const [activeTab, setActiveTab] = useState("info");
   const [isEditing, setIsEditing] = useState(false);
 
-  // Datos simulados para las estadísticas visuales
-  const stats = {
-    bookings: 12,
-    spent: "1,380€",
-    level: "Cliente Preferencial"
-  };
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Mock data para el historial (hasta que conectemos la API de reservas)
-  const mockBookings = [
-    { id: "BK001", room: "Suite Ejecutiva", checkIn: "2025-12-15", checkOut: "2025-12-18", status: "confirmed", total: 840 },
-    { id: "BK002", room: "Habitación Deluxe", checkIn: "2025-11-01", checkOut: "2025-11-03", status: "completed", total: 300 },
-  ];
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/reservations/client/${user.id}`);
+        setBookings(response.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching bookings:", err);
+        setError("No se pudieron cargar tus reservas. Inténtalo de nuevo más tarde.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.id) {
+      fetchBookings();
+    }
+  }, [user?.id]);
+
+  // Cálculo de estadísticas reales
+  const totalBookingsCount = bookings.length;
+  const totalSpentAmount = bookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+
+  const stats = {
+    bookings: totalBookingsCount,
+    spent: `${totalSpentAmount.toLocaleString()}€`,
+    level: totalBookingsCount > 5 ? "Cliente Preferencial" : "Cliente Estándar"
+  };
 
   // Estado del formulario (Solo datos reales de la BD)
   const [profileData, setProfileData] = useState({
@@ -163,10 +185,60 @@ const ProfilePage = ({ user }) => {
             {/* TAB: RESERVAS */}
             {activeTab === "bookings" && (
               <div className="space-y-4">
-                {/* Aquí irán las reservas reales cuando conectemos el endpoint */}
-                <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                  <p className="text-gray-500">Historial de reservas próximamente...</p>
-                </div>
+                {loading ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                    <Loader2 className="w-8 h-8 animate-spin mb-2 text-amber-600" />
+                    <p>Cargando historial...</p>
+                  </div>
+                ) : error ? (
+                  <div className="flex items-center gap-2 p-4 bg-red-50 text-red-700 rounded-xl border border-red-100">
+                    <AlertCircle size={20} />
+                    <p>{error}</p>
+                  </div>
+                ) : bookings.length === 0 ? (
+                  <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                    <p className="text-gray-500">Aún no tienes ninguna reserva realizada.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                          <th className="pb-4 pl-2">ID</th>
+                          <th className="pb-4">Estancia</th>
+                          <th className="pb-4">Estado</th>
+                          <th className="pb-4 pr-2 text-right">Monto</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {bookings.map((booking) => (
+                          <tr key={booking.id} className="group hover:bg-gray-50 transition-colors">
+                            <td className="py-4 pl-2 font-mono text-xs text-amber-700">#{booking.id || "N/A"}</td>
+                            <td className="py-4">
+                              <div className="text-sm font-medium text-gray-900">
+                                {new Date(booking.checkInDate).toLocaleDateString()} - {new Date(booking.checkOutDate).toLocaleDateString()}
+                              </div>
+                              <div className="text-xs text-gray-500">Reserva: {new Date(booking.reservationDate).toLocaleDateString()}</div>
+                            </td>
+                            <td className="py-4">
+                              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${booking.condition.toLowerCase() === 'confirmed' || booking.condition.toLowerCase() === 'confirmada'
+                                ? 'bg-green-100 text-green-700'
+                                : booking.condition.toLowerCase() === 'completed' || booking.condition.toLowerCase() === 'completada'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : 'bg-gray-100 text-gray-700'
+                                }`}>
+                                {booking.condition}
+                              </span>
+                            </td>
+                            <td className="py-4 pr-2 text-right font-bold text-gray-900">
+                              {booking.totalPrice?.toFixed(2)}€
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
 

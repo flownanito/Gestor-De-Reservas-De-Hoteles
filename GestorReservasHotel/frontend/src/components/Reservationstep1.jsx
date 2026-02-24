@@ -84,6 +84,11 @@ const ReservationStep1 = ({ initialData, onNext }) => {
         <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
           <div className="mb-6 pb-6 border-b border-gray-100">
             <h2 className="text-xl font-bold text-gray-900 mb-1">Detalles de la reserva</h2>
+            {initialData.roomNumber && (
+              <p className="text-amber-700 font-semibold mb-2 bg-amber-50 p-2 rounded-lg border border-amber-100 inline-block">
+                Habitación Seleccionada: {initialData.roomNumber}
+              </p>
+            )}
             <p className="text-gray-500 text-sm">Selecciona las fechas y tipo de habitación</p>
           </div>
 

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { createReservation } from "../services/reservationsApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
+// Forced re-build to clear possible cache issues
 import ReservationStep1 from "../components/Reservationstep1";
 import ReservationStep2 from "../components/Reservationstep2";
 import ReservationStep3 from "../components/Reservationstep3";
 
 const ReservationsPage = ({ user }) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(1);
 
   // Unificamos nombres: roomTypeId + guests + checkIn/checkOut
@@ -85,7 +86,7 @@ const ReservationsPage = ({ user }) => {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Nueva Reserva</h1>
-      
+
       <div className="flex justify-between mb-8 text-sm font-medium text-gray-500 border-b pb-4">
         <span className={currentStep >= 1 ? "text-amber-700" : ""}>1. Fechas y Habitación</span>
         <span className={currentStep >= 2 ? "text-amber-700" : ""}>2. Tus Datos</span>

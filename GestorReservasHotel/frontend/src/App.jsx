@@ -19,6 +19,8 @@ import ReservationStep1 from './components/Reservationstep1';
 import ReservationStep2 from './components/Reservationstep2';
 import ReservationStep3 from './components/Reservationstep3';
 import ReservationsUpcoming from './pages/ReservationsUpcoming';
+import RoomMap from './pages/RoomMap';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +41,9 @@ export default function App() {
             element={!user ? <LoginPage onLoginSuccess={setUser} /> : <Navigate to="/" />}
           />
           <Route path='/register' element={<RegisterPage />} />
+
+          {/* Página de eror 404 */}
+          <Route path="*" element={<NotFound />} />
 
           {/* Rutas Privadas / Dashboard */}
           <Route path='/' element={<Dashboard />} />

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import com.proyect.reservationmanager.model.Employee;
 import com.proyect.reservationmanager.model.Client;
@@ -18,7 +19,7 @@ import com.proyect.reservationmanager.repository.EmployeeRepository;
 import com.proyect.reservationmanager.repository.ReservationRepository;
 import com.proyect.reservationmanager.repository.RoomTypeRepository;
 
-@RestController // Marca la clase para manejar peticiones HTTP y devolver JSON/XML
+@RestController
 @RequestMapping("/api/reservations") // Define la URL base para este controlador
 public class ReservationController {
 
@@ -147,6 +148,7 @@ public class ReservationController {
           reservation.setCondition(reservationDetails.getCondition());
           reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
           reservation.setTotalPrice(reservationDetails.getTotalPrice());
+
           // El reservationId no se modifica en un PUT
 
           // Guardamos la entidad actualizada (Hibernate la mapea a un UPDATE)

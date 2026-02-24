@@ -150,7 +150,7 @@ const RoomMap = () => {
                                     {/* Indicador de Estado pequeño debajo del número */}
                                     <circle
                                         cx={room.x + 50}
-                                        cy={room.y > 100 ? room.y + 95 : room.y - 35}
+                                        cy={room.y > 100 ? room.y + 95 : room.y - 25}
                                         r="3"
                                         fill={getRoomColor(room.roomState?.stateName)}
                                     />
