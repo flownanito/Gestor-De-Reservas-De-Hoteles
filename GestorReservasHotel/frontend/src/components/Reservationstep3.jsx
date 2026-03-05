@@ -7,6 +7,9 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
   const navigate = useNavigate();
   const [showSuccessModal, setShowSuccessModal] = useState(false); // 2. Estado del modal
 
+  const [invoice, setInvoice] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const { rooms, loading } = useRoomTypes();
 
   const roomTypeId = Number(initialData?.roomTypeId);
@@ -69,14 +72,17 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
     }
 
     try {
-      // Le pasamos al padre los importes calculados
-      await onSubmit({
+      setSubmitting(true);
+
+      // Ahora onSubmit debe devolver el DTO (InvoiceResponse)
+      const dto = await onSubmit({
         ...paymentData,
         subtotal,
         impuestos,
         total,
       });
 
+      setInvoice(dto);
       setShowSuccessModal(true);
 
       setTimeout(() => {
@@ -84,9 +90,15 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
       }, 2000);
     } catch (error) {
       console.error("Error:", error);
-      alert("Hubo un error en el pago.");
+      alert(`Hubo un error: ${error.message}`);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const subtotalShown = invoice ? Number(invoice.subtotal) : subtotal;
+  const taxShown = invoice ? Number(invoice.taxAmount) : impuestos;
+  const totalShown = invoice ? Number(invoice.total) : total;
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans relative">
@@ -100,7 +112,14 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Pago Exitoso!</h2>
             <p className="text-gray-600 mb-6">
-              Tu reserva ha sido confirmada correctamente. Te hemos enviado un email con los detalles.
+              {invoice ? (
+                <>
+                  Reserva <b>#{invoice.reservationId}</b> — {invoice.nights} noche(s) — Total:{" "}
+                  <b>{Number(invoice.total).toFixed(2)} €</b>
+                </>
+              ) : (
+                "Tu reserva ha sido confirmada correctamente. Te hemos enviado un email con los detalles."
+              )}
             </p>
             <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
               <div className="h-full bg-green-500 animate-[progress_2s_linear_forwards]" style={{ width: '0%' }}></div>
@@ -219,9 +238,10 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
                   </button>
                   <button
                     onClick={handleFinalSubmit}
-                    className="flex-1 px-6 py-3 bg-amber-700 text-white rounded-lg font-semibold hover:bg-amber-800 transition-colors shadow-md transform hover:-translate-y-0.5"
+                    disabled={submitting}
+                    className="flex-1 px-6 py-3 bg-amber-700 text-white rounded-lg font-semibold hover:bg-amber-800 transition-colors shadow-md transform hover:-translate-y-0.5 disabled:opacity-60"
                   >
-                    Confirmar y Pagar
+                    {submitting ? "Procesando..." : "Confirmar y Pagar"}
                   </button>
                 </div>
               </div>
@@ -236,18 +256,18 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
               <div className="space-y-4 mb-6 text-gray-600">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-medium">{subtotal.toFixed(2)} €</span>
+                  <span className="font-medium">{subtotalShown.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Impuestos</span>
-                  <span className="font-medium">{impuestos.toFixed(2)} €</span>
+                  <span className="font-medium">{taxShown.toFixed(2)} €</span>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-gray-900">Total a Pagar</span>
-                  <span className="text-2xl font-bold text-amber-700">{total.toFixed(2)} €</span>
+                  <span className="text-2xl font-bold text-amber-700">{totalShown.toFixed(2)} €</span>
                 </div>
               </div>
 

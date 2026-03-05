@@ -142,7 +142,7 @@ function RoomDetails() {
 
               <div className="flex items-center justify-between mb-4">
                 <div className="text-3xl font-bold text-amber-700">
-                  {room.price} <span className="text-sm text-gray-500 font-normal">/ noche</span>
+                  {Number(room.basePrice).toFixed(2)} € <span className="text-sm text-gray-500 font-normal">/ noche</span>
                 </div>
 
                 {/* Etiqueta disponibilidad */}
