@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout LANDSCAPE para AdminDashboardActivity -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="24dp">
+
+        <!-- Panel izquierdo: Info del admin + acciones de cuenta -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panel de Administración"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvAdminName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hola, Admin"
+                android:textSize="16sp"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/tvAdminRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rol: ADMIN"
+                android:textSize="13sp"
+                android:textColor="@color/text_gray"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cuenta"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnGoToSearch"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="🔍  Vista Cliente"
+                android:layout_marginBottom="8dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary"/>
+
+            <Button
+                android:id="@+id/btnGoToProfile"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="👤  Mi Perfil"
+                android:layout_marginBottom="16dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="@color/text_dark"
+                app:strokeColor="@color/text_gray"/>
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Cerrar Sesión"
+                android:backgroundTint="@color/red_error"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Panel derecho: Botones de gestión -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gestión"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnGoToClients"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="📋  Gestionar Clientes"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btnGoToReservations"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="📅  Gestionar Reservas"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btnGoToRooms"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="🏨  Gestionar Habitaciones"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btnGoToPayment"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="💳  Gestionar Pagos"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
