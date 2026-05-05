@@ -19,7 +19,7 @@ import ReservationStep1 from './components/Reservationstep1';
 import ReservationStep2 from './components/Reservationstep2';
 import ReservationStep3 from './components/Reservationstep3';
 import ReservationsUpcoming from './pages/ReservationsUpcoming';
-import RoomMap from './pages/RoomMap';
+
 import NotFound from './pages/NotFound';
 
 export default function App() {
