@@ -27,7 +27,7 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    
+
     @ManyToOne
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomType roomType;
@@ -35,6 +35,9 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Invoice invoice;
 
     @Column(nullable = false)
     @NotNull(message = "La fecha de reserva es obligatoria")
@@ -49,9 +52,9 @@ public class Reservation {
     private LocalDate checkOutDate;
 
     // DATOS
-    @Column(length = 50)
-    @NotBlank(message = "El estado es obligatorio")
-    private String condition;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReservationStatus status;
 
     @Column(nullable = false)
     @NotNull(message = "El número de huéspedes es obligatorio")

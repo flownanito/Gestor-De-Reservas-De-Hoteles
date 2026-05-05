@@ -1,5 +1,8 @@
 package com.proyect.reservationmanager.controller;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import com.proyect.reservationmanager.model.Employee;
+import com.proyect.reservationmanager.model.Invoice;
+import com.proyect.reservationmanager.dto.InvoiceResponse;
 import com.proyect.reservationmanager.model.Client;
 import com.proyect.reservationmanager.model.Reservation;
+import com.proyect.reservationmanager.model.ReservationStatus;
 import com.proyect.reservationmanager.model.RoomType;
 import com.proyect.reservationmanager.repository.ClientRepository;
 import com.proyect.reservationmanager.repository.EmployeeRepository;
+import com.proyect.reservationmanager.repository.InvoiceRepository;
 import com.proyect.reservationmanager.repository.ReservationRepository;
 import com.proyect.reservationmanager.repository.RoomTypeRepository;
 
@@ -34,6 +41,9 @@ public class ReservationController {
 
   @Autowired
   private EmployeeRepository employeeRepository;
+
+  @Autowired
+  private InvoiceRepository invoiceRepository;
 
   // Endpoint: GET /api/reservations
   @GetMapping
@@ -61,6 +71,46 @@ public class ReservationController {
   public ResponseEntity<List<Reservation>> getReservationsByClient(@PathVariable Long clientId) {
     List<Reservation> reservations = reservationRepository.findByClient_Id(clientId);
     return new ResponseEntity<>(reservations, HttpStatus.OK);
+  }
+
+  @Transactional
+  @GetMapping("/{id}/invoice")
+  public ResponseEntity<?> getInvoiceByReservation(@PathVariable Long id) {
+
+    Invoice invoice = invoiceRepository.findByReservation_Id(id)
+        .orElseThrow(() -> new RuntimeException("Factura no encontrada"));
+
+    Reservation reservation = invoice.getReservation(); // si LAZY, asegúrate de estar en transacción o usa fetch join
+
+    long nights = ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate());
+
+    BigDecimal pricePerNight = reservation.getRoomType().getBasePrice();
+
+    InvoiceResponse dto = new InvoiceResponse(
+        invoice.getId(),
+        invoice.getIssuedAt(),
+        invoice.getSubtotal(),
+        invoice.getTaxRate(),
+        invoice.getTaxAmount(),
+        invoice.getTotal(),
+
+        reservation.getId(),
+        reservation.getCheckInDate(),
+        reservation.getCheckOutDate(),
+        nights,
+
+        reservation.getClient().getId(),
+        reservation.getClient().getFirstName(),
+        reservation.getClient().getLastName(),
+        reservation.getClient().getDni(),
+        reservation.getClient().getEmail(),
+
+        reservation.getRoomType().getId(),
+        reservation.getRoomType().getName(),
+        pricePerNight 
+    );
+
+    return ResponseEntity.ok(dto);
   }
 
   // Endpoint: POST /api/reservations
@@ -129,6 +179,9 @@ public class ReservationController {
     reservation.setRoomType(roomType);
     reservation.setEmployee(employee);
 
+    // ESTADO
+    reservation.setStatus(ReservationStatus.CONFIRMED);
+
     Reservation savedReservation = reservationRepository.save(reservation);
 
     return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
@@ -145,7 +198,8 @@ public class ReservationController {
           reservation.setReservationDate(reservationDetails.getReservationDate());
           reservation.setCheckInDate(reservationDetails.getCheckInDate());
           reservation.setCheckOutDate(reservationDetails.getCheckOutDate());
-          reservation.setCondition(reservationDetails.getCondition());
+          // NO tocar status aquí
+          // reservation.setStatus(reservationDetails.getStatus());
           reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
           reservation.setTotalPrice(reservationDetails.getTotalPrice());
 
@@ -159,6 +213,80 @@ public class ReservationController {
         })
         // Si no existe (orElse), devolvemos 404 Not Found
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
+  // ENDPOINT Para facturar
+  @Transactional
+  @PostMapping("/{id}/invoice")
+  public ResponseEntity<?> generateInvoice(@PathVariable Long id) {
+
+    Reservation reservation = reservationRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+    if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+      return new ResponseEntity<>("No se puede facturar una reserva cancelada", HttpStatus.BAD_REQUEST);
+    }
+
+    if (reservation.getStatus() == ReservationStatus.INVOICED || invoiceRepository.existsByReservation_Id(id)) {
+      return new ResponseEntity<>("Esta reserva ya está facturada", HttpStatus.CONFLICT);
+    }
+
+    long nights = ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate());
+    if (nights <= 0) {
+      return new ResponseEntity<>("Fechas inválidas: check-out debe ser posterior a check-in", HttpStatus.BAD_REQUEST);
+    }
+
+    BigDecimal pricePerNight = reservation.getRoomType().getBasePrice();
+    if (pricePerNight == null) {
+      return new ResponseEntity<>("El tipo de habitación no tiene basePrice", HttpStatus.BAD_REQUEST);
+    }
+
+    BigDecimal taxRate = new BigDecimal("0.10");
+
+    BigDecimal subtotal = pricePerNight.multiply(BigDecimal.valueOf(nights));
+    BigDecimal taxAmount = subtotal.multiply(taxRate);
+    BigDecimal total = subtotal.add(taxAmount);
+
+    Invoice invoice = new Invoice();
+    invoice.setReservation(reservation);
+    invoice.setIssuedAt(LocalDateTime.now());
+    invoice.setSubtotal(subtotal);
+    invoice.setTaxRate(taxRate);
+    invoice.setTaxAmount(taxAmount);
+    invoice.setTotal(total);
+
+    Invoice savedInvoice = invoiceRepository.save(invoice);
+
+    reservation.setInvoice(savedInvoice);
+    reservation.setStatus(ReservationStatus.INVOICED);
+    reservation.setTotalPrice(total.doubleValue());
+    reservationRepository.save(reservation);
+
+    InvoiceResponse dto = new InvoiceResponse(
+        savedInvoice.getId(),
+        savedInvoice.getIssuedAt(),
+        savedInvoice.getSubtotal(),
+        savedInvoice.getTaxRate(),
+        savedInvoice.getTaxAmount(),
+        savedInvoice.getTotal(),
+
+        reservation.getId(),
+        reservation.getCheckInDate(),
+        reservation.getCheckOutDate(),
+        nights,
+
+        reservation.getClient().getId(),
+        reservation.getClient().getFirstName(),
+        reservation.getClient().getLastName(),
+        reservation.getClient().getDni(),
+        reservation.getClient().getEmail(),
+
+        reservation.getRoomType().getId(),
+        reservation.getRoomType().getName(),
+
+        pricePerNight);
+
+    return new ResponseEntity<>(dto, HttpStatus.CREATED);
   }
 
   // Endpoint: DELETE http://localhost:8080/api/reservations/1

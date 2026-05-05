@@ -6,6 +6,8 @@ import lombok.*; // Para simplificar el código Java
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity // Indica que esta clase es una tabla de base de datos
 @Table(name = "clients") // Especifica el nombre real de la tabla en la BD
 @Data // Lombok genera los metodos get/set/toString automaticamente
@@ -37,6 +39,7 @@ public class Client {
   @Email(message = "El email debe ser valido")
   private String email;
 
+  @JsonIgnore
   @Column(nullable = false)
   private String password;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createReservation } from "../services/reservationsApi";
+import { createReservation, generateInvoice } from "../services/reservationsApi";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // Forced re-build to clear possible cache issues
@@ -42,45 +42,31 @@ const ReservationsPage = ({ user }) => {
 
   // Función para confirmar la reserva final
   const handleSubmitFinal = async (paymentData) => {
-    try {
-      const clientId = user?.id ?? 1; // mientras no tengas login real, usa 1
+    const clientId = user?.id ?? 1;
 
-      // validación rápida
-      if (!reservationData.roomTypeId) {
-        throw new Error("Falta roomTypeId (tipo de habitación).");
-      }
-      if (!reservationData.checkIn || !reservationData.checkOut) {
-        throw new Error("Faltan fechas de check-in/check-out.");
-      }
+    if (!reservationData.roomTypeId) throw new Error("Falta roomTypeId.");
+    if (!reservationData.checkIn || !reservationData.checkOut) throw new Error("Faltan fechas.");
 
-      const payload = {
-        client: { id: clientId },
-        employee: null,
-        roomType: { id: Number(reservationData.roomTypeId) },
+    // 1) Crear reserva (NO mandes totalPrice calculado del front)
+    const payload = {
+      client: { id: clientId },
+      employee: null,
+      roomType: { id: Number(reservationData.roomTypeId) },
+      reservationDate: new Date().toISOString(),
+      checkInDate: reservationData.checkIn,
+      checkOutDate: reservationData.checkOut,
+      status: "CONFIRMED",
+      numberOfGuests: Number(reservationData.guests ?? 1),
+      totalPrice: 0, // backend lo fija al facturar
+    };
 
-        reservationDate: new Date().toISOString(), // LocalDateTime en backend
-        checkInDate: reservationData.checkIn,      // LocalDate
-        checkOutDate: reservationData.checkOut,    // LocalDate
+    const created = await createReservation(payload); // <- devuelve reserva con id
 
-        condition: "CONFIRMED",
-        numberOfGuests: Number(reservationData.guests ?? 1),
+    // 2) Generar factura (backend calcula noches/subtotal/impuestos/total)
+    const invoiceDto = await generateInvoice(created.id);
 
-        // OJO: si tu Step3 tiene "total" perfecto.
-        // Si no, pon un cálculo real luego.
-        totalPrice: Number(paymentData?.total ?? 0)
-      };
-
-      console.log("POST /api/reservations payload:", payload);
-
-      await createReservation(payload);
-
-      alert("¡Reserva realizada con éxito!");
-      navigate("/"); // o /reservations/upcoming
-    } catch (error) {
-      console.error("Error creando reserva:", error);
-      alert(`Hubo un error al reservar: ${error.message}`);
-      throw error; // para que Step3 pueda capturarlo si quieres
-    }
+    // 3) Devolver DTO al Step3 para mostrar modal
+    return invoiceDto;
   };
 
   return (
