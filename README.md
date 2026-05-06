@@ -6,14 +6,11 @@ Este proyecto es una plataforma robusta diseñada para centralizar todas las ope
 
 ---
 
-## 📸 Demo / Capturas
+## 📸 Demo / Capturas Reales
 
-> [!TIP]
-> Puedes ver el despliegue del frontend y el backend en tus entornos locales siguiendo los pasos de instalación.
-
-| Mapa Interactivo | Gestión de Clientes | Perfil de Usuario |
-| :--- | :--- | :--- |
-| ![Mapa](https://via.placeholder.com/300x200?text=Mapa+Interactivo+SVG) | ![Clientes](https://via.placeholder.com/300x200?text=CRUD+Clientes+Moderno) | ![Historial](https://via.placeholder.com/300x200?text=Historial+Reservas+Activo) |
+| Pantalla de Login | Mapa Interactivo de Habitaciones | Gestión de Clientes |
+| :---: | :---: | :---: |
+| ![Login](docs/screenshots/login.png) | ![Mapa](docs/screenshots/room_map.png) | ![Clientes](docs/screenshots/clients.png) |
 
 ---
 
@@ -31,30 +28,29 @@ Este proyecto es una plataforma robusta diseñada para centralizar todas las ope
 
 ## ✨ Funcionalidades Destacadas
 
-Hemos implementado recientemente características de última generación para mejorar la experiencia:
-
-*   **🗺️ Mapa de Habitaciones Interactivo**: Visualización SVG en tiempo real de la planta del hotel. Permite cambiar estados (Libre, Ocupada, Mantenimiento) con un solo clic.
-*   **📅 Flujo de Reserva Inteligente**: Sistema en 3 pasos con validación de fechas (Check-out siempre posterior a Check-in) y control de capacidad máxima por tipo de habitación.
-*   **📑 Facturación Automática**: Generación inmediata de facturas al confirmar reservas, calculando subtotal, impuestos y total según las noches de estancia.
-*   **👥 Gestión Administrativa Pro**: CRUDs completos para Empleados y Clientes con interfaces modernas, avatares dinámicos y búsqueda rápida.
-*   **👤 Historial de Reservas Activo**: Los clientes pueden ver sus próximas estancias, cancelarlas o editarlas directamente desde su perfil personal.
+*   **🗺️ Mapa de Habitaciones Interactivo**: Visualización SVG dinámica de la planta del hotel. Permite gestionar estados (Libre, Ocupada, Mantenimiento) de forma visual.
+*   **📅 Reserva en 3 Pasos**: Flujo guiado con validación de fechas (Check-out > Check-in) y control estricto de capacidad por habitación.
+*   **📑 Facturación Express**: Generación automática de facturas en PDF/JSON al confirmar la reserva, calculando noches, IVA (10%) y total.
+*   **👥 Gestión Administrativa (CRUD)**: Paneles completos para Empleados y Clientes con diseño premium, avatares y búsqueda en tiempo real.
+*   **👤 Perfil de Cliente con Historial**: Espacio personal donde los huéspedes pueden consultar, editar o cancelar sus propias reservas.
 
 ---
 
 ## 🛠️ Tecnologías Usadas
 
 ### Frontend
-*   **React 18** (Vite)
-*   **Tailwind CSS** (Diseño Premium & Responsive)
-*   **React Router Dom** (Navegación)
-*   **Axios** (Comunicación con API)
-*   **Lucide React** (Iconografía moderna)
+*   **React 19.2.0** (Vite 7.2.4)
+*   **Tailwind CSS 3.4.1** (Diseño Moderno)
+*   **React Router Dom 7.9.6** (Gestión de rutas)
+*   **Axios 1.6.7** (Cliente API)
+*   **Lucide React** (Iconografía)
 
 ### Backend
-*   **Java 17** con **Spring Boot 3**
-*   **Spring Data JPA** & **Hibernate**
-*   **PostgreSQL** (Base de datos relacional)
-*   **Maven** (Gestor de dependencias)
+*   **Java 17** con **Spring Boot 3.3.5**
+*   **Spring Data JPA** (Gestión de base de datos)
+*   **PostgreSQL** (Persistencia de datos)
+*   **Lombok** (Productividad en código)
+*   **OpenAPI/Swagger 2.6.0** (Documentación de API)
 
 ---
 
@@ -62,20 +58,20 @@ Hemos implementado recientemente características de última generación para me
 
 ```mermaid
 graph TD
-    A[Frontend React] -->|JSON API| B[Spring Boot Backend]
+    A[Frontend React 19] -->|Axios HTTP/JSON| B[Spring Boot API]
     B -->|JPA/Hibernate| C[(PostgreSQL DB)]
-    B -->|Logic| D[Generador de Facturas]
-    B -->|Logic| E[Gestor de Inventario]
+    B -->|Spring Security| D[Auth Provider]
+    B -->|Invoice Service| E[Facturación]
 ```
 
 ---
 
 ## 📋 Requisitos Previos
 
-*   **Node.js**: v18.0.0 o superior.
-*   **Java JDK**: v17 o superior.
-*   **Docker** (Opcional, para la base de datos).
-*   **PostgreSQL**: v14 o superior (si no se usa Docker).
+*   **Node.js**: v18.0.0 o superior (recomendado v20+).
+*   **Java JDK**: v17.
+*   **PostgreSQL**: Base de datos activa en puerto 5432.
+*   **Maven**: Para la construcción del backend.
 
 ---
 
@@ -90,7 +86,7 @@ cd Gestor-De-Reservas-De-Hoteles
 ### 2. Configurar el Backend
 ```bash
 cd GestorReservasHotel/backend
-# Configura el archivo application.properties con tus credenciales de BD
+# Configura application.properties con tus datos de PostgreSQL
 ./mvnw spring-boot:run
 ```
 
@@ -103,25 +99,21 @@ npm run dev
 
 ---
 
-## 🌐 Variables de Entorno
+## 🌐 Variables de Env / Configuración
 
-Crea un archivo `.env` en la carpeta `frontend` con:
-```env
-VITE_API_URL=http://localhost:8080/api
-```
-
-Para el backend, puedes configurar el archivo `src/main/resources/application.properties`:
+### Backend (`application.properties`)
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/hotel_db
 spring.datasource.username=tu_usuario
 spring.datasource.password=tu_contraseña
+spring.jpa.hibernate.ddl-auto=update
 ```
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia **MIT**. Eres libre de usarlo y modificarlo.
+Este proyecto está bajo la licencia **MIT**.
 
 ---
 
@@ -129,8 +121,7 @@ Este proyecto está bajo la licencia **MIT**. Eres libre de usarlo y modificarlo
 
 **Nauzet / flownanito**
 *   **GitHub**: [flownanito](https://github.com/flownanito)
-*   **LinkedIn**: [Tu Perfil]
-*   **Email**: tu-email@ejemplo.com
 
 ---
-*Se han confeccionado los manuales de configuración y administración adjuntos en la carpeta /docs.*
+> [!NOTE]
+> *Se han confeccionado los manuales de configuración y administración detallados en la carpeta /docs.*
