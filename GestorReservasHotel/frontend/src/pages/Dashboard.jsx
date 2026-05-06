@@ -1,6 +1,10 @@
 import React from 'react';
 import Hero from '../components/Hero'; // 1. Importamos la "Portada"
 
+import roomsData from "../data/Rooms";
+
+import { Link } from "react-router-dom";
+
 const Dashboard = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -18,17 +22,40 @@ const Dashboard = () => {
             Descubre el confort y la elegancia en cada uno de nuestros espacios diseñados para ti.
           </p>
 
-          {/* Un grid de ejemplo rápido */}
+          {/* Un grid con ejemplos de habitaciones */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-40 bg-gray-200 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                  Foto Habitación {item}
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Suite Deluxe {item}</h3>
-                <p className="text-amber-700 font-bold">$120 / noche</p>
+            {roomsData.slice(0, 3).map((room) => (
+              <div
+                key={room.id}
+                className="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <img
+                  src={room.img}
+                  alt={room.name}
+                  className="h-40 w-full object-cover rounded-lg mb-4"
+                />
+
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {room.name}
+                </h3>
+
+                <p className="text-gray-600 mb-2">
+                  {room.description}
+                </p>
+
+                <p className="text-amber-700 font-bold">
+                  {room.price}
+                </p>
               </div>
             ))}
+          </div>
+          <div className="mt-12">
+            <Link
+              to="/rooms"
+              className="inline-block bg-amber-700 hover:bg-amber-800 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg"
+            >
+              Ver todas las habitaciones
+            </Link>
           </div>
         </div>
       </section>
