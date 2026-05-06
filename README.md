@@ -111,17 +111,9 @@ spring.jpa.hibernate.ddl-auto=update
 
 ---
 
-## 📄 Licencia
-
-Este proyecto está bajo la licencia **MIT**.
-
----
-
 ## 👨‍💻 Autor / Contacto
 
 **Nauzet / flownanito**
 *   **GitHub**: [flownanito](https://github.com/flownanito)
-
----
-> [!NOTE]
-> *Se han confeccionado los manuales de configuración y administración detallados en la carpeta /docs.*
+*   **GitHub**: [depraider](https://github.com/depraider)
+*   **GitHub**: [VictoriaRaaz](https://github.com/VictoriaRaaz)
