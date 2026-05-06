@@ -14,13 +14,15 @@ const ReservationsPage = ({ user }) => {
 
   // Unificamos nombres: roomTypeId + guests + checkIn/checkOut
   const [reservationData, setReservationData] = useState({
-    roomTypeId: 1,      // <-- importante
-    checkIn: "",
-    checkOut: "",
-    guests: 1,
+    roomTypeId: location.state?.preselectedRoomId || 1,
+    checkIn: location.state?.checkIn || "",
+    checkOut: location.state?.checkOut || "",
+    guests: location.state?.guests || 1,
+    isEditing: location.state?.isEditing || false,
+    reservationId: location.state?.reservationId || null,
 
     clientData: {
-      nombre: user?.name || "",
+      nombre: user?.name || user?.firstName || "",
       apellido: user?.lastName || "",
       email: user?.email || "",
       telefono: user?.phone || ""
@@ -47,22 +49,28 @@ const ReservationsPage = ({ user }) => {
     if (!reservationData.roomTypeId) throw new Error("Falta roomTypeId.");
     if (!reservationData.checkIn || !reservationData.checkOut) throw new Error("Faltan fechas.");
 
-    // 1) Crear reserva (NO mandes totalPrice calculado del front)
     const payload = {
       client: { id: clientId },
-      employee: null,
       roomType: { id: Number(reservationData.roomTypeId) },
       reservationDate: new Date().toISOString(),
       checkInDate: reservationData.checkIn,
       checkOutDate: reservationData.checkOut,
       status: "CONFIRMED",
       numberOfGuests: Number(reservationData.guests ?? 1),
-      totalPrice: 0, // backend lo fija al facturar
+      totalPrice: 0,
     };
 
-    const created = await createReservation(payload); // <- devuelve reserva con id
+    let created;
+    if (reservationData.isEditing && reservationData.reservationId) {
+      // MODO EDICIÓN: Usamos PUT
+      const response = await api.put(`/reservations/${reservationData.reservationId}`, payload);
+      created = response.data;
+    } else {
+      // MODO CREACIÓN: Usamos POST
+      created = await createReservation(payload);
+    }
 
-    // 2) Generar factura (backend calcula noches/subtotal/impuestos/total)
+    // 2) Generar/Actualizar factura
     const invoiceDto = await generateInvoice(created.id);
 
     // 3) Devolver DTO al Step3 para mostrar modal

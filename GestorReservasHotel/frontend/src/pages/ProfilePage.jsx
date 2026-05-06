@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { User, Mail, Phone, Calendar, CreditCard, Star, Edit, Loader2, AlertCircle } from "lucide-react";
+import { User, Mail, Phone, Calendar, CreditCard, Star, Edit, Loader2, AlertCircle, Trash2, ChevronRight } from "lucide-react";
 import api from '../services/api';
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = ({ user }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("info");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -40,10 +42,10 @@ const ProfilePage = ({ user }) => {
     level: totalBookingsCount > 5 ? "Cliente Preferencial" : "Cliente Estándar"
   };
 
-  // Estado del formulario (Solo datos reales de la BD)
+  // Estado del formulario (Maneja firstName o name según el tipo de usuario)
   const [profileData, setProfileData] = useState({
-    name: user.name || "",
-    lastName: user.lastName || "", // ⬅️ Nuevo campo
+    name: user.firstName || user.name || "",
+    lastName: user.lastName || "", 
     email: user.email || "",
     phone: user.phone || ""
   });
@@ -52,6 +54,19 @@ const ProfilePage = ({ user }) => {
     // Aquí conectaríamos con el endpoint PUT /api/clients/{id}
     setIsEditing(false);
     alert("Datos actualizados correctamente (Simulado)");
+  };
+
+  const handleCancelBooking = async (id) => {
+    if (!window.confirm("¿Estás seguro de que quieres cancelar esta reserva? Esta acción no se puede deshacer.")) return;
+    
+    try {
+      await api.delete(`/reservations/${id}`);
+      setBookings(prev => prev.filter(b => b.id !== id));
+      alert("Reserva cancelada con éxito");
+    } catch (err) {
+      console.error("Error cancelling reservation:", err);
+      alert("No se pudo cancelar la reserva.");
+    }
   };
 
   return (
@@ -69,10 +84,10 @@ const ProfilePage = ({ user }) => {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
 
             <div className="w-24 h-24 bg-amber-700 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 border-4 border-amber-50">
-              {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+              {(user.firstName || user.name || "U").charAt(0).toUpperCase()}
             </div>
 
-            <h2 className="text-xl font-bold text-gray-900">{user.name} {user.lastName}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{user.firstName || user.name} {user.lastName}</h2>
             <p className="text-sm text-gray-500 uppercase tracking-wider mb-6">{user.role}</p>
 
             <div className="space-y-4 text-left border-t border-gray-100 pt-6">
@@ -207,7 +222,8 @@ const ProfilePage = ({ user }) => {
                           <th className="pb-4 pl-2">ID</th>
                           <th className="pb-4">Estancia</th>
                           <th className="pb-4">Estado</th>
-                          <th className="pb-4 pr-2 text-right">Monto</th>
+                          <th className="pb-4 text-right">Monto</th>
+                          <th className="pb-4 text-right pr-2">Acciones</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-50">
@@ -221,17 +237,44 @@ const ProfilePage = ({ user }) => {
                               <div className="text-xs text-gray-500">Reserva: {new Date(booking.reservationDate).toLocaleDateString()}</div>
                             </td>
                             <td className="py-4">
-                              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${booking.condition.toLowerCase() === 'confirmed' || booking.condition.toLowerCase() === 'confirmada'
+                              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${(booking.status || "PENDING").toLowerCase() === 'confirmed' || (booking.status || "").toLowerCase() === 'confirmada'
                                 ? 'bg-green-100 text-green-700'
-                                : booking.condition.toLowerCase() === 'completed' || booking.condition.toLowerCase() === 'completada'
+                                : (booking.status || "").toLowerCase() === 'completed' || (booking.status || "").toLowerCase() === 'completada'
                                   ? 'bg-blue-100 text-blue-700'
                                   : 'bg-gray-100 text-gray-700'
                                 }`}>
-                                {booking.condition}
+                                {booking.status || "PENDING"}
                               </span>
                             </td>
-                            <td className="py-4 pr-2 text-right font-bold text-gray-900">
+                            <td className="py-4 text-right font-bold text-gray-900">
                               {booking.totalPrice?.toFixed(2)}€
+                            </td>
+                            <td className="py-4 text-right pr-2">
+                              <div className="flex justify-end gap-2">
+                                <button 
+                                  onClick={() => navigate('/reservations', { 
+                                    state: { 
+                                      isEditing: true, 
+                                      reservationId: booking.id,
+                                      preselectedRoomId: booking.roomType?.id,
+                                      checkIn: booking.checkInDate,
+                                      checkOut: booking.checkOutDate,
+                                      guests: booking.numberOfGuests
+                                    } 
+                                  })}
+                                  className="p-1.5 text-gray-400 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
+                                  title="Editar fechas"
+                                >
+                                  <Edit size={16} />
+                                </button>
+                                <button 
+                                  onClick={() => handleCancelBooking(booking.id)}
+                                  className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                  title="Cancelar reserva"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}

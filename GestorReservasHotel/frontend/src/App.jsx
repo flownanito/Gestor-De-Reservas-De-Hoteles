@@ -69,7 +69,7 @@ export default function App() {
 
           {/* --- RUTA DE TUS COMPAÑEROS (Upcoming) --- */}
           {/* He descomentado esta línea para que funcione, ya que importamos el componente arriba */}
-          <Route path="/reservation-upcoming" element={<ReservationsUpcoming />} />
+          <Route path="/reservation-upcoming" element={<ReservationsUpcoming user={user} />} />
           <Route path='/room-map' element={<RoomMap />} />
 
         </Routes>
