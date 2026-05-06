@@ -25,9 +25,18 @@ const ReservationStep1 = ({ initialData, onNext }) => {
   };
 
   const handleSubmit = () => {
-    // Validación fechas
+    // Validación presencia de fechas
     if (!formData.checkIn || !formData.checkOut) {
       alert("Por favor selecciona las fechas");
+      return;
+    }
+
+    // Validación coherencia (Salida > Entrada)
+    const start = new Date(formData.checkIn);
+    const end = new Date(formData.checkOut);
+
+    if (end <= start) {
+      alert("La fecha de salida debe ser posterior a la fecha de entrada.");
       return;
     }
 
@@ -40,6 +49,9 @@ const ReservationStep1 = ({ initialData, onNext }) => {
     // Si todo está correcto, avanzar
     onNext(formData);
   };
+
+  // Obtener fecha de hoy en formato YYYY-MM-DD para el atributo min
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
@@ -138,8 +150,9 @@ const ReservationStep1 = ({ initialData, onNext }) => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Check-in</label>
                 <input
-                  type="date" // Cambiado a type="date" para que salga el calendario
+                  type="date" 
                   name="checkIn"
+                  min={today}
                   value={formData.checkIn}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
@@ -148,8 +161,9 @@ const ReservationStep1 = ({ initialData, onNext }) => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Check-out</label>
                 <input
-                  type="date" // Cambiado a type="date"
+                  type="date" 
                   name="checkOut"
+                  min={formData.checkIn || today}
                   value={formData.checkOut}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"

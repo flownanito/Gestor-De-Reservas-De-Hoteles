@@ -9,10 +9,14 @@ import org.springframework.stereotype.Component;
 import com.proyect.reservationmanager.model.Client;
 import com.proyect.reservationmanager.model.Employee;
 import com.proyect.reservationmanager.model.Position;
+import com.proyect.reservationmanager.model.Room;
+import com.proyect.reservationmanager.model.RoomState;
 import com.proyect.reservationmanager.model.RoomType;
 import com.proyect.reservationmanager.repository.ClientRepository;
 import com.proyect.reservationmanager.repository.EmployeeRepository;
 import com.proyect.reservationmanager.repository.PositionRepository;
+import com.proyect.reservationmanager.repository.RoomRepository;
+import com.proyect.reservationmanager.repository.RoomStateRepository;
 import com.proyect.reservationmanager.repository.RoomTypeRepository;
 
 @Component
@@ -21,15 +25,21 @@ public class DataInitializer implements CommandLineRunner {
   private final EmployeeRepository employeeRepository;
   private final PositionRepository positionRepository;
   private final RoomTypeRepository roomTypeRepository;
+  private final RoomRepository roomRepository;
+  private final RoomStateRepository roomStateRepository;
 
   public DataInitializer(ClientRepository clientRepository,
       EmployeeRepository employeeRepository,
       PositionRepository positionRepository,
-      RoomTypeRepository roomTypeRepository) {
+      RoomTypeRepository roomTypeRepository,
+      RoomRepository roomRepository,
+      RoomStateRepository roomStateRepository) {
     this.clientRepository = clientRepository;
     this.employeeRepository = employeeRepository;
     this.positionRepository = positionRepository;
     this.roomTypeRepository = roomTypeRepository;
+    this.roomRepository = roomRepository;
+    this.roomStateRepository = roomStateRepository;
   }
 
   @Override
@@ -181,6 +191,56 @@ public class DataInitializer implements CommandLineRunner {
       terraza.setAvailableRooms(4);
       roomTypeRepository.save(terraza);
     }
+
+    // --- CARGA DE ESTADOS ---
+    RoomState libre = null;
+    RoomState ocupada = null;
+    RoomState mantenimiento = null;
+
+    if (roomStateRepository.count() == 0) {
+      libre = new RoomState();
+      libre.setStateName("Libre");
+      roomStateRepository.save(libre);
+
+      ocupada = new RoomState();
+      ocupada.setStateName("Ocupada");
+      roomStateRepository.save(ocupada);
+
+      mantenimiento = new RoomState();
+      mantenimiento.setStateName("Mantenimiento");
+      roomStateRepository.save(mantenimiento);
+      System.out.println("Estados de habitación creados");
+    } else {
+      libre = roomStateRepository.findByStateName("Libre").orElse(null);
+      ocupada = roomStateRepository.findByStateName("Ocupada").orElse(null);
+      mantenimiento = roomStateRepository.findByStateName("Mantenimiento").orElse(null);
+    }
+
+    // --- CARGA DE HABITACIONES (ROOMS) ---
+    if (roomRepository.count() == 0) {
+      System.out.println("Insertando Habitaciones...");
+      RoomType typeDeluxe = roomTypeRepository.findAll().get(0);
+      RoomType typeSuperior = roomTypeRepository.findAll().get(1);
+
+      createRoom("101", 1, libre, typeDeluxe);
+      createRoom("102", 1, ocupada, typeSuperior);
+      createRoom("103", 1, libre, typeDeluxe);
+      createRoom("104", 1, libre, typeSuperior);
+      createRoom("105", 1, mantenimiento, typeDeluxe);
+      createRoom("106", 1, ocupada, typeSuperior);
+      createRoom("107", 1, libre, typeDeluxe);
+      createRoom("108", 1, libre, typeSuperior);
+      System.out.println("Habitaciones creadas");
+    }
     System.out.println("Carga de datos completada");
+  }
+
+  private void createRoom(String number, Integer floor, RoomState state, RoomType type) {
+    Room room = new Room();
+    room.setRoomNumber(number);
+    room.setFloor(floor);
+    room.setRoomState(state);
+    room.setRoomType(type);
+    roomRepository.save(room);
   }
 }

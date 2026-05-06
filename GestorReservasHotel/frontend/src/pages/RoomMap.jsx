@@ -13,14 +13,14 @@ const RoomMap = () => {
 
     // Cambiar precios de las habitaciones 
     const MOCK_ROOMS = [
-        { id: 1, roomNumber: "101", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Individual', basePrice: 80, capacity: 1 }, x: 30, y: 30 },
-        { id: 2, roomNumber: "102", roomState: { stateName: 'Ocupada' }, roomType: { typeName: 'Doble', basePrice: 120, capacity: 2 }, x: 160, y: 30 },
-        { id: 3, roomNumber: "103", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Suite', basePrice: 250, capacity: 2 }, x: 290, y: 30 },
-        { id: 4, roomNumber: "104", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Libre', basePrice: 180, capacity: 4 }, x: 420, y: 30 },
-        { id: 5, roomNumber: "105", roomState: { stateName: 'Limpieza' }, roomType: { typeName: 'Individual', basePrice: 85, capacity: 1 }, x: 30, y: 190 },
-        { id: 6, roomNumber: "106", roomState: { stateName: 'Ocupada' }, roomType: { typeName: 'Doble', basePrice: 130, capacity: 2 }, x: 160, y: 190 },
-        { id: 7, roomNumber: "107", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Deluxe', basePrice: 160, capacity: 2 }, x: 290, y: 190 },
-        { id: 8, roomNumber: "108", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Individual', basePrice: 75, capacity: 1 }, x: 420, y: 190 },
+        { id: 1, roomNumber: "101", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Individual', basePrice: 80, capacity: 1 }, x: 55, y: 40 },
+        { id: 2, roomNumber: "102", roomState: { stateName: 'Ocupada' }, roomType: { typeName: 'Doble', basePrice: 120, capacity: 2 }, x: 185, y: 40 },
+        { id: 3, roomNumber: "103", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Suite', basePrice: 250, capacity: 2 }, x: 315, y: 40 },
+        { id: 4, roomNumber: "104", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Libre', basePrice: 180, capacity: 4 }, x: 445, y: 40 },
+        { id: 5, roomNumber: "105", roomState: { stateName: 'Limpieza' }, roomType: { typeName: 'Individual', basePrice: 85, capacity: 1 }, x: 55, y: 200 },
+        { id: 6, roomNumber: "106", roomState: { stateName: 'Ocupada' }, roomType: { typeName: 'Doble', basePrice: 130, capacity: 2 }, x: 185, y: 200 },
+        { id: 7, roomNumber: "107", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Deluxe', basePrice: 160, capacity: 2 }, x: 315, y: 200 },
+        { id: 8, roomNumber: "108", roomState: { stateName: 'Libre' }, roomType: { typeName: 'Individual', basePrice: 75, capacity: 1 }, x: 445, y: 200 },
     ];
 
     useEffect(() => {
@@ -67,6 +67,16 @@ const RoomMap = () => {
             }
 
             console.log("Status updated successfully");
+
+            // Si el nuevo estado es 'Ocupada', redirigimos automáticamente a reservas
+            if (newState === 'Ocupada') {
+                navigate('/reservations', {
+                    state: {
+                        preselectedRoomId: roomId,
+                        preselectedRoomNumber: selectedRoom.roomNumber
+                    }
+                });
+            }
         } catch (error) {
             console.error("Error updating room status:", error);
             alert("No se pudo actualizar el estado de la habitación.");
@@ -139,7 +149,7 @@ const RoomMap = () => {
 
                                     {/* Texto de la habitación */}
                                     <text
-                                        x={room.x + 50}
+                                        x={room.x + 55}
                                         y={room.y > 100 ? room.y + 85 : room.y - 15}
                                         textAnchor="middle"
                                         className="fill-slate-800 text-lg font-black tracking-tighter"
@@ -147,11 +157,11 @@ const RoomMap = () => {
                                         {room.roomNumber}
                                     </text>
 
-                                    {/* Indicador de Estado pequeño debajo del número */}
+                                    {/* Indicador de Estado pequeño al lado del número */}
                                     <circle
-                                        cx={room.x + 50}
-                                        cy={room.y > 100 ? room.y + 95 : room.y - 25}
-                                        r="3"
+                                        cx={room.x + 35}
+                                        cy={room.y > 100 ? room.y + 79 : room.y - 21}
+                                        r="4"
                                         fill={getRoomColor(room.roomState?.stateName)}
                                     />
                                 </g>
@@ -248,17 +258,19 @@ const RoomMap = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-3 pt-4">
-                                    <button
-                                        onClick={() => navigate('/reservations', {
-                                            state: {
-                                                preselectedRoomId: selectedRoom.id,
-                                                preselectedRoomNumber: selectedRoom.roomNumber
-                                            }
-                                        })}
-                                        className="w-full bg-slate-900 hover:bg-black text-white font-black py-5 rounded-[2rem] transition-all shadow-xl active:scale-95 text-sm tracking-widest uppercase"
-                                    >
-                                        Gestionar Reserva
-                                    </button>
+                                    {selectedRoom.roomState?.stateName === 'Libre' && (
+                                        <button
+                                            onClick={() => navigate('/reservations', {
+                                                state: {
+                                                    preselectedRoomId: selectedRoom.id,
+                                                    preselectedRoomNumber: selectedRoom.roomNumber
+                                                }
+                                            })}
+                                            className="w-full bg-slate-900 hover:bg-black text-white font-black py-5 rounded-[2rem] transition-all shadow-xl active:scale-95 text-sm tracking-widest uppercase"
+                                        >
+                                            Gestionar Reserva
+                                        </button>
+                                    )}
                                     <button
                                         onClick={() => setSelectedRoom(null)}
                                         className="w-full bg-slate-100 text-slate-400 font-bold py-4 rounded-[2rem] hover:bg-slate-200 transition-all uppercase text-[10px] tracking-widest"
