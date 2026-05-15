@@ -10,6 +10,7 @@ import ReservationsPage from './pages/ReservationsPage';
 import ProfilePage from './pages/ProfilePage';
 import Room from './pages/Rooms';
 import RoomDetails from './pages/RoomDetails';
+import RoomMap from './pages/RoomMap';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -18,6 +19,8 @@ import ReservationStep1 from './components/Reservationstep1';
 import ReservationStep2 from './components/Reservationstep2';
 import ReservationStep3 from './components/Reservationstep3';
 import ReservationsUpcoming from './pages/ReservationsUpcoming';
+
+import NotFound from './pages/NotFound';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -38,6 +41,9 @@ export default function App() {
             element={!user ? <LoginPage onLoginSuccess={setUser} /> : <Navigate to="/" />}
           />
           <Route path='/register' element={<RegisterPage />} />
+
+          {/* Página de eror 404 */}
+          <Route path="*" element={<NotFound />} />
 
           {/* Rutas Privadas / Dashboard */}
           <Route path='/' element={<Dashboard />} />
@@ -63,7 +69,8 @@ export default function App() {
 
           {/* --- RUTA DE TUS COMPAÑEROS (Upcoming) --- */}
           {/* He descomentado esta línea para que funcione, ya que importamos el componente arriba */}
-          <Route path="/reservation-upcoming" element={<ReservationsUpcoming />} />
+          <Route path="/reservation-upcoming" element={<ReservationsUpcoming user={user} />} />
+          <Route path='/room-map' element={<RoomMap />} />
 
         </Routes>
       </main>

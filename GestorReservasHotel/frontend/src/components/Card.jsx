@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 
-function Card({ id, name, description, price, img, people, size, wifi }) {
+function Card({ id, name, description, price, img, people, size, wifi, availableRooms, totalRooms }) {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col h-full">
+    <div className={`bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex flex-col h-full
+  ${availableRooms === 0 ? "opacity-70" : "hover:shadow-xl transition-shadow duration-300"}
+`}>
 
       {/* --- SECCIÓN DE IMAGEN --- */}
       <div
@@ -11,11 +13,31 @@ function Card({ id, name, description, price, img, people, size, wifi }) {
           backgroundImage: img ? `url(${img})` : "none"
         }}
       >
-        {/* Etiqueta de Precio (Badge) */}
+        {/* Etiqueta de Precio (Badge) + Estado/Disponinilidad */}
         {price && (
-          <span className="absolute top-3 right-3 bg-amber-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
-            {price}
-          </span>
+          <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
+
+            {/* Precio */}
+            <span className="bg-amber-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+              {price}
+            </span>
+
+            {/* Estado disponibilidad */}
+            {availableRooms !== null && availableRooms !== undefined && (
+              <>
+                {availableRooms === 0 && (
+                  <span className="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+                    Completo
+                  </span>
+                )}
+                {availableRooms > 0 && availableRooms <= 5 && (
+                  <span className="bg-red-100 text-red-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-red-200">
+                    Quedan pocas
+                  </span>
+                )}
+              </>
+            )}
+          </div>
         )}
 
         {/* Placeholder si no hay imagen */}
@@ -61,10 +83,15 @@ function Card({ id, name, description, price, img, people, size, wifi }) {
 
         {/* Botón de Acción (Es un Link disfrazado de botón) */}
         <Link
-          to={`/rooms/${id}`}
-          className="w-full block text-center bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-sm active:scale-95 transform duration-100"
+          to={availableRooms === 0 ? "#" : `/rooms/${id}`}
+          onClick={(e) => availableRooms === 0 && e.preventDefault()}
+          className={`w-full block text-center font-bold py-3 px-4 rounded-lg transition-colors shadow-sm active:scale-95 transform duration-100
+    ${availableRooms === 0
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+              : "bg-amber-700 hover:bg-amber-800 text-white"
+            }`}
         >
-          Ver Detalles
+          {availableRooms === 0 ? "No disponible" : "Ver Detalles"}
         </Link>
 
       </div>

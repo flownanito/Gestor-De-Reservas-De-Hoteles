@@ -33,8 +33,7 @@
 
         <activity
             android:name=".ui.MiPerfilActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
 
         <activity android:name=".ui.RoomFeaureActivity" android:exported="false" />
         <activity android:name=".ui.PaymentManagementActivity" />

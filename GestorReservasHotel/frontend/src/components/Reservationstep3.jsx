@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Importar para redirigir
-import { CheckCircle } from 'lucide-react'; // Icono de éxito
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle } from 'lucide-react';
+import { useRoomTypes } from "../hooks/useRoomTypes";
+import { calculateReservationPrice } from '../utils/priceCalculator';
 
 const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
   const navigate = useNavigate();
   const [showSuccessModal, setShowSuccessModal] = useState(false); // 2. Estado del modal
 
+  const [invoice, setInvoice] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const { rooms, loading } = useRoomTypes();
+
+  const roomTypeId = Number(initialData?.roomTypeId);
+  const selectedRoom = rooms.find((r) => r.id === roomTypeId);
+
+  const checkIn = initialData?.checkIn || "";
+  const checkOut = initialData?.checkOut || "";
+  const guests = Number(initialData?.guests ?? 1);
+
+  // Calcula noches y precios usando la utilidad pura
+  const { nights, subtotal, impuestos, total } = useMemo(() => {
+    return calculateReservationPrice(checkIn, checkOut, selectedRoom?.basePrice);
+  }, [checkIn, checkOut, selectedRoom]);
+
+  // Estado de pago SOLO para tarjeta
   const [paymentData, setPaymentData] = useState({
-    habitacion: initialData?.tipoHabitacion || 'Habitación Estándar',
-    checkIn: initialData?.checkIn || '15/12/2025',
-    checkOut: initialData?.checkOut || '18/12/2025',
-    huespedes: initialData?.huespedes || 2,
-    subtotal: 252,
-    impuestos: 50,
-    total: 302,
-    cardName: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: ''
+    cardName: "",
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
   });
 
   const handleChange = (e) => {
@@ -31,23 +44,44 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
       return;
     }
 
-    try {
-      // Aquí llamarías al onSubmit del padre que llama al Backend
-      await onSubmit(paymentData);
+    // Validaciones básicas de fechas/selección
+    if (!roomTypeId || !selectedRoom) {
+      alert("Selecciona una habitación válida");
+      return;
+    }
+    if (!checkIn || !checkOut || nights <= 0) {
+      alert("Revisa las fechas (check-out debe ser posterior a check-in)");
+      return;
+    }
 
-      // 3. ¡ÉXITO! MOSTRAR EL MODAL
+    try {
+      setSubmitting(true);
+
+      // Ahora onSubmit debe devolver el DTO (InvoiceResponse)
+      const dto = await onSubmit({
+        ...paymentData,
+        subtotal,
+        impuestos,
+        total,
+      });
+
+      setInvoice(dto);
       setShowSuccessModal(true);
 
-      // 4. ESPERAR 2 SEGUNDOS Y REDIRIGIR AL INICIO
       setTimeout(() => {
-        navigate('/');
+        navigate("/");
       }, 2000);
-
     } catch (error) {
       console.error("Error:", error);
-      alert("Hubo un error en el pago.");
+      alert(`Hubo un error: ${error.message}`);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const subtotalShown = invoice ? Number(invoice.subtotal) : subtotal;
+  const taxShown = invoice ? Number(invoice.taxAmount) : impuestos;
+  const totalShown = invoice ? Number(invoice.total) : total;
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans relative">
@@ -61,7 +95,14 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Pago Exitoso!</h2>
             <p className="text-gray-600 mb-6">
-              Tu reserva ha sido confirmada correctamente. Te hemos enviado un email con los detalles.
+              {invoice ? (
+                <>
+                  Reserva <b>#{invoice.reservationId}</b> — {invoice.nights} noche(s) — Total:{" "}
+                  <b>{Number(invoice.total).toFixed(2)} €</b>
+                </>
+              ) : (
+                "Tu reserva ha sido confirmada correctamente. Te hemos enviado un email con los detalles."
+              )}
             </p>
             <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
               <div className="h-full bg-green-500 animate-[progress_2s_linear_forwards]" style={{ width: '0%' }}></div>
@@ -87,19 +128,19 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
                   <div className="space-y-2 text-sm text-gray-700">
                     <div className="flex justify-between">
                       <span>Habitación:</span>
-                      <span className="font-medium">{paymentData.habitacion}</span>
+                      <span className="font-medium">{selectedRoom?.name ?? "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Check-in:</span>
-                      <span className="font-medium">{paymentData.checkIn}</span>
+                      <span className="font-medium">{checkIn || "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Check-out:</span>
-                      <span className="font-medium">{paymentData.checkOut}</span>
+                      <span className="font-medium">{checkOut || "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Huéspedes:</span>
-                      <span className="font-medium">{paymentData.huespedes} personas</span>
+                      <span className="font-medium">{guests} persona{guests > 1 ? "s" : ""}</span>
                     </div>
                   </div>
                 </div>
@@ -180,9 +221,10 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
                   </button>
                   <button
                     onClick={handleFinalSubmit}
-                    className="flex-1 px-6 py-3 bg-amber-700 text-white rounded-lg font-semibold hover:bg-amber-800 transition-colors shadow-md transform hover:-translate-y-0.5"
+                    disabled={submitting}
+                    className="flex-1 px-6 py-3 bg-amber-700 text-white rounded-lg font-semibold hover:bg-amber-800 transition-colors shadow-md transform hover:-translate-y-0.5 disabled:opacity-60"
                   >
-                    Confirmar y Pagar
+                    {submitting ? "Procesando..." : "Confirmar y Pagar"}
                   </button>
                 </div>
               </div>
@@ -197,18 +239,18 @@ const ReservationStep3 = ({ initialData, onSubmit, onBack }) => {
               <div className="space-y-4 mb-6 text-gray-600">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-medium">{paymentData.subtotal} €</span>
+                  <span className="font-medium">{subtotalShown.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Impuestos</span>
-                  <span className="font-medium">{paymentData.impuestos} €</span>
+                  <span className="font-medium">{taxShown.toFixed(2)} €</span>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-gray-900">Total a Pagar</span>
-                  <span className="text-2xl font-bold text-amber-700">{paymentData.total} €</span>
+                  <span className="text-2xl font-bold text-amber-700">{totalShown.toFixed(2)} €</span>
                 </div>
               </div>
 

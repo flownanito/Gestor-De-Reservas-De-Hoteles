@@ -39,6 +39,7 @@ export default function Header({ user, onLogout }) {
               <>
                 <Link to="/employees" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Empleados</Link>
                 <Link to="/clients" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Clientes</Link>
+                <Link to="/room-map" className="text-gray-600 hover:text-amber-700 font-medium transition-colors">Mapa de Habitaciones</Link>
               </>
             )}
           </div>

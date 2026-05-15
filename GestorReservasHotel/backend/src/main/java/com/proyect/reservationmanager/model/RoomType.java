@@ -54,6 +54,15 @@ public class RoomType {
   @Column(nullable = false)
   private Integer capacity;
 
+  @NotNull(message = "El número total de habitaciones es obligatorio")
+  @Min(value = 1, message = "Debe haber al menos una habitación")
+  @Column(nullable = false)
+  private Integer totalRooms;
+
+  @NotNull(message = "La disponibilidad es obligatoria")
+  @Column(nullable = false)
+  private Integer availableRooms;
+
   @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   private Set<Room> rooms;
